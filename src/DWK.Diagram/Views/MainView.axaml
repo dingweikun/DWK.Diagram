@@ -2,7 +2,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
              xmlns:vm="clr-namespace:DWK.Diagram.ViewModels"
+             xmlns:go="using:Northwoods.Go.Avalonia"
+             xmlns:ctrl="using:DWK.Diagram.Controls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="DWK.Diagram.Views.MainView"
              x:DataType="vm:MainViewModel">
@@ -12,5 +15,91 @@
         <vm:MainViewModel />
     </Design.DataContext>
 
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="SeparatorBrush" Opacity="0.4" Color="Gray" />
+    </UserControl.Resources>
+
+    <DockPanel>
+        <ui:CommandBar DefaultLabelPosition="Right" DockPanel.Dock="Top">
+            <ui:CommandBar.PrimaryCommands>
+                <ui:CommandBarButton IconSource="New" Label="New" />
+                <ui:CommandBarButton IconSource="OpenFolder" Label="Open" />
+                <ui:CommandBarButton IconSource="Clear" Label="Close" />
+                <ui:CommandBarSeparator />
+                <ui:CommandBarButton IconSource="Save" Label="Save" />
+                <ui:CommandBarButton IconSource="SaveAs" Label="Save As" />
+                <ui:CommandBarSeparator />
+                <ui:CommandBarButton IconSource="Undo" Label="Undo" />
+                <ui:CommandBarButton IconSource="Redo" Label="Redo" />
+                <ui:CommandBarSeparator />
+                <ui:CommandBarButton IconSource="DarkTheme" Label="Toggle Theme"
+                                     Command="{Binding ToggleThemeCommand}" />
+            </ui:CommandBar.PrimaryCommands>
+        </ui:CommandBar>
+
+        <Rectangle DockPanel.Dock="Top" Height="1" Fill="{StaticResource SeparatorBrush}" />
+
+        <Grid ShowGridLines="False" ColumnDefinitions="Auto,Auto,Auto,Auto,*">
+            <!-- <ui:NavigationView PaneDisplayMode="LeftCompact" IsPaneToggleButtonVisible="False" > -->
+            <!--     <ui:NavigationView.MenuItems> -->
+            <!--         <ui:NavigationViewItem Content="Menu Item1" Tag="SamplePage1" IconSource="Play"/> -->
+            <!--         <ui:NavigationViewItem Content="Menu Item2" Tag="SamplePage2" IconSource="Save" /> -->
+            <!--         <ui:NavigationViewItem Content="Menu Item3" Tag="SamplePage3" IconSource="Refresh" /> -->
+            <!--         <ui:NavigationViewItem Content="Menu Item4" Tag="SamplePage4" IconSource="Download" /> -->
+            <!--     </ui:NavigationView.MenuItems> -->
+            <!-- </ui:NavigationView> -->
+
+            <ListBox Width="40" Grid.Column="0" SelectionMode="Toggle" SelectedIndex="{Binding PanelIndex}">
+                <ListBox.Styles>
+                    <Style Selector="ListBoxItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                    </Style>
+                    <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+                        <Setter Property="Background" Value="{StaticResource SystemAccentColor}" />
+                        <Setter Property="Foreground" Value="white" />
+                    </Style>
+                    <Style Selector="ui|SymbolIcon">
+                        <Setter Property="FontSize" Value="18" />
+                    </Style>
+                </ListBox.Styles>
+                <ListBoxItem>
+                    <ui:SymbolIcon Symbol="Document" />
+                </ListBoxItem>
+                <ListBoxItem>
+                    <ui:SymbolIcon Symbol="List" />
+                </ListBoxItem>
+                <ListBoxItem>
+                    <ui:SymbolIcon Symbol="ViewAll" />
+                </ListBoxItem>
+            </ListBox>
+
+            <Rectangle Grid.Column="1" Width="1" Fill="{StaticResource SeparatorBrush}"></Rectangle>
+
+            <DockPanel Grid.Column="2" Width="360" IsVisible="{Binding  ShowPanel}">
+                <TextBlock Text="{Binding PanelTitle}" DockPanel.Dock="Top" Padding="16 8" />
+                <ScrollViewer>
+                </ScrollViewer>
+            </DockPanel>
+
+            <Rectangle Grid.Column="3" Width="1" Fill="{StaticResource SeparatorBrush}"></Rectangle>
+
+
+            <!-- TabCloseRequested="BindingTabView_TabCloseRequested" -->
+            <ui:TabView Padding="0" Grid.Column="4"
+                        TabItems="{Binding Documents}">
+                <ui:TabView.TabItemTemplate>
+                    <DataTemplate DataType="x:String">
+                        <ui:TabViewItem Header="{Binding }" IconSource="Document">
+                            <!-- <ctrl:DiagramControl></ctrl:DiagramControl> -->
+                            <!-- <Border Background="red" Height="100" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Border> -->
+                            <!-- <go:DiagramControl -->
+                            <!--     BorderBrush="Black" BorderThickness="1" -->
+                            <!--     Background="LightGray" /> -->
+                        </ui:TabViewItem>
+                    </DataTemplate>
+                </ui:TabView.TabItemTemplate>
+            </ui:TabView>
+        </Grid>
+    </DockPanel>
 
 </UserControl>
