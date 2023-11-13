@@ -1,23 +1,25 @@
 using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using DWK.Diagram.Views;
+using Prism.DryIoc;
+using Prism.Ioc;
 
 namespace DWK.Diagram;
 
-public partial class App : Application
+public partial class App : PrismApplication
 {
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
+        base.Initialize();
     }
 
-    public override void OnFrameworkInitializationCompleted()
+    protected override AvaloniaObject CreateShell()
     {
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-        {
-            desktop.MainWindow = new MainWindow();
-        }
+        return Container.Resolve<ShellWindow>();
+    }
 
-        base.OnFrameworkInitializationCompleted();
+    protected override void RegisterTypes(IContainerRegistry containerRegistry)
+    {
     }
 }

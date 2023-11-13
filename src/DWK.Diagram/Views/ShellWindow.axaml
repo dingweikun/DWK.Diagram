@@ -1,0 +1,44 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ui="using:FluentAvalonia.UI.Controls"
+        xmlns:vm="using:DWK.Diagram.ViewModels"
+        xmlns:v="using:DWK.Diagram.Views"
+        xmlns:m="using:DWK.Diagram.Models"
+        xmlns:prism="http://prismlibrary.com/"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="DWK.Diagram.Views.ShellWindow"
+        Title="{Binding ShellTitle}">
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="SeparatorBrush" Color="gray" Opacity="0.3" />
+    </Window.Resources>
+
+    <DockPanel>
+        <ui:CommandBar DockPanel.Dock="Top" DefaultLabelPosition="Right">
+            <ui:CommandBarButton Label="Shift Theme" IconSource="DarkTheme" Command="{Binding ShiftThemeCommand}" />
+        </ui:CommandBar>
+
+        <Rectangle DockPanel.Dock="Top" Height="1" Fill="{StaticResource SeparatorBrush}" />
+        
+        <Grid x:Name="PartGrid" ColumnDefinitions="Auto,Auto,Auto,*">
+            <ListBox Grid.Column="0" Width="40" SelectionMode="Toggle" ItemsSource="{Binding SidePanelItems}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="vm:SidePanelItem">
+                        <ui:SymbolIcon Symbol="{Binding IconSymbol}" FontSize="18"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                <ListBox.Styles>
+                    <Style Selector=":selected /template/ ContentPresenter">
+                        <Setter Property="Background" Value="Red"></Setter>
+                        <Setter Property="Foreground" Value="White"></Setter>
+                    </Style>
+                </ListBox.Styles>
+            </ListBox>
+            <ContentControl Grid.Column="1" prism:RegionManager.RegionName="{x:Static m:RegionNames.SidePanelRegion}"/>
+            <GridSplitter x:Name="PartSplitter" Grid.Column="2" />
+            <ContentControl Grid.Column="3" prism:RegionManager.RegionName="{x:Static m:RegionNames.DiagramRegion}"/>
+        </Grid>
+    </DockPanel>
+</Window>
