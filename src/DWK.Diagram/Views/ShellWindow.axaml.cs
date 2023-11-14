@@ -4,25 +4,25 @@ namespace DWK.Diagram.Views;
 
 public partial class ShellWindow : Window
 {
-    protected const double SidePanelDefaultWidth = 280;
+    private const double SidePanelDefaultWidth = 280;
     private double _sidePanelSavedWidth = SidePanelDefaultWidth;
-
-    public double SidePanelSavedWidth
-    {
-        get => _sidePanelSavedWidth;
-        set => _sidePanelSavedWidth = value > SidePanelDefaultWidth ? value : SidePanelDefaultWidth;
-    }
 
     public ShellWindow()
     {
         InitializeComponent();
     }
 
+    private double SidePanelSavedWidth
+    {
+        get => _sidePanelSavedWidth;
+        set => _sidePanelSavedWidth = value > SidePanelDefaultWidth ? value : SidePanelDefaultWidth;
+    }
+
     private void OnSidePanelSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         if (sender is not ListBox listbox) return;
 
-        ColumnDefinition sidePanelColumn = PartGrid.ColumnDefinitions[1];
+        var sidePanelColumn = PartGrid.ColumnDefinitions[1];
 
         if (e.RemovedItems.Count > 0)
             SidePanelSavedWidth = sidePanelColumn.Width.Value;

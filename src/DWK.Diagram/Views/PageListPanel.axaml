@@ -8,9 +8,20 @@
 
     <DockPanel>
         <TextBlock Classes="panel_title" DockPanel.Dock="Top" Text="{Binding PanelTitle}" />
-        <ListBox SelectionMode="Single" 
+        <ListBox SelectionMode="Single"
                  SelectedItem="{Binding OpenedPage}"
                  ItemsSource="{Binding Pages}">
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="x:String">
+                    <Border VerticalAlignment="Center" Padding="0" Margin="0">
+                        <DockPanel>
+                            <ui:SymbolIcon Symbol="Document" DockPanel.Dock="Left" />
+                            <ui:SymbolIcon Symbol="Star" DockPanel.Dock="Right" />
+                            <TextBlock Classes="page_name" Text="{Binding}" />
+                        </DockPanel>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
             <ListBox.Styles>
                 <Style Selector="ui|SymbolIcon">
                     <Setter Property="FontSize" Value="15" />
@@ -20,49 +31,6 @@
                     <Setter Property="Padding" Value="8,0" />
                 </Style>
             </ListBox.Styles>
-            <!--<ListBoxItem>
-                <DockPanel>
-                    <ui:SymbolIcon Symbol="Document" DockPanel.Dock="Left" />
-                    <ui:SymbolIcon Symbol="Star" DockPanel.Dock="Right" />
-                    <TextBlock Classes="page_name" TextAlignment="Start"  Text="中文 CSV Defualt Page" />
-                </DockPanel>
-            </ListBoxItem>
-
-            <ListBoxItem>
-                <DockPanel>
-                    <ui:SymbolIcon Symbol="Document" DockPanel.Dock="Left" />
-                    <ui:SymbolIcon Symbol="Star" DockPanel.Dock="Right" />
-                    <TextBlock Classes="page_name" TextAlignment="Start"  Text="中文 CSV Defualt Page" />
-                </DockPanel>
-            </ListBoxItem>
-            <ListBoxItem>
-                <DockPanel>
-                    <ui:SymbolIcon Symbol="Document" DockPanel.Dock="Left" />
-                    <ui:SymbolIcon Symbol="Star" DockPanel.Dock="Right" />
-                    <TextBlock Classes="page_name" TextAlignment="Start"  Text="中文 CSV Defualt Page" />
-                </DockPanel>
-            </ListBoxItem>
-            <ListBoxItem>
-                <DockPanel>
-                    <ui:SymbolIcon Symbol="Document" DockPanel.Dock="Left" />
-                    <ui:SymbolIcon Symbol="Star" DockPanel.Dock="Right" />
-                    <TextBlock Classes="page_name" TextAlignment="Start"  Text="中文 CSV Defualt Page" />
-                </DockPanel>
-            </ListBoxItem>
-            <ListBoxItem>
-                <DockPanel>
-                    <ui:SymbolIcon Symbol="Document" DockPanel.Dock="Left" />
-                    <ui:SymbolIcon Symbol="Star" DockPanel.Dock="Right" />
-                    <TextBlock Classes="page_name" TextAlignment="Start"  Text="中文 CSV Defualt Page" />
-                </DockPanel>
-            </ListBoxItem>
-            <ListBoxItem>
-                <DockPanel>
-                    <ui:SymbolIcon Symbol="Document" DockPanel.Dock="Left" />
-                    <ui:SymbolIcon Symbol="Star" DockPanel.Dock="Right" />
-                    <TextBlock Classes="page_name" TextAlignment="Start"  Text="中文 CSV Defualt Page" />
-                </DockPanel>
-            </ListBoxItem>-->
         </ListBox>
     </DockPanel>
 </UserControl>

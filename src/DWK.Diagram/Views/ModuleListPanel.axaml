@@ -5,9 +5,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="DWK.Diagram.Views.ModuleListPanel">
     <DockPanel>
-        <TextBlock DockPanel.Dock="Top" Padding="12,8" Text="{Binding PanelTitle}"/>
-        <Grid>
-
-        </Grid>
+        <TextBlock DockPanel.Dock="Top" Padding="12,8" Text="{Binding PanelTitle}" />
+        <Grid />
     </DockPanel>
 </UserControl>

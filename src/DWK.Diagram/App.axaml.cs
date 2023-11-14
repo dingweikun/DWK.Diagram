@@ -1,4 +1,4 @@
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Markup.Xaml;
 using DWK.Diagram.Views;
 using Prism.DryIoc;
@@ -6,7 +6,7 @@ using Prism.Ioc;
 
 namespace DWK.Diagram;
 
-public partial class App : PrismApplication
+public class App : PrismApplication
 {
     public override void Initialize()
     {

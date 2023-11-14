@@ -12,9 +12,6 @@ public partial class DiagramView : UserControl
     {
         InitializeComponent();
         _aggregator = aggregator;
-        _aggregator.GetEvent<DiagramInitEvent>().Subscribe(agent =>
-        {
-            agent.Reset(PartDiagramControl.Diagram);
-        });
+        _aggregator.GetEvent<DiagramInitEvent>().Subscribe(agent => { agent.Reset(PartDiagramControl.Diagram); });
     }
 }

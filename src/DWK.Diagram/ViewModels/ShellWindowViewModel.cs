@@ -21,11 +21,11 @@ internal class ShellWindowViewModel : BindableBase
 
     public string ShellTitle => "DWK Diagram App 2023";
 
-    public SidePanelItem[] SidePanelItems { get; } = new[]
+    public SidePanelItem[] SidePanelItems { get; } =
     {
         new SidePanelItem(nameof(PageListPanel), "Document"),
         new SidePanelItem(nameof(ModuleListPanel), "List"),
-        new SidePanelItem(nameof(ModuleLibraryPanel), "ViewAll"),
+        new SidePanelItem(nameof(ModuleLibraryPanel), "ViewAll")
     };
 
     public SidePanelItem? CurrentSidePanelItem
@@ -34,13 +34,11 @@ internal class ShellWindowViewModel : BindableBase
         set
         {
             if (SetProperty(ref _currrntSidePanelItem, value) && value.HasValue)
-            {
                 _regionManager.RequestNavigate(RegionNames.SidePanelRegion, value.Value.PanelName);
-            }
         }
     }
 
-    public DelegateCommand ShiftThemeCommand { get; } = new DelegateCommand(() =>
+    public DelegateCommand ShiftThemeCommand { get; } = new(() =>
     {
         var app = Application.Current!;
         var isDark = app.ActualThemeVariant.Key == ThemeVariant.Dark.Key;

@@ -4,11 +4,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ui="using:FluentAvalonia.UI.Controls"
         xmlns:vm="using:DWK.Diagram.ViewModels"
-        xmlns:v="using:DWK.Diagram.Views"
         xmlns:m="using:DWK.Diagram.Models"
         xmlns:prism="http://prismlibrary.com/"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="DWK.Diagram.Views.ShellWindow"
+        Icon="/Assets/DingWK.png"
         Title="{Binding ShellTitle}">
 
     <DockPanel>
@@ -33,9 +33,9 @@
                     <ui:SymbolIcon Symbol="DarkTheme" FontSize="18" />
                 </Button>
                 <ListBox SelectionMode="Toggle"
-                     ItemsSource="{Binding SidePanelItems}"
-                     SelectedItem="{Binding CurrentSidePanelItem}"
-                     SelectionChanged="OnSidePanelSelectionChanged">
+                         ItemsSource="{Binding SidePanelItems}"
+                         SelectedItem="{Binding CurrentSidePanelItem}"
+                         SelectionChanged="OnSidePanelSelectionChanged">
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="vm:SidePanelItem">
                             <ui:SymbolIcon Symbol="{Binding IconSymbol}" FontSize="18" />

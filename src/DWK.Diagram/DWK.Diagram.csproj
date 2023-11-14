@@ -1,40 +1,46 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-    <RootNamespace>DWK.Diagram</RootNamespace>
-  </PropertyGroup>
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <!--If you are willing to use Windows/MacOS native APIs you will need to create 3 projects.
+        One for Windows with net7.0-windows TFM, one for MacOS with net7.0-macos and one with net7.0 TFM for Linux.-->
+        <TargetFramework>net7.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+    </PropertyGroup>
 
-  
-  <ItemGroup>
-    <AvaloniaResource Include="Assets\**" />
-  </ItemGroup>
 
-  
-  <ItemGroup>
-    <None Remove="Assets\DingWK.svg" />
-    <None Remove="Assets\Fonts\DingWK.png" />
-  </ItemGroup>
-	
-  <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.0.5" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.0.5" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.5" />
-    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.5" />
-    <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.5" />
-    <PackageReference Include="FluentAvaloniaUI" Version="2.0.4" />
-    <PackageReference Include="Northwoods.GoDiagram.Avalonia" Version="10.0.6" />
-    <PackageReference Include="Prism.Avalonia" Version="8.1.97.11000" />
-    <PackageReference Include="Prism.DryIoc.Avalonia" Version="8.1.97.11000" />
-  </ItemGroup>
-	
-  <!--<ItemGroup>
-    <Compile Update="Views\ShellWindow.axaml.cs">
-      <DependentUpon>ShellWindow.axaml</DependentUpon>
-    </Compile>
-  </ItemGroup>-->
+    <ItemGroup>
+        <AvaloniaResource Include="Assets\**" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+        <None Remove="Assets\DingWK.svg" />
+        <None Remove="Assets\Fonts\DingWK.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Avalonia" Version="11.0.5" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.0.5" />
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.5" />
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.5" />
+        <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.5" />
+        <PackageReference Include="FluentAvaloniaUI" Version="2.0.4" />
+        <PackageReference Include="Northwoods.GoDiagram.Avalonia" Version="10.0.6" />
+        <PackageReference Include="Prism.Avalonia" Version="8.1.97.11000" />
+        <PackageReference Include="Prism.DryIoc.Avalonia" Version="8.1.97.11000" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\DWK.Diagram.Base\DWK.Diagram.Base.csproj" />
+        <ProjectReference Include="..\DWK.Diagram.Logic\DWK.Diagram.Logic.csproj" />
+    </ItemGroup>
+
+    <!--<ItemGroup>
+      <Compile Update="Views\ShellWindow.axaml.cs">
+        <DependentUpon>ShellWindow.axaml</DependentUpon>
+      </Compile>
+    </ItemGroup>-->
 </Project>

@@ -1,4 +1,6 @@
-﻿using DWK.Diagram.Models;
+﻿using DWK.Diagram.Base;
+using DWK.Diagram.Logic;
+using DWK.Diagram.Models;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -9,7 +11,7 @@ public class PageListPanelViewModel : BindableBase
 {
     private readonly IEventAggregator _aggregator;
 
-    public string PanelTitle => "Page List".ToUpper();
+    private string _openedPage = string.Empty;
 
     public PageListPanelViewModel(IEventAggregator aggregator)
     {
@@ -18,7 +20,8 @@ public class PageListPanelViewModel : BindableBase
         OpenPageCommand = new DelegateCommand(OpenPage);
     }
 
-    private string _openedPage = string.Empty;
+    public string PanelTitle => "Page List".ToUpper();
+
     public string OpenedPage
     {
         get => _openedPage;
@@ -29,7 +32,7 @@ public class PageListPanelViewModel : BindableBase
         }
     }
 
-    public string[] Pages { get; } = new[] { "Page-1", "Page-2", "Page-3", "Page-4", "Page-5" };
+    public string[] Pages { get; } = { "Page-1", "Page-2", "Page-3", "Page-4", "Page-5" };
 
     public DelegateCommand OpenPageCommand { get; }
 
