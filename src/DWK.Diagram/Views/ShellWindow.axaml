@@ -23,7 +23,8 @@
         <Rectangle DockPanel.Dock="Top" Height="1" Fill="{StaticResource SeparatorBrush}" />
         
         <Grid x:Name="PartGrid" ColumnDefinitions="Auto,Auto,Auto,*">
-            <ListBox Grid.Column="0" Width="40" SelectionMode="Toggle" ItemsSource="{Binding SidePanelItems}">
+            <ListBox Grid.Column="0" Width="40" SelectionMode="Toggle" ItemsSource="{Binding SidePanelItems}"
+                     SelectionChanged="OnSidePanelSelectionChanged">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="vm:SidePanelItem">
                         <ui:SymbolIcon Symbol="{Binding IconSymbol}" FontSize="18"/>
@@ -31,7 +32,7 @@
                 </ListBox.ItemTemplate>
                 <ListBox.Styles>
                     <Style Selector=":selected /template/ ContentPresenter">
-                        <Setter Property="Background" Value="Red"></Setter>
+                        <Setter Property="Background" Value="{StaticResource SystemAccentColor}"></Setter>
                         <Setter Property="Foreground" Value="White"></Setter>
                     </Style>
                 </ListBox.Styles>

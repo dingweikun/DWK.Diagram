@@ -21,5 +21,10 @@ public partial class App : PrismApplication
 
     protected override void RegisterTypes(IContainerRegistry containerRegistry)
     {
+        containerRegistry.Register<DiagramView>();
+
+        containerRegistry.RegisterForNavigation<PageListPanel>();
+        containerRegistry.RegisterForNavigation<ModuleListPanel>();
+        containerRegistry.RegisterForNavigation<ModuleLibraryPanel>();
     }
 }
