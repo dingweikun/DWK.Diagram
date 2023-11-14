@@ -11,35 +11,50 @@
         x:Class="DWK.Diagram.Views.ShellWindow"
         Title="{Binding ShellTitle}">
 
-    <Window.Resources>
-        <SolidColorBrush x:Key="SeparatorBrush" Color="gray" Opacity="0.3" />
-    </Window.Resources>
-
     <DockPanel>
-        <ui:CommandBar DockPanel.Dock="Top" DefaultLabelPosition="Right">
-            <ui:CommandBarButton Label="Shift Theme" IconSource="DarkTheme" Command="{Binding ShiftThemeCommand}" />
-        </ui:CommandBar>
+        <Border DockPanel.Dock="Top" BorderThickness="1" BorderBrush="{StaticResource SeparatorBrush}">
+            <Menu FontSize="10">
+                <MenuItem Header="_File">
+                    <MenuItem Header="_Open..." />
+                    <Separator />
+                    <MenuItem Header="_Exit" />
+                </MenuItem>
+                <MenuItem Header="_Edit">
+                    <MenuItem Header="Copy" />
+                    <MenuItem Header="Paste" />
+                </MenuItem>
+            </Menu>
+        </Border>
 
-        <Rectangle DockPanel.Dock="Top" Height="1" Fill="{StaticResource SeparatorBrush}" />
-        
         <Grid x:Name="PartGrid" ColumnDefinitions="Auto,Auto,Auto,*">
-            <ListBox Grid.Column="0" Width="40" SelectionMode="Toggle" ItemsSource="{Binding SidePanelItems}"
+            <DockPanel Grid.Column="0" Width="40" Background="{StaticResource PanelFillBrush}">
+                <Button DockPanel.Dock="Bottom" Height="40" Background="Transparent" BorderThickness="0"
+                        Command="{Binding ShiftThemeCommand}">
+                    <ui:SymbolIcon Symbol="DarkTheme" FontSize="18" />
+                </Button>
+                <ListBox SelectionMode="Toggle"
+                     ItemsSource="{Binding SidePanelItems}"
+                     SelectedItem="{Binding CurrentSidePanelItem}"
                      SelectionChanged="OnSidePanelSelectionChanged">
-                <ListBox.ItemTemplate>
-                    <DataTemplate DataType="vm:SidePanelItem">
-                        <ui:SymbolIcon Symbol="{Binding IconSymbol}" FontSize="18"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-                <ListBox.Styles>
-                    <Style Selector=":selected /template/ ContentPresenter">
-                        <Setter Property="Background" Value="{StaticResource SystemAccentColor}"></Setter>
-                        <Setter Property="Foreground" Value="White"></Setter>
-                    </Style>
-                </ListBox.Styles>
-            </ListBox>
-            <ContentControl Grid.Column="1" prism:RegionManager.RegionName="{x:Static m:RegionNames.SidePanelRegion}"/>
-            <GridSplitter x:Name="PartSplitter" Grid.Column="2" />
-            <ContentControl Grid.Column="3" prism:RegionManager.RegionName="{x:Static m:RegionNames.DiagramRegion}"/>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="vm:SidePanelItem">
+                            <ui:SymbolIcon Symbol="{Binding IconSymbol}" FontSize="18" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.Styles>
+                        <Style Selector=":selected /template/ ContentPresenter">
+                            <Setter Property="Background" Value="{StaticResource SystemAccentColor}" />
+                            <Setter Property="Foreground" Value="White" />
+                        </Style>
+                    </ListBox.Styles>
+                </ListBox>
+            </DockPanel>
+
+            <ContentControl Grid.Column="1" prism:RegionManager.RegionName="{x:Static m:RegionNames.SidePanelRegion}" />
+
+            <GridSplitter x:Name="PartSplitter" Grid.Column="2" IsVisible="False" />
+
+            <ContentControl Grid.Column="3" prism:RegionManager.RegionName="{x:Static m:RegionNames.DiagramRegion}" />
         </Grid>
     </DockPanel>
 </Window>

@@ -1,25 +1,20 @@
 using Avalonia.Controls;
-using DWK.Diagram.Models;
-using DWK.Diagram.ViewModels;
-using Prism.Events;
 
 namespace DWK.Diagram.Views;
 
 public partial class ShellWindow : Window
 {
-    protected const double SidePanelDefaultWidth = 300;
-    private readonly IEventAggregator? _aggregator;
+    protected const double SidePanelDefaultWidth = 280;
     private double _sidePanelSavedWidth = SidePanelDefaultWidth;
 
     public double SidePanelSavedWidth
     {
         get => _sidePanelSavedWidth;
-        set => _sidePanelSavedWidth = value > 0 ? value : SidePanelDefaultWidth;
+        set => _sidePanelSavedWidth = value > SidePanelDefaultWidth ? value : SidePanelDefaultWidth;
     }
 
-    public ShellWindow(IEventAggregator aggregator)
+    public ShellWindow()
     {
-        _aggregator = aggregator;
         InitializeComponent();
     }
 
@@ -42,9 +37,5 @@ public partial class ShellWindow : Window
             sidePanelColumn.Width = new GridLength(0, GridUnitType.Pixel);
             PartSplitter.IsVisible = false;
         }
-
-        // 发布事件
-        string panelTitle = (listbox.SelectedItem as SidePanelItem)?.PanelTitle ?? string.Empty;
-        _aggregator?.GetEvent<ShiftSidePanelEvent>().Publish(panelTitle);
     }
 }

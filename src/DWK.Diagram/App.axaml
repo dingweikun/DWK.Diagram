@@ -8,6 +8,22 @@
 
     <Application.Styles>
         <sty:FluentAvaloniaTheme />
+        <StyleInclude Source="avares://Northwoods.GoDiagram.Avalonia/DiagramControl.axaml" />
+        
+        <!--Custom-->
+        <Style Selector="TextBlock.panel_title">
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+        
     </Application.Styles>
+
+    <Application.Resources>
+
+        <SolidColorBrush x:Key="SeparatorBrush" Color="gray" Opacity="0.3" />
+        <SolidColorBrush x:Key="PanelFillBrush" Color="gray" Opacity="0.1" />
+    </Application.Resources>
+
 
 </prism:PrismApplication>
