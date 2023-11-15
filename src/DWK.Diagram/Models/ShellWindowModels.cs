@@ -1,4 +1,4 @@
-﻿using Prism.Events;
+using Prism.Events;
 
 namespace DWK.Diagram.Models;
 
@@ -11,3 +11,4 @@ public static class RegionNames
 public class ShiftSidePanelEvent : PubSubEvent<string>
 {
 }
+
