@@ -7,5 +7,5 @@
              x:Class="DWK.Diagram.DiagramView">
     <go:DiagramControl
         Name="PartDiagramControl"
-        Background="LightGray" />
+        Background="white" />
 </UserControl>
