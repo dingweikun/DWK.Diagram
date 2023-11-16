@@ -3,7 +3,7 @@ namespace DWK.Diagram.Logic;
 public enum SignalTypes
 {
     Analog,
-    Digital
+    Digital,
 }
 
 public class LogicDiagramModel : GraphLinksModel<LogicNodeData, Guid, object, LogicLinkData, Guid, string>
