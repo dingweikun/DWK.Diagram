@@ -1,5 +1,4 @@
-﻿using DWK.Diagram.Base;
-using DWK.Diagram.Logic;
+﻿using DWK.Diagram.Logic;
 using DWK.Diagram.Models;
 using Prism.Commands;
 using Prism.Events;
@@ -41,11 +40,6 @@ public class PageListPanelViewModel : BindableBase
         var agent = new LogicDiagramAgent();
         _aggregator.GetEvent<DiagramInitEvent>().Publish(agent);
     }
-}
-
-public class ModuleListPanelViewModel : BindableBase
-{
-    public string PanelTitle => "Module List".ToUpper();
 }
 
 public class ModuleLibraryPanelViewModel : BindableBase

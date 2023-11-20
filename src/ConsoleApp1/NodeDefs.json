@@ -1,0 +1,81 @@
+[
+
+  {
+    "Category": "Add",
+    "Description": "Add Modules",
+    "Ports": {
+      "X1": {
+        "Type": "Any",
+        "IsInput": true,
+        "LinkLimit": 0
+      },
+      "X2": {
+        "Type": "Any",
+        "IsInput": true,
+        "LinkLimit": 0
+      },
+      "Y": {
+        "Type": "Any",
+        "IsInput": false,
+        "LinkLimit": 0
+      }
+    },
+    "Params": {
+      "X1": {
+        "Type": "Double",
+        "Description": "Add Param 1",
+        "Default": 1.0
+      },
+      "X2": {
+        "Type": "Double",
+        "Description": "Add Param 2",
+        "Default": 2.0
+      },
+      "Y": {
+        "Type": "Double",
+        "Description": "Add Result",
+        "Default": 0.0
+      }
+    }
+  },
+
+  {
+    "Category": "Multi",
+    "Description": "Multiplication Modules",
+    "Ports": {
+      "X1": {
+        "Type": "Any",
+        "IsInput": true,
+        "LinkLimit": 0
+      },
+      "X2": {
+        "Type": "Any",
+        "IsInput": true,
+        "LinkLimit": 0
+      },
+      "Y": {
+        "Type": "Any",
+        "IsInput": false,
+        "LinkLimit": 0
+      }
+    },
+    "Params": {
+      "X1": {
+        "Type": "Double",
+        "Description": "Multiplication Param 1",
+        "Default": 1.0
+      },
+      "X2": {
+        "Type": "Double",
+        "Description": "Multiplication Param 2",
+        "Default": 2.0
+      },
+      "Y": {
+        "Type": "Double",
+        "Description": "Multiplication Result",
+        "Default": 0.0
+      }
+    }
+  }
+
+]
