@@ -1,24 +1,24 @@
 namespace DWK.Diagram.Logic;
 
-public readonly record struct LogicPortDefine
+
+
+
+public record struct LogicPortDefine
 {
-    public string PortId { get; init; }
-    public bool IsInput { get; init; }
-    public SignalTypes Type { get; init; }
+    public string Name { get; set; }
 }
 
-public record LogicModuleDefine(string Name)
+
+public readonly record struct LogicModuleDefine
 {
-    public LogicPortDefine[] Ports { get; init; } = Array.Empty<LogicPortDefine>();
+    public string Category { get; init; }
+
+    public string Description { get; init; }
 }
 
-public interface ILogicModuleData
-{
-    public Guid Key { get; }
-    public string Tag { get; set; }
-}
 
-public class LogicNodeData : LogicDiagramModel.NodeData, ILogicModuleData
+
+public class LogicNodeData : LogicDiagramModel.NodeData
 {
     public string Tag { get; set; } = "<Logic Node>";
 }
@@ -29,24 +29,24 @@ public class LogicNodeStyle
 
 ///-------------------
 ///
-public static class LogicMockData
-{
-    public static LogicModuleDefine[] ModuleDefines { get; } = new[]{
-        new LogicModuleDefine("Add"){
-            Ports = new LogicPortDefine[]
-            {
-                new LogicPortDefine{PortId="X1", IsInput=true, Type=SignalTypes.Digital},
-                new LogicPortDefine{PortId="X2", IsInput=true, Type=SignalTypes.Digital},
-                new LogicPortDefine{PortId="Y", IsInput=false, Type=SignalTypes.Digital},
-            }
-        },
-        new LogicModuleDefine("Sub"){
-            Ports = new LogicPortDefine[]
-            {
-                new LogicPortDefine{PortId="X1", IsInput=true, Type=SignalTypes.Digital},
-                new LogicPortDefine{PortId="X2", IsInput=true, Type=SignalTypes.Digital},
-                new LogicPortDefine{PortId="Y", IsInput=false, Type=SignalTypes.Digital},
-            }
-        },
-    };
-}
+//public static class LogicMockData
+//{
+//    public static LogicModuleDefine[] ModuleDefines { get; } = new[]{
+//        new LogicModuleDefine("Add"){
+//            Ports = new LogicPortDefine[]
+//            {
+//                new LogicPortDefine{PortId="X1", IsInput=true, Type=SignalTypes.Digital},
+//                new LogicPortDefine{PortId="X2", IsInput=true, Type=SignalTypes.Digital},
+//                new LogicPortDefine{PortId="Y", IsInput=false, Type=SignalTypes.Digital},
+//            }
+//        },
+//        new LogicModuleDefine("Sub"){
+//            Ports = new LogicPortDefine[]
+//            {
+//                new LogicPortDefine{PortId="X1", IsInput=true, Type=SignalTypes.Digital},
+//                new LogicPortDefine{PortId="X2", IsInput=true, Type=SignalTypes.Digital},
+//                new LogicPortDefine{PortId="Y", IsInput=false, Type=SignalTypes.Digital},
+//            }
+//        },
+//    };
+//}

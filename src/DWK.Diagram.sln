@@ -11,6 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DWK.Diagram.Logic", "DWK.Di
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{1994170D-1946-4DBE-837A-A8E16873F7AC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{84692D0D-1B49-4313-B919-606C7A71AB87}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Diagram.Logic", "Test.Diagram.Logic\Test.Diagram.Logic.csproj", "{D9DC9651-51AF-4963-9A4D-322AC4BD833F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,9 +37,16 @@ Global
 		{1994170D-1946-4DBE-837A-A8E16873F7AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1994170D-1946-4DBE-837A-A8E16873F7AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1994170D-1946-4DBE-837A-A8E16873F7AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9DC9651-51AF-4963-9A4D-322AC4BD833F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9DC9651-51AF-4963-9A4D-322AC4BD833F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9DC9651-51AF-4963-9A4D-322AC4BD833F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9DC9651-51AF-4963-9A4D-322AC4BD833F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D9DC9651-51AF-4963-9A4D-322AC4BD833F} = {84692D0D-1B49-4313-B919-606C7A71AB87}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2F16CAE8-D571-4CCC-8FC0-2E58F35554AC}

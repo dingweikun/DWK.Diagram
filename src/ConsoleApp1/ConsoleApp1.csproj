@@ -8,6 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Update="NodeDef.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="NodeDefs.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -8,54 +8,54 @@ public class LogicDiagramAgent : IDiagramAgent
     {
         diagram.Reset();
 
-        diagram.NodeTemplateMap = BuildNodeTemplateMap(LogicMockData.ModuleDefines);
+        //diagram.NodeTemplateMap = BuildNodeTemplateMap(LogicMockData.ModuleDefines);
 
         return diagram;
     }
 
-    private static IDictionary<string, Part> BuildNodeTemplateMap(IEnumerable<LogicModuleDefine> moduleDefines)
-    {
-        var templateDict = new Dictionary<string, Part>();
-        foreach (var def in moduleDefines)
-        {
-            templateDict.Add(def.Name, BuildNodeTemplate(def));
-        }
-        return templateDict;
-    }
+    //private static IDictionary<string, Part> BuildNodeTemplateMap(IEnumerable<LogicModuleDefine> moduleDefines)
+    //{
+    //    var templateDict = new Dictionary<string, Part>();
+    //    foreach (var def in moduleDefines)
+    //    {
+    //        templateDict.Add(def.Name, BuildNodeTemplate(def));
+    //    }
+    //    return templateDict;
+    //}
 
-    private static Part BuildNodeTemplate(LogicModuleDefine define)
-    {
-        var inPorts = define.Ports.Where(p => p.IsInput).Select(p => p.PortId).ToArray();
-        var outPorts = define.Ports.Where(p => !p.IsInput).Select(p => p.PortId).ToArray();
-        var portRows = Math.Max(inPorts.Length, outPorts.Length);
+    //private static Part BuildNodeTemplate(LogicModuleDefine define)
+    //{
+    //    var inPorts = define.Ports.Where(p => p.IsInput).Select(p => p.PortId).ToArray();
+    //    var outPorts = define.Ports.Where(p => !p.IsInput).Select(p => p.PortId).ToArray();
+    //    var portRows = Math.Max(inPorts.Length, outPorts.Length);
 
-        var table = new Part("Table")
-            .Add(new Shape("RoundedRectangle")
-            {
-                Fill = "lightblue",
-                Stretch = Stretch.Fill,
-                Row = 0,
-                RowSpan = portRows + 2,
-                Column = 1,
-                ColumnSpan = 2,
-            })
-            .Add(new TextBlock(define.Name)
-            {
-                Font = new Font("Arial", 18, FontWeight.Bold),
-                MinSize = new Size(80, 0),
-                TextAlign = TextAlign.Center,
-                Wrap = Wrap.DesiredSize,
-                Margin = new Margin(16, 16, 8, 16),
-                Row = 0,
-                Column = 1,
-                ColumnSpan = 2,
-            });
+    //    var table = new Part("Table")
+    //        .Add(new Shape("RoundedRectangle")
+    //        {
+    //            Fill = "lightblue",
+    //            Stretch = Stretch.Fill,
+    //            Row = 0,
+    //            RowSpan = portRows + 2,
+    //            Column = 1,
+    //            ColumnSpan = 2,
+    //        })
+    //        .Add(new TextBlock(define.Name)
+    //        {
+    //            Font = new Font("Arial", 18, FontWeight.Bold),
+    //            MinSize = new Size(80, 0),
+    //            TextAlign = TextAlign.Center,
+    //            Wrap = Wrap.DesiredSize,
+    //            Margin = new Margin(16, 16, 8, 16),
+    //            Row = 0,
+    //            Column = 1,
+    //            ColumnSpan = 2,
+    //        });
 
-        var font = new Font("Arial", 16);
-        table.Add(BuildPortGraphicObjects(portRows, true, inPorts, font));
-        table.Add(BuildPortGraphicObjects(portRows, false, outPorts, font));
-        return table;
-    }
+    //    var font = new Font("Arial", 16);
+    //    table.Add(BuildPortGraphicObjects(portRows, true, inPorts, font));
+    //    table.Add(BuildPortGraphicObjects(portRows, false, outPorts, font));
+    //    return table;
+    //}
 
     private static IList<GraphObject> BuildPortGraphicObjects(int maxPortCount, bool isLeft, IList<string> portNames, Font font)
     {

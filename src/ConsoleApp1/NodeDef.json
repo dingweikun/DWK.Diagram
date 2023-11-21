@@ -1,0 +1,23 @@
+{
+  "Category": "Add",
+  "Description": "Add Modules",
+  "Ports": {
+  },
+  "Params": {
+    "X1": {
+      "Type": "Double",
+      "Description": "Add Param 1",
+      "Default": 1.0
+    },
+    "X2": {
+      "Type": "Double",
+      "Description": "Add Param 2",
+      "Default": 2.0
+    },
+    "Y": {
+      "Type": "Double",
+      "Description": "Add Result",
+      "Default": 0.0
+    }
+  }
+}
