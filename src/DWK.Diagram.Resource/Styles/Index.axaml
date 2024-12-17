@@ -123,10 +123,11 @@
 
 
     <!-- Header -->
+    
     <Style Selector="Panel.Header">
         <Setter Property="MinHeight" Value="40" />
-        <Setter Property="Background" Value="{DynamicResource BorderCardBackground}"/>
-        
+        <Setter Property="Background" Value="{DynamicResource BorderCardBackground}" />
+
         <Style Selector="^ TextBlock">
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="FontSize" Value="14" />
@@ -136,7 +137,7 @@
 
         <Style Selector="^ StackPanel">
             <Setter Property="VerticalAlignment" Value="Stretch" />
-            <Setter Property="Background" Value="{DynamicResource BorderCardBackground}"/>
+            <Setter Property="Background" Value="{DynamicResource BorderCardBackground}" />
             <Setter Property="Margin" Value="8,0" />
         </Style>
     </Style>
@@ -203,5 +204,18 @@
         </Style>
 
     </Style>
+
+    <Style Selector=":is(Panel).DynamicHeaderToolbarHolder">
+        <Style Selector="^ StackPanel.HeaderToolbar">
+            <Setter Property="IsVisible" Value="False" />
+        </Style>
+        <Style Selector="^:pointerover StackPanel.HeaderToolbar">
+            <Setter Property="IsVisible" Value="True" />
+        </Style>
+        <Style Selector="^:focus-within StackPanel.HeaderToolbar">
+            <Setter Property="IsVisible" Value="True" />
+        </Style>
+    </Style>
+
 
 </Styles>

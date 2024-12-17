@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:views="clr-namespace:DWK.Diagram.Views"
+             xmlns:u="https://irihi.tech/ursa"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="DWK.Diagram.Views.MainView"
              BorderThickness="1"
@@ -17,14 +18,27 @@
         </Border>
 
         <Border DockPanel.Dock="Left" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource DividerBorderBrush}">
-            <ListBox x:Name="PART_LeftNavListBox" Classes="Navbar Ver" SelectionMode="Toggle">
-                <ListBoxItem IsSelected="{Binding #PART_LeftPanelExplorer.IsVisible, Mode=TwoWay}">
-                    <PathIcon Data="{StaticResource Folder}" />
-                </ListBoxItem>
-                <ListBoxItem IsSelected="{Binding #PART_LeftPanelComponent.IsVisible, Mode=TwoWay}">
-                    <PathIcon Data="{StaticResource System-Line}" />
-                </ListBoxItem>
-            </ListBox>
+            <StackPanel>
+                <ListBox x:Name="PART_LeftNavListBox" Classes="Navbar Ver" SelectionMode="Toggle">
+                    <ListBoxItem IsSelected="{Binding #PART_LeftPanelExplorer.IsVisible, Mode=TwoWay}">
+                        <PathIcon Data="{StaticResource Folder}" />
+                    </ListBoxItem>
+                    <ListBoxItem IsSelected="{Binding #PART_LeftPanelComponent.IsVisible, Mode=TwoWay}">
+                        <PathIcon Data="{StaticResource System-Line}" />
+                    </ListBoxItem>
+                </ListBox>
+                
+                <Rectangle Height="1" Width="24" Margin="0,8" Fill="{DynamicResource DividerBorderBrush}"/>
+                
+                <ListBox x:Name="PART_LeftBottomNavListBox" Classes="Navbar Ver" SelectionMode="Toggle">
+                    <ListBoxItem>
+                        <PathIcon Data="{StaticResource Folder}" />
+                    </ListBoxItem>
+                    <ListBoxItem>
+                        <PathIcon Data="{StaticResource System-Line}" />
+                    </ListBoxItem>
+                </ListBox>
+            </StackPanel>
         </Border>
 
         <Grid x:Name="PART_MainLayoutGrid" ColumnDefinitions="Auto,Auto,*">
@@ -36,7 +50,7 @@
 
             <!-- Main Content -->
             <Border Grid.Column="2">
-                
+                <TextBox/>
             </Border>
         </Grid>
 

@@ -2,13 +2,27 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:u="https://irihi.tech/ursa"
              xmlns:vm="clr-namespace:DWK.Diagram.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="DWK.Diagram.Views.LeftPanelExplorerView"
              x:DataType="vm:LeftPanelExplorerViewModel">
+    
+    <!-- <UserControl.Styles> -->
+    <!--     <Style Selector="DockPanel"> -->
+    <!--         <Style Selector="^ StackPanel.HeaderToolbar"> -->
+    <!--             <Setter Property="IsVisible" Value="False" /> -->
+    <!--         </Style> -->
+    <!-- -->
+    <!--         <Style Selector="^:pointerover"> -->
+    <!--             <Style Selector="^ StackPanel.HeaderToolbar"> -->
+    <!--                 <Setter Property="IsVisible" Value="True" /> -->
+    <!--             </Style> -->
+    <!--         </Style> -->
+    <!--     </Style> -->
+    <!-- </UserControl.Styles> -->
 
-    <DockPanel>
+
+    <DockPanel Classes="DynamicHeaderToolbarHolder">
         <Panel Classes="Header" DockPanel.Dock="Top">
             <TextBlock HorizontalAlignment="Left" Text="{Binding Title}" />
             <StackPanel Classes="HeaderToolbar" HorizontalAlignment="Right">
@@ -27,7 +41,10 @@
             </StackPanel>
         </Panel>
 
-        <Border BorderBrush="{DynamicResource DividerBorderBrush}" BorderThickness="0,1,0,0"></Border>
+        <Border BorderBrush="{DynamicResource DividerBorderBrush}" BorderThickness="0,1,0,0"
+                Background="DarkSlateBlue">
+            <TextBox />
+        </Border>
 
     </DockPanel>
 </UserControl>
