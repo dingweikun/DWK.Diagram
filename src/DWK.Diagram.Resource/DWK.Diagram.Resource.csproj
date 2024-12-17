@@ -13,5 +13,11 @@
     <ItemGroup>
       <PackageReference Include="Avalonia" />
     </ItemGroup>
+    
+    <ItemGroup>
+      <Reference Include="Ursa">
+        <HintPath>..\..\..\..\.nuget\packages\irihi.ursa\1.6.2\lib\net8.0\Ursa.dll</HintPath>
+      </Reference>
+    </ItemGroup>
 
 </Project>

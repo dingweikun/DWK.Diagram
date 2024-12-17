@@ -3,11 +3,21 @@
              xmlns:semi="https://irihi.tech/semi"
              xmlns:ursa="https://irihi.tech/ursa/themes/semi"
              x:Class="DWK.Diagram.App"
-             RequestedThemeVariant="{x:Static semi:SemiTheme.Aquatic}">
+             RequestedThemeVariant="Dark">
+    <!-- RequestedThemeVariant="{x:Static semi:SemiTheme.Aquatic}"> -->
 
     <Application.Styles>
-        <semi:SemiTheme Locale="zh-CN"/>
-        <ursa:SemiTheme Locale="zh-CN"/>
+        <semi:SemiTheme Locale="zh-CN" />
+        <ursa:SemiTheme Locale="zh-CN" />
+        <StyleInclude Source="avares://DWK.Diagram.Resource/Styles/Index.axaml" />
     </Application.Styles>
     
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="avares://DWK.Diagram.Resource/Icons.axaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+
 </Application>

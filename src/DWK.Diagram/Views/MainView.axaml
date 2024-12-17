@@ -2,12 +2,43 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="clr-namespace:DWK.Diagram.ViewModels"
+             xmlns:views="clr-namespace:DWK.Diagram.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="DWK.Diagram.Views.MainView"
-             x:DataType="vm:MainViewModel">
+             BorderThickness="1"
+             BorderBrush="{DynamicResource DividerBorderBrush}"
+             LeftPanelOpened="{Binding #PART_LeftNavListBox.SelectedItem, Mode=OneWay, Converter={x:Static ObjectConverters.IsNotNull}}">
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-    
-    
+    <DockPanel>
+        <Border DockPanel.Dock="Top" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource DividerBorderBrush}">
+            <StackPanel Orientation="Horizontal" Classes="Toolbar">
+
+            </StackPanel>
+        </Border>
+
+        <Border DockPanel.Dock="Left" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource DividerBorderBrush}">
+            <ListBox x:Name="PART_LeftNavListBox" Classes="Navbar Ver" SelectionMode="Toggle">
+                <ListBoxItem IsSelected="{Binding #PART_LeftPanelExplorer.IsVisible, Mode=TwoWay}">
+                    <PathIcon Data="{StaticResource Folder}" />
+                </ListBoxItem>
+                <ListBoxItem IsSelected="{Binding #PART_LeftPanelComponent.IsVisible, Mode=TwoWay}">
+                    <PathIcon Data="{StaticResource System-Line}" />
+                </ListBoxItem>
+            </ListBox>
+        </Border>
+
+        <Grid x:Name="PART_MainLayoutGrid" ColumnDefinitions="Auto,Auto,*">
+            <!-- Left Panels -->
+            <views:LeftPanelExplorerView x:Name="PART_LeftPanelExplorer" Grid.Column="0" />
+            <views:LeftPanelComponentView x:Name="PART_LeftPanelComponent" Grid.Column="0" />
+
+            <GridSplitter Grid.Column="1" x:Name="PART_LeftPanelGridSplitter" />
+
+            <!-- Main Content -->
+            <Border Grid.Column="2">
+                
+            </Border>
+        </Grid>
+
+    </DockPanel>
 </UserControl>

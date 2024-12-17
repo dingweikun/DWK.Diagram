@@ -1,0 +1,207 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:u="https://irihi.tech/ursa">
+
+    <Style Selector="StackPanel.Toolbar">
+        <Setter Property="Spacing" Value="4" />
+        <Style Selector="^[Orientation=Horizontal]">
+            <Setter Property="MinHeight" Value="40" />
+        </Style>
+        <Style Selector="^[Orientation=Vertical]">
+            <Setter Property="MinWidth" Value="40" />
+        </Style>
+
+        <Style Selector="^ PathIcon">
+            <Setter Property="Height" Value="16" />
+            <Setter Property="Width" Value="16" />
+        </Style>
+
+        <Style Selector="^ :is(Button)">
+            <Setter Property="Height" Value="30" />
+            <Setter Property="MinWidth" Value="30" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Padding" Value="5" />
+
+            <Setter Property="Foreground" Value="{DynamicResource ButtonSolidForeground}" />
+            <Setter Property="Background" Value="{DynamicResource ButtonSolidPrimaryBackground}" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource ButtonInputInnerForeground}" />
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+            </Style>
+
+            <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource ButtonInputInnerForeground}" />
+                <Setter Property="Background" Value="{DynamicResource ButtonDefaultPointeroverBackground}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource ButtonDefaultPointeroverBorderBrush}" />
+            </Style>
+
+            <Style Selector="^:flyout-open /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="{TemplateBinding Foreground}" />
+                <Setter Property="Background" Value="{TemplateBinding Background}" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+            </Style>
+
+            <Style Selector="^:checked /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="{TemplateBinding Foreground}" />
+                <Setter Property="Background" Value="{TemplateBinding Background}" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+            </Style>
+
+            <Style Selector="^:disabled">
+                <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Foreground" Value="{DynamicResource ButtonDefaultDisabledForeground}" />
+                    <Setter Property="Background" Value="Transparent" />
+                </Style>
+                <Style Selector="^:checked /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Foreground" Value="{DynamicResource ButtonSolidDisabledForeground}" />
+                    <Setter Property="Background" Value="{DynamicResource ButtonSolidDisabledBackground}" />
+                </Style>
+            </Style>
+        </Style>
+    </Style>
+
+    <Style Selector="ListBox.Navbar">
+        <Style Selector="^.Hor">
+            <Setter Property="MinHeight" Value="40" />
+        </Style>
+        <Style Selector="^.Ver">
+            <Setter Property="MinWidth" Value="40" />
+        </Style>
+
+        <Style Selector="^ PathIcon">
+            <Setter Property="Height" Value="16" />
+            <Setter Property="Width" Value="16" />
+        </Style>
+
+        <Style Selector="^ ListBoxItem">
+            <Setter Property="Height" Value="30" />
+            <Setter Property="Width" Value="30" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="1" />
+
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource ButtonInputInnerForeground}" />
+                <Setter Property="Background" Value="Transparent" />
+            </Style>
+
+            <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource ButtonInputInnerForeground}" />
+                <Setter Property="Background" Value="{DynamicResource ButtonDefaultPointeroverBackground}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource ButtonDefaultPointeroverBorderBrush}" />
+            </Style>
+
+            <Style Selector="^:selected /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource ButtonSolidForeground}" />
+                <Setter Property="Background" Value="{DynamicResource ButtonSolidPrimaryBackground}" />
+            </Style>
+
+            <Style Selector="^:disabled">
+                <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Foreground" Value="{DynamicResource ButtonDefaultDisabledForeground}" />
+                    <Setter Property="Background" Value="Transparent" />
+                </Style>
+                <Style Selector="^:selected /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Foreground" Value="{DynamicResource ButtonSolidDisabledForeground}" />
+                    <Setter Property="Background" Value="{DynamicResource ButtonSolidDisabledBackground}" />
+                </Style>
+            </Style>
+        </Style>
+    </Style>
+
+    <Style Selector="GridSplitter">
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="MinWidth" Value="2" />
+        <Setter Property="MinHeight" Value="2" />
+    </Style>
+
+
+    <!-- Header -->
+    <Style Selector="Panel.Header">
+        <Setter Property="MinHeight" Value="40" />
+        <Setter Property="Background" Value="{DynamicResource BorderCardBackground}"/>
+        
+        <Style Selector="^ TextBlock">
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="12,0" />
+        </Style>
+
+        <Style Selector="^ StackPanel">
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="Background" Value="{DynamicResource BorderCardBackground}"/>
+            <Setter Property="Margin" Value="8,0" />
+        </Style>
+    </Style>
+
+    <Style Selector="StackPanel.HeaderToolbar">
+        <Setter Property="Orientation" Value="Horizontal" />
+        <Setter Property="Spacing" Value="4" />
+
+        <Style Selector="^ PathIcon">
+            <Setter Property="Height" Value="12" />
+            <Setter Property="Width" Value="12" />
+        </Style>
+
+        <Style Selector="^ u|Divider">
+            <Setter Property="Orientation" Value="Vertical" />
+        </Style>
+
+        <Style Selector="^ :is(Button)">
+            <Setter Property="MinHeight" Value="22" />
+            <Setter Property="MinWidth" Value="22" />
+            <Setter Property="Height" Value="22" />
+            <Setter Property="Width" Value="22" />
+            <Setter Property="CornerRadius" Value="3" />
+            <Setter Property="Padding" Value="0" />
+
+            <Setter Property="Foreground" Value="{DynamicResource ButtonSolidForeground}" />
+            <Setter Property="Background" Value="{DynamicResource ButtonSolidPrimaryBackground}" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource ButtonInputInnerForeground}" />
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+            </Style>
+
+            <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource ButtonInputInnerForeground}" />
+                <Setter Property="Background" Value="{DynamicResource ButtonDefaultPointeroverBackground}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource ButtonDefaultPointeroverBorderBrush}" />
+            </Style>
+
+            <Style Selector="^:flyout-open /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="{TemplateBinding Foreground}" />
+                <Setter Property="Background" Value="{TemplateBinding Background}" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+            </Style>
+
+            <Style Selector="^:checked /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="{TemplateBinding Foreground}" />
+                <Setter Property="Background" Value="{TemplateBinding Background}" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+            </Style>
+
+            <Style Selector="^:disabled">
+                <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Foreground" Value="{DynamicResource ButtonDefaultDisabledForeground}" />
+                    <Setter Property="Background" Value="Transparent" />
+                </Style>
+                <Style Selector="^:checked /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Foreground" Value="{DynamicResource ButtonSolidDisabledForeground}" />
+                    <Setter Property="Background" Value="{DynamicResource ButtonSolidDisabledBackground}" />
+                </Style>
+            </Style>
+        </Style>
+
+    </Style>
+
+</Styles>

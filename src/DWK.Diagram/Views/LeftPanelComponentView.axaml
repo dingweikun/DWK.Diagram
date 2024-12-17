@@ -1,0 +1,28 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:DWK.Diagram.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="DWK.Diagram.Views.LeftPanelComponentView"
+             x:DataType="vm:LeftPanelComponentViewModel">
+    <DockPanel>
+        <Panel Classes="Header" DockPanel.Dock="Top">
+            <TextBlock HorizontalAlignment="Left" Text="{Binding Title}" />
+            <StackPanel Classes="HeaderToolbar" HorizontalAlignment="Right">
+                <Button>
+                    <PathIcon Data="{StaticResource Search}" />
+                </Button>
+                <Button>
+                    <PathIcon Data="{StaticResource Dots-V}" />
+                </Button>
+                <Button Click="HidePanelButton_OnClick">
+                    <PathIcon Data="{StaticResource Minus}" />
+                </Button>
+            </StackPanel>
+        </Panel>
+
+        <Border BorderBrush="{DynamicResource DividerBorderBrush}" BorderThickness="0,1,0,0"></Border>
+
+    </DockPanel>
+</UserControl>

@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DWK.Diagram;
 
-public partial class App : Application, IServiceProviderApp
+public class App : Application, IServiceProviderApp
 {
     private readonly IHost _host;
 
@@ -51,7 +51,8 @@ public partial class App : Application, IServiceProviderApp
 
     private static void ConfigureServices(IServiceCollection services)
     {
-        services.AddSingleton<MainViewModel>();
+        services.AddSingleton<LeftPanelComponentViewModel>();
+        services.AddSingleton<LeftPanelExplorerViewModel>();
     }
 
     public override void Initialize()

@@ -26,12 +26,5 @@
         <ProjectReference Include="..\DWK.Diagram.Common\DWK.Diagram.Common.csproj"/>
         <ProjectReference Include="..\DWK.Diagram.Resource\DWK.Diagram.Resource.csproj"/>
     </ItemGroup>
-
-    <ItemGroup>
-      <AvaloniaXaml Remove="Views\MainView.axaml" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Remove="Views\MainView.axaml.cs" />
-    </ItemGroup>
+    
 </Project>

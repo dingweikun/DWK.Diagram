@@ -13,9 +13,32 @@
               IsTitleBarVisible="True">
 
     <u:UrsaWindow.RightContent>
-        <TextBlock Text="this is right content" />
+        <StackPanel Orientation="Horizontal" Classes="Toolbar" Margin="16,0">
+            <ToggleButton IsEnabled="False">
+                <PathIcon Data="{StaticResource Folder-Minus}" />
+            </ToggleButton>
+            <ToggleButton IsEnabled="False" IsChecked="True">
+                <PathIcon Data="{StaticResource Folder-Minus}" />
+            </ToggleButton>
+            <ToggleButton IsChecked="True">
+                <PathIcon Data="{StaticResource Folder-Minus}" />
+            </ToggleButton>
+
+            <Button>
+                <PathIcon Data="{StaticResource Palette}" />
+                <Button.Flyout>
+                    <Flyout>
+                        <ListBox x:Name="PART_ThemeListBox" />
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+            <Button>
+                <PathIcon Data="{StaticResource Info-Line}" />
+            </Button>
+            <Button IsEnabled="False">
+                <PathIcon Data="{StaticResource Info-Line}" />
+            </Button>
+        </StackPanel>
     </u:UrsaWindow.RightContent>
-    <!-- <views:MainView /> -->
-    
-    <Button> THIS IS BUTTON </Button>
+    <views:MainView />
 </u:UrsaWindow>
