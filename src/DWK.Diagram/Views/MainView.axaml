@@ -3,12 +3,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:views="clr-namespace:DWK.Diagram.Views"
-             xmlns:u="https://irihi.tech/ursa"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="DWK.Diagram.Views.MainView"
              BorderThickness="1"
-             BorderBrush="{DynamicResource DividerBorderBrush}"
-             LeftPanelOpened="{Binding #PART_LeftNavListBox.SelectedItem, Mode=OneWay, Converter={x:Static ObjectConverters.IsNotNull}}">
+             BorderBrush="{DynamicResource DividerBorderBrush}">
 
     <DockPanel>
         <Border DockPanel.Dock="Top" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource DividerBorderBrush}">
@@ -19,38 +17,40 @@
 
         <Border DockPanel.Dock="Left" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource DividerBorderBrush}">
             <StackPanel>
-                <ListBox x:Name="PART_LeftNavListBox" Classes="Navbar Ver" SelectionMode="Toggle">
-                    <ListBoxItem IsSelected="{Binding #PART_LeftPanelExplorer.IsVisible, Mode=TwoWay}">
+                <ListBox x:Name="PART_LeftUpperNavListBox" Classes="Navbar Ver" SelectionMode="Toggle">
+                    <ListBoxItem IsSelected="{Binding #PART_PanelExplorer.IsVisible, Mode=TwoWay}">
                         <PathIcon Data="{StaticResource Folder}" />
-                    </ListBoxItem>
-                    <ListBoxItem IsSelected="{Binding #PART_LeftPanelComponent.IsVisible, Mode=TwoWay}">
-                        <PathIcon Data="{StaticResource System-Line}" />
                     </ListBoxItem>
                 </ListBox>
-                
-                <Rectangle Height="1" Width="24" Margin="0,8" Fill="{DynamicResource DividerBorderBrush}"/>
-                
-                <ListBox x:Name="PART_LeftBottomNavListBox" Classes="Navbar Ver" SelectionMode="Toggle">
-                    <ListBoxItem>
-                        <PathIcon Data="{StaticResource Folder}" />
-                    </ListBoxItem>
-                    <ListBoxItem>
+
+                <Rectangle Height="1" Width="24" Margin="0,8" Fill="{DynamicResource DividerBorderBrush}" />
+
+                <ListBox x:Name="PART_LeftLowerNavListBox" Classes="Navbar Ver" SelectionMode="Toggle">
+                    <ListBoxItem IsSelected="{Binding #PART_PanelComponent.IsVisible, Mode=TwoWay}">
                         <PathIcon Data="{StaticResource System-Line}" />
                     </ListBoxItem>
+                    <!-- <ListBoxItem> -->
+                    <!--     <PathIcon Data="{StaticResource Folder}" /> -->
+                    <!-- </ListBoxItem> -->
                 </ListBox>
             </StackPanel>
         </Border>
 
         <Grid x:Name="PART_MainLayoutGrid" ColumnDefinitions="Auto,Auto,*">
             <!-- Left Panels -->
-            <views:LeftPanelExplorerView x:Name="PART_LeftPanelExplorer" Grid.Column="0" />
-            <views:LeftPanelComponentView x:Name="PART_LeftPanelComponent" Grid.Column="0" />
+            <Grid x:Name="PART_LeftLayoutGrid" Grid.Column="0" RowDefinitions="Auto,Auto,*">
+                <!-- Left Upper-->
+                <views:LeftPanelExplorerView x:Name="PART_PanelExplorer" Grid.Row="0" />
+                <GridSplitter x:Name="PART_LeftVerticalGridSplitter" Grid.Row="1" />
+                <!-- Left Lower-->
+                <views:LeftPanelComponentView x:Name="PART_PanelComponent" Grid.Row="2" />
+            </Grid>
 
-            <GridSplitter Grid.Column="1" x:Name="PART_LeftPanelGridSplitter" />
+            <GridSplitter x:Name="PART_LeftGridSplitter" Grid.Column="1" />
 
             <!-- Main Content -->
             <Border Grid.Column="2">
-                <TextBox/>
+                <TextBox />
             </Border>
         </Grid>
 

@@ -1,74 +1,163 @@
+using System.Text;
 using Avalonia.Interactivity;
 
 namespace DWK.Diagram.Views;
 
 public partial class MainView : UserControl
 {
-    private const double LeftPanelMinWidth = 60;
+    private const double PanelMinSpace = 60;
     private double _leftPanelWidth = 300;
-
-    #region LeftPanelOpenedProperty
-
-    public static readonly DirectProperty<MainView, bool> LeftPanelOpenedProperty =
-        AvaloniaProperty.RegisterDirect<MainView, bool>(nameof(LeftPanelOpened),
-            o => o.LeftPanelOpened,
-            (o, v) => o.LeftPanelOpened = v);
-
-    private bool _leftPanelOpened;
-
-    public bool LeftPanelOpened
-    {
-        get => _leftPanelOpened;
-        set => SetAndRaise(LeftPanelOpenedProperty, ref _leftPanelOpened, value);
-    }
-
-    #endregion
+    private double _leftPanelLowerHeight = 300;
 
     public MainView()
     {
         InitializeComponent();
+        InitializeLayoutControls();
     }
 
-    #region Overried Methods
-
-    protected override void OnLoaded(RoutedEventArgs e)
+    private void InitializeLayoutControls()
     {
-        SetLeftPanelLayout(LeftPanelOpened);
-        base.OnLoaded(e);
-    }
+        PART_PanelExplorer.IsVisible = false;
+        PART_PanelComponent.IsVisible = false;
 
-    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
-    {
-        if (change.Property == LeftPanelOpenedProperty)
-        {
-            SetLeftPanelLayout(LeftPanelOpened);
-        }
+        PART_LeftUpperNavListBox.SelectionChanged += OnLeftNavListBoxSelectionChanged;
+        PART_LeftLowerNavListBox.SelectionChanged += OnLeftNavListBoxSelectionChanged;
 
-        base.OnPropertyChanged(change);
-    }
+        PART_LeftUpperNavListBox.SelectedItem = null;
+        PART_LeftLowerNavListBox.SelectedItem = null;
 
-    #endregion
+        PART_LeftGridSplitter.IsVisible = false;
+        PART_LeftVerticalGridSplitter.IsVisible = false;
 
-    #region Private Methods
-
-    private void SetLeftPanelLayout(bool panelOpened)
-    {
         var leftCol = PART_MainLayoutGrid.ColumnDefinitions[0];
-
-        if (panelOpened)
-        {
-            leftCol.MinWidth = LeftPanelMinWidth;
-            leftCol.Width = new GridLength(double.Max(_leftPanelWidth, LeftPanelMinWidth), GridUnitType.Pixel);
-        }
-        else
-        {
-            _leftPanelWidth = leftCol.ActualWidth;
-            leftCol.MinWidth = 0;
-            leftCol.Width = new GridLength(0, GridUnitType.Pixel);
-        }
-
-        PART_LeftPanelGridSplitter.IsVisible = panelOpened;
+        leftCol.MinWidth = 0;
+        leftCol.Width = new GridLength(0, GridUnitType.Pixel);
     }
 
-    #endregion
+    private void OnLeftNavListBoxSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (sender is not ListBox) return;
+
+        if (e.AddedItems.Count == 0 && e.RemovedItems.Count > 0)
+        {
+            ResetLeftPanelLayout(isOpening: false);
+        }
+        else if (e.AddedItems.Count > 0 && e.RemovedItems.Count == 0)
+        {
+            ResetLeftPanelLayout(isOpening: true);
+        }
+    }
+
+    private void ResetLeftPanelLayout(bool isOpening)
+    {
+        if (isOpening)
+            AnyLeftPanelOpening();
+        else
+            AnyLeftPanelClosing();
+        return;
+
+        #region local methods
+
+        void AnyLeftPanelOpening()
+        {
+            var upperOpened = PART_LeftUpperNavListBox.SelectedItem is not null;
+            var lowerOpened = PART_LeftLowerNavListBox.SelectedItem is not null;
+
+            if (upperOpened && lowerOpened)
+            {
+                var actualHeight = PART_LeftLayoutGrid.RowDefinitions[0].ActualHeight + PART_LeftLayoutGrid.RowDefinitions[2].ActualHeight;
+                _leftPanelLowerHeight = Double.Min(actualHeight - PanelMinSpace, _leftPanelLowerHeight);
+
+                PART_LeftLayoutGrid.RowDefinitions[0].MinHeight = PanelMinSpace;
+                PART_LeftLayoutGrid.RowDefinitions[2].MinHeight = PanelMinSpace;
+
+                PART_LeftLayoutGrid.RowDefinitions[0].Height = new GridLength(1, GridUnitType.Star);
+                PART_LeftLayoutGrid.RowDefinitions[2].Height = new GridLength(_leftPanelLowerHeight, GridUnitType.Pixel);
+
+                PART_LeftVerticalGridSplitter.IsVisible = true;
+            }
+
+            if (upperOpened && !lowerOpened)
+            {
+                PART_LeftLayoutGrid.RowDefinitions[0].MinHeight = PanelMinSpace;
+                PART_LeftLayoutGrid.RowDefinitions[2].MinHeight = 0;
+
+                PART_LeftLayoutGrid.RowDefinitions[0].Height = new GridLength(1, GridUnitType.Star);
+                PART_LeftLayoutGrid.RowDefinitions[2].Height = new GridLength(0, GridUnitType.Pixel);
+
+                // PART_LeftVerticalGridSplitter.IsVisible = false;
+            }
+
+            if (!upperOpened && lowerOpened)
+            {
+                PART_LeftLayoutGrid.RowDefinitions[0].MinHeight = 0;
+                PART_LeftLayoutGrid.RowDefinitions[2].MinHeight = PanelMinSpace;
+
+                PART_LeftLayoutGrid.RowDefinitions[0].Height = new GridLength(0, GridUnitType.Pixel);
+                PART_LeftLayoutGrid.RowDefinitions[2].Height = new GridLength(1, GridUnitType.Star);
+
+                // PART_LeftVerticalGridSplitter.IsVisible = false;
+            }
+
+            if (!upperOpened && !lowerOpened)
+            {
+                throw new InvalidOperationException();
+            }
+
+            if (upperOpened != lowerOpened)
+            {
+                PART_LeftGridSplitter.IsVisible = true;
+                PART_MainLayoutGrid.ColumnDefinitions[0].MinWidth = PanelMinSpace;
+                PART_MainLayoutGrid.ColumnDefinitions[0].Width = new GridLength(_leftPanelWidth, GridUnitType.Pixel);
+            }
+        }
+
+        void AnyLeftPanelClosing()
+        {
+            var upperOpened = PART_LeftUpperNavListBox.SelectedItem is not null;
+            var lowerOpened = PART_LeftLowerNavListBox.SelectedItem is not null;
+
+            if (upperOpened && lowerOpened)
+            {
+                throw new InvalidOperationException();
+            }
+
+            if (upperOpened && !lowerOpened)
+            {
+                _leftPanelLowerHeight = PART_LeftLayoutGrid.RowDefinitions[2].ActualHeight;
+                PART_LeftVerticalGridSplitter.IsVisible = false;
+
+                PART_LeftLayoutGrid.RowDefinitions[0].MinHeight = PanelMinSpace;
+                PART_LeftLayoutGrid.RowDefinitions[2].MinHeight = 0;
+
+                PART_LeftLayoutGrid.RowDefinitions[0].Height = new GridLength(1, GridUnitType.Star);
+                PART_LeftLayoutGrid.RowDefinitions[2].Height = new GridLength(0, GridUnitType.Pixel);
+            }
+
+            if (!upperOpened && lowerOpened)
+            {
+                _leftPanelLowerHeight = PART_LeftLayoutGrid.RowDefinitions[2].ActualHeight;
+                PART_LeftVerticalGridSplitter.IsVisible = false;
+
+                PART_LeftLayoutGrid.RowDefinitions[0].MinHeight = 0;
+                PART_LeftLayoutGrid.RowDefinitions[2].MinHeight = PanelMinSpace;
+
+                PART_LeftLayoutGrid.RowDefinitions[0].Height = new GridLength(0, GridUnitType.Pixel);
+                PART_LeftLayoutGrid.RowDefinitions[2].Height = new GridLength(1, GridUnitType.Star);
+            }
+
+            if (!upperOpened && !lowerOpened)
+            {
+                // PART_LeftLayoutGrid do nothing
+
+                _leftPanelWidth = PART_MainLayoutGrid.ColumnDefinitions[0].ActualWidth;
+                PART_LeftGridSplitter.IsVisible = false;
+
+                PART_MainLayoutGrid.ColumnDefinitions[0].MinWidth = 0;
+                PART_MainLayoutGrid.ColumnDefinitions[0].Width = new GridLength(0, GridUnitType.Pixel);
+            }
+        }
+
+        #endregion
+    }
 }
