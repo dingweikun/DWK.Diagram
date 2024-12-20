@@ -20,6 +20,8 @@
     <PackageVersion Include="Microsoft.Extensions.Logging" Version="9.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Options" Version="9.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.0" />
+    <PackageVersion Include="Northwoods.GoDiagram.Avalonia" Version="10.0.12" />
+    <PackageVersion Include="Northwoods.GoDiagram.Console" Version="10.0.12" />
     <PackageVersion Include="Semi.Avalonia" Version="11.2.1.2" />
     <PackageVersion Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.0.1.1" />
   </ItemGroup>

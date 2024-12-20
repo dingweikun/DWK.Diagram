@@ -19,6 +19,8 @@
         <PackageReference Include="Microsoft.Extensions.Hosting"/>
         <PackageReference Include="Microsoft.Extensions.Logging"/>
         <PackageReference Include="Microsoft.Extensions.Options"/>
+        <PackageReference Include="Northwoods.GoDiagram.Avalonia" />
+        <PackageReference Include="Northwoods.GoDiagram.Console" />
         <PackageReference Include="Semi.Avalonia"/>
     </ItemGroup>
 
