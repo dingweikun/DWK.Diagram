@@ -9,6 +9,7 @@
     <Application.Styles>
         <semi:SemiTheme Locale="zh-CN" />
         <ursa:SemiTheme Locale="zh-CN" />
+        <StyleInclude Source="avares://Northwoods.GoDiagram.Avalonia/DiagramControl.axaml" />
         <StyleInclude Source="avares://DWK.Diagram.Resource/Styles/Index.axaml" />
     </Application.Styles>
     
@@ -17,6 +18,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceInclude Source="avares://DWK.Diagram.Resource/Icons.axaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <FontFamily x:Key="DefaultFontFamily">Microsoft YaHei, Noto Sans CJK SC, Source Han Sans CN, Inter, Segoe UI, Hiragino Sans GB, Helvetica Neue, Helvetica, Arial, sans-serif</FontFamily>
+            <FontFamily x:Key="CodeFontFamily">Consolas, Noto Sans Mono, Inconsolata, Monospace</FontFamily>
         </ResourceDictionary>
     </Application.Resources>
 

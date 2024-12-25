@@ -7,3 +7,4 @@ global using Avalonia.Controls;
 global using CommunityToolkit.Mvvm.ComponentModel;
 global using DWK.Diagram.ViewModels;
 global using DWK.Diagram.Views;
+global using Go = Northwoods.Go;

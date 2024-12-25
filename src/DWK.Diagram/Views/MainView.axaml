@@ -50,7 +50,7 @@
 
             <!-- Main Content -->
             <Border Grid.Column="2">
-                <TextBox />
+                <views:DiagramView />
             </Border>
         </Grid>
 

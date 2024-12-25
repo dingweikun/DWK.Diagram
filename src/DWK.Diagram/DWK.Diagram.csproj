@@ -20,12 +20,12 @@
         <PackageReference Include="Microsoft.Extensions.Logging"/>
         <PackageReference Include="Microsoft.Extensions.Options"/>
         <PackageReference Include="Northwoods.GoDiagram.Avalonia" />
-        <PackageReference Include="Northwoods.GoDiagram.Console" />
         <PackageReference Include="Semi.Avalonia"/>
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\DWK.Diagram.Common\DWK.Diagram.Common.csproj"/>
+        <ProjectReference Include="..\DWK.Diagram.Logic\DWK.Diagram.Logic.csproj" />
         <ProjectReference Include="..\DWK.Diagram.Resource\DWK.Diagram.Resource.csproj"/>
     </ItemGroup>
     
