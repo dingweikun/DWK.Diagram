@@ -4,10 +4,15 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <RootNamespace>DWK.Diagram</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Northwoods.GoDiagram.Avalonia" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DWK.Diagram.Common\DWK.Diagram.Common.csproj" />
   </ItemGroup>
 
 </Project>

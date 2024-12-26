@@ -1,4 +1,4 @@
-namespace DWK.Diagram.Logic;
+namespace DWK.Diagram;
 
 public class LogicSharedData
 {

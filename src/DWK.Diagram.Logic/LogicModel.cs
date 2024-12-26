@@ -5,10 +5,16 @@ using Northwoods.Go.PanelLayouts;
 using FontWeight = Northwoods.Go.FontWeight;
 using Stretch = Northwoods.Go.Stretch;
 
-namespace DWK.Diagram.Logic;
+namespace DWK.Diagram;
 
-public class LogicModel : GraphLinksModel<LogicNodeData, Guid, object, LogicLinkData, Guid, string>
+// public class LogicModel : GraphLinksModel<LogicNodeData, Guid, object, LogicLinkData, Guid, string>
+public class LogicModel : GraphLinksModel<LogicNodeData, int, object, LogicLinkData, string, string>
 {
+    public LogicModel()
+    {
+        LinkFromPortIdProperty = nameof(LogicLinkData.FromPort);
+        LinkToPortIdProperty = nameof(LogicLinkData.ToPort);
+    }
 }
 
 public static class LogicDiagram
