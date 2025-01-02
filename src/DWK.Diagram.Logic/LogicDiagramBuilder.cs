@@ -1,14 +1,22 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Avalonia.Controls;
 using Northwoods.Go;
-using Northwoods.Go.Models;
 using Northwoods.Go.PanelLayouts;
-using FontWeight = Northwoods.Go.FontWeight;
+using RowDefinition = Northwoods.Go.RowDefinition;
 using Stretch = Northwoods.Go.Stretch;
+using TextBlock = Northwoods.Go.TextBlock;
 
 namespace DWK.Diagram;
 
 public class LogicDiagramBuilder
 {
     private LogicDiagramSettings Settings { get; } = new();
+
+    private JsonSerializerOptions JsonSerializerOptions { get; } = new(JsonSerializerOptions.Web)
+    {
+        WriteIndented = true
+    };
 
     public LogicDiagramBuilder WithSettings(Action<LogicDiagramSettings> action)
     {
@@ -21,27 +29,22 @@ public class LogicDiagramBuilder
         string[] import = ["in-a", "in-a", "in-b"];
         string[] export = ["res"];
 
+        diagram.ToolManager.HoverDelay = 750;
+
+
         diagram.NodeTemplate = MakeNodeTemplate(import.ToHashSet(), export.ToHashSet());
         diagram.LinkTemplate = MakeLinkTemplate();
-        
-        
+
         diagram.Model = new LogicModel
         {
             NodeDataSource = new List<LogicNodeData>
             {
-                new LogicNodeData { Key = 1, Tag = "Alpha", Color = "lightblue" },
-                new LogicNodeData { Key = 2, Tag = "Beta", Color = "orange" },
-                // new LogicNodeData { Key = 3, Tag = "Gamma", Color = "lightgreen", Group = 5 },
-                // new LogicNodeData { Key = 4,  Color = "pink", Group = 5 },
-                // new LogicNodeData { Key = 5, Tag = "Epsilon", Color = "green", IsGroup = true }
+                new() { Key = Guid.NewGuid(), Tag = "Alpha", Color = "lightblue" },
+                new() { Key = Guid.NewGuid(), Tag = "Beta", Color = "orange" },
             },
-            // LinkDataSource = new List<LogicLinkData>
-            // {
-            //     new LogicLinkData { From = 1, To = 2, Color = "blue" },
-            //     new LogicLinkData { From = 2, To = 2 },
-            //     new LogicLinkData { From = 3, To = 4, Color = "green" },
-            //     new LogicLinkData { From = 3, To = 1, Color = "purple" }
-            // }
+            LinkDataSource = new List<LogicLinkData>
+            {
+            }
         };
     }
 
@@ -84,7 +87,8 @@ public class LogicDiagramBuilder
             table.Add(new TextBlock(port)
             {
                 Row = iPos, Column = 1,
-                Font = Settings.PortFont,
+                Font = Settings.PortFont, 
+                Stroke = Settings.ModuleTextColor,
                 Margin = new Margin(0, 12, 0, 4),
                 Alignment = Spot.Left,
             });
@@ -93,15 +97,14 @@ public class LogicDiagramBuilder
             {
                 Row = iPos, Column = 0,
                 Height = 6, Width = 6,
+                Stroke = Settings.ModuleTextColor,
+                Fill = Settings.ModuleTextColor,
                 Alignment = Spot.Right,
                 Cursor = "pointer",
 
                 PortId = port,
                 ToLinkable = true,
-                ToLinkableSelfNode = true,
-                ToLinkableDuplicates = false,
-                ToSpot = Spot.Left,
-                ToMaxLinks = 1
+                ToLinkableSelfNode = true
             });
         }
 
@@ -113,23 +116,23 @@ public class LogicDiagramBuilder
             {
                 Row = oPos, Column = 2,
                 Font = Settings.PortFont,
+                Stroke = Settings.ModuleTextColor,
                 Margin = new Margin(0, 4, 0, 12),
                 Alignment = Spot.Right,
-                Cursor = "pointer"
             });
 
             table.Add(new Shape("rectangle")
             {
                 Row = oPos, Column = 3,
                 Height = 6, Width = 6,
+                Stroke = Settings.ModuleTextColor,
+                Fill = Settings.ModuleTextColor,
                 Alignment = Spot.Left,
                 Cursor = "pointer",
 
                 PortId = port,
                 FromLinkable = true,
-                FromLinkableSelfNode = true,
-                FromLinkableDuplicates = false,
-                FromSpot = Spot.Right,
+                FromLinkableSelfNode = true
             });
         }
 
@@ -139,11 +142,26 @@ public class LogicDiagramBuilder
                 Row = portRows + 2,
                 Column = 0, ColumnSpan = 4,
                 Font = Settings.TagFont,
+                Stroke = Settings.ModuleTextColor,
                 TextAlign = TextAlign.Center,
                 Stretch = Stretch.Horizontal
             }
             .Bind(nameof(TextBlock.Text), nameof(LogicNodeData.Tag))
         );
+
+        // set to port max link count = 1
+        table.LinkValidation = (fromNode, fromPort, toNode, toPort, link) => !toNode.FindLinksConnected(toPort.PortId).Any();
+
+        // set tooltip
+        table.ToolTip = new Adornment(PanelLayoutAuto.Instance)
+            .Add(new Shape("Rectangle") { Fill = Settings.NodeTipBackColor, Stroke = Settings.NodeTipForeColor })
+            .Add(new TextBlock { Font = Settings.CodeFont, Margin = 12, Stroke = Settings.NodeTipForeColor }
+                .Bind(nameof(TextBlock.Text), string.Empty, value =>
+                {
+                    if (value is not LogicNodeData node) return "Node Type Error";
+                    var json = JsonSerializer.Serialize(node, JsonSerializerOptions);
+                    return $"{nameof(LogicNodeData)}:\n{json}";
+                }));
 
         return table;
     }
@@ -152,18 +170,31 @@ public class LogicDiagramBuilder
     {
         var link = new Link
         {
+            Corner = 6,
             ToShortLength = 3,
-            RelinkableFrom = true,
-            RelinkableTo = true,
-
             Routing = LinkRouting.AvoidsNodes,
-            Corner = 6
+            FromSpot = Spot.Right, ToSpot = Spot.Left,
+            RelinkableFrom = false, RelinkableTo = true,
+            MouseEnter = (e, l, _) => { ((l as Link).Elt(2) as Shape).Stroke = "rgba(0,90,156,.3)"; },
+            MouseLeave = (e, l, _) => { ((l as Link).Elt(2) as Shape).Stroke = "transparent"; }
         };
 
+        var tooltip = new Adornment(PanelLayoutAuto.Instance)
+            .Add(new Shape("Rectangle") { Fill = Settings.LinkTipBackColor, Stroke = Settings.LinkTipForeColor })
+            .Add(new TextBlock { Margin = 12, Font = Settings.CodeFont, Stroke = Settings.LinkTipForeColor }
+                .Bind(nameof(TextBlock.Text), "", value =>
+                {
+                    if (value is not LogicLinkData link) return "Link Type Error";
+                    var json = JsonSerializer.Serialize(link, JsonSerializerOptions);
+                    return $"{nameof(LogicLinkData)}:\n{json}";
+                }));
+
         link.Add(
-            new Shape { Stroke = Settings.LinkColor, StrokeWidth = 2 },
-            new Shape { ToArrow = "Standard", Stroke = null, Fill = Settings.LinkColor }
+            new Shape { ToArrow = "Standard", Stroke = null, Fill = Settings.LinkColor },
+            new Shape { IsPanelMain = true, Stroke = Settings.LinkColor, StrokeWidth = 2 },
+            new Shape { IsPanelMain = true, Stroke = "transparent", StrokeWidth = 6, ToolTip = tooltip }
         );
+
 
         return link;
     }

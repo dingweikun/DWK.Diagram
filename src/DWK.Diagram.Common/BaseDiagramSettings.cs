@@ -4,6 +4,8 @@ public class BaseDiagramSettings
 {
     public string FontName { get; set; } = "Noto Sans CJK SC";
 
+    public string CodeFontName { get; set; } = "FreeMono";
+
     public string BackColor { get; set; } = "LightGray";
 
     public string GridColor { get; set; } = "Gray";
