@@ -25,6 +25,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\DWK.Diagram.Common\DWK.Diagram.Common.csproj"/>
+        <ProjectReference Include="..\DWK.Diagram.Elec\DWK.Diagram.Elec.csproj" />
         <ProjectReference Include="..\DWK.Diagram.Logic\DWK.Diagram.Logic.csproj" />
         <ProjectReference Include="..\DWK.Diagram.Resource\DWK.Diagram.Resource.csproj"/>
     </ItemGroup>

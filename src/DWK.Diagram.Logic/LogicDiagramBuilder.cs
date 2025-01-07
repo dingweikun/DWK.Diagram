@@ -2,6 +2,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Avalonia.Controls;
 using Northwoods.Go;
+using Northwoods.Go.Models;
 using Northwoods.Go.PanelLayouts;
 using RowDefinition = Northwoods.Go.RowDefinition;
 using Stretch = Northwoods.Go.Stretch;
@@ -172,12 +173,15 @@ public class LogicDiagramBuilder
         {
             Corner = 6,
             ToShortLength = 3,
-            Routing = LinkRouting.AvoidsNodes,
+            Reshapable = true, 
+            Resegmentable = true,
+            Routing = LinkRouting.Orthogonal,// LinkRouting.AvoidsNodes,
             FromSpot = Spot.Right, ToSpot = Spot.Left,
             RelinkableFrom = false, RelinkableTo = true,
             MouseEnter = (e, l, _) => { ((l as Link).Elt(2) as Shape).Stroke = "rgba(0,90,156,.3)"; },
             MouseLeave = (e, l, _) => { ((l as Link).Elt(2) as Shape).Stroke = "transparent"; }
-        };
+        }
+        .Bind(new Binding("Points").MakeTwoWay());
 
         var tooltip = new Adornment(PanelLayoutAuto.Instance)
             .Add(new Shape("Rectangle") { Fill = Settings.LinkTipBackColor, Stroke = Settings.LinkTipForeColor })
@@ -194,8 +198,7 @@ public class LogicDiagramBuilder
             new Shape { IsPanelMain = true, Stroke = Settings.LinkColor, StrokeWidth = 2 },
             new Shape { IsPanelMain = true, Stroke = "transparent", StrokeWidth = 6, ToolTip = tooltip }
         );
-
-
+        
         return link;
     }
 }

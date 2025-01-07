@@ -19,12 +19,18 @@ public static class Testing
                     Background = style.BackBrush,
                 }
                 .Add(
-                    new Shape("LineH") { Stroke = style.SubLineBrush },
+                    new Shape("LineH").Bind(nameof(Shape.Stroke), "", value =>
+                    {
+                        var type = value.GetType();
+                        Console.WriteLine(type.FullName);
+                        return "yellow";
+                    }),
                     new Shape("LineV") { Stroke = style.SubLineBrush },
                     new Shape("LineH") { Stroke = style.MainLineBrush, Interval = 5 },
                     new Shape("LineV") { Stroke =  style.MainLineBrush, Interval = 5 }
                 );
         diagram.Grid.Visible = true;
+        
     }
 
     public static void Setup3(Northwoods.Go.Diagram diagram)
@@ -185,8 +191,7 @@ public static class Testing
                 }
             };
     }
-
-
+    
     public static void Setup(Northwoods.Go.Diagram diagram)
     {
         var set = new LogicDiagramSettings();

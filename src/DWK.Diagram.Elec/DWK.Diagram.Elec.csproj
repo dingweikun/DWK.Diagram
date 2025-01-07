@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <RootNamespace>DWK.Diagram</RootNamespace>
   </PropertyGroup>
-
+  
   <ItemGroup>
     <ProjectReference Include="..\DWK.Diagram.Common\DWK.Diagram.Common.csproj" />
   </ItemGroup>

@@ -6,10 +6,9 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="DWK.Diagram.Views.DiagramView">
     <DockPanel>
-        <Button DockPanel.Dock="Top" Content="XXX" /> 
-        
-
-        <avalonia:DiagramControl Name="PART_DiagramControl" />
+        <Button DockPanel.Dock="Top" Content="XXX" Click="Button_OnClick"/> 
+ 
+        <avalonia:DiagramControl Name="PART_DiagramControl"/>
         <!-- <avalonia:DiagramControl Name="PART_DiagramControl" Background="#0061cc" /> -->
         <!-- <avalonia:DiagramControl Name="PART_DiagramControl" Background="#3B4166" /> -->
         

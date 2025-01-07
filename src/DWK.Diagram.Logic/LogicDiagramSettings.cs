@@ -49,7 +49,6 @@ public class LogicDiagramSettings : BaseDiagramSettings
 
 public class GridStyle
 {
-    // public Brush BackBrush { get; set; } = "darkblue";
     public Brush BackBrush { get; set; } = "rgba(0,97,204)";
     public Brush MainLineBrush { get; set; } = "rgba(255,255,255,0.5)";
     public Brush SubLineBrush { get; set; } = "rgba(255,255,255,0.2)";

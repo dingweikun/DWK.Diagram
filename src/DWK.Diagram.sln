@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DWK.Diagram.Resource", "DWK
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DWK.Diagram.Common", "DWK.Diagram.Common\DWK.Diagram.Common.csproj", "{29FD2651-6B0D-45DB-BB82-A502E6A90074}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DWK.Diagram.Elec", "DWK.Diagram.Elec\DWK.Diagram.Elec.csproj", "{FAF226F1-DC96-49FF-9603-D027D1996A9C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{29FD2651-6B0D-45DB-BB82-A502E6A90074}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29FD2651-6B0D-45DB-BB82-A502E6A90074}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29FD2651-6B0D-45DB-BB82-A502E6A90074}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAF226F1-DC96-49FF-9603-D027D1996A9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAF226F1-DC96-49FF-9603-D027D1996A9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAF226F1-DC96-49FF-9603-D027D1996A9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAF226F1-DC96-49FF-9603-D027D1996A9C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
