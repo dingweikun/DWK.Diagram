@@ -2,7 +2,10 @@ namespace DWK.Diagram.Node;
 
 public class BusNodeData : ElecNodeData
 {
-    internal const double InitLength = 200;
+    public BusNodeData()
+    {
+        Category = ElecNodeCategory.Bus;
+    }
 
     public override string Category
     {
@@ -10,5 +13,5 @@ public class BusNodeData : ElecNodeData
         set => base.Category = ElecNodeCategory.Bus;
     }
 
-    public double Length { get; set; } = InitLength;
+    public double Width { get; set; } = 200;
 }

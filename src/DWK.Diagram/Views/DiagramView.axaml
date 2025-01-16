@@ -6,11 +6,15 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="DWK.Diagram.Views.DiagramView">
     <DockPanel>
-        <Button DockPanel.Dock="Top" Content="XXX" Click="Button_OnClick"/> 
- 
-        <avalonia:DiagramControl Name="PART_DiagramControl"/>
+        <StackPanel Orientation="Horizontal" Spacing="8">
+            <Button DockPanel.Dock="Top" Content="XXX" Click="Button_OnClick" />
+            <Button DockPanel.Dock="Top" Content="Spy" Click="SpyButton_OnClick" />
+
+        </StackPanel>
+
+        <avalonia:DiagramControl Name="PART_DiagramControl" />
         <!-- <avalonia:DiagramControl Name="PART_DiagramControl" Background="#0061cc" /> -->
         <!-- <avalonia:DiagramControl Name="PART_DiagramControl" Background="#3B4166" /> -->
-        
+
     </DockPanel>
 </UserControl>

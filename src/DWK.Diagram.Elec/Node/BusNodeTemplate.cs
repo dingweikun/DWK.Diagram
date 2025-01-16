@@ -1,66 +1,48 @@
-using Avalonia.Controls.Shapes;
 using Northwoods.Go.Models;
-using Shape = Northwoods.Go.Shape;
 
 namespace DWK.Diagram.Node;
 
 public static class BusNodeTemplate
 {
-    public static Northwoods.Go.Node Make(ElecDiagramTheme? theme = null)
+    public static Northwoods.Go.Node Make()
     {
-        theme ??= new ElecDiagramTheme();
-
-        var resizeAdornment = new Adornment(PanelLayoutSpot.Instance)
-            .Add(
-                new Placeholder(),
-                new Shape
-                {
-                    // left resize handle
-                    Alignment = Spot.Left, Cursor = "col-resize",
-                    DesiredSize = new Size(6, 6),
-                    Fill = theme.AdornmentFillBrush, Stroke = theme.AdornmentStrokeBrush
-                },
-                new Shape
-                {
-                    // right resize handle
-                    Alignment = Spot.Right, Cursor = "col-resize",
-                    DesiredSize = new Size(6, 6),
-                    Fill = theme.AdornmentFillBrush, Stroke = theme.AdornmentStrokeBrush
-                }
-            );
-
-
-        return new Northwoods.Go.Node(PanelLayoutAuto.Instance)
+        return new Northwoods.Go.Node(PanelLayoutSpot.Instance)
             {
-                // LocationSpot = Spot.Center,
-                // Padding = new Margin(0),
-
-                // special resizing: just at the ends
-                Resizable = true, ResizeAdornmentTemplate = resizeAdornment,
-                // FromLinkable = true, ToLinkable = true
-                MinSize = new Size(100, double.NaN),
-                Background = "lightgray",
-                // Height = 20
+                SelectionElementName = "SHAPE",
+                LocationElementName = "SHAPE", LocationSpot = Spot.TopLeft,
+                Resizable = true, ResizeElementName = "SHAPE", ResizeAdornmentTemplate = ResizeAdornments.Horizontal
             }
             .Bind(new Binding(nameof(Northwoods.Go.Node.Location), nameof(BusNodeData.Location)).MakeTwoWay())
-            .Bind(new Binding(nameof(Northwoods.Go.Node.Width), nameof(BusNodeData.Length)).MakeTwoWay())
             .Add(
-                // new Shape("Rectangle")
-                // {
-                //     Fill = "red", StrokeWidth = 0,
-                //     Height = 10, Stretch = Stretch.Horizontal,
-                //     PortId = "",
-                //     FromLinkable = true, ToLinkable = true
-                // },
-                new TextBlock()
-                {
-                    Font = theme.DefaultFont
-                }.Bind("Text", nameof(BusNodeData.Length), val => val.ToString()),
                 new Shape("Rectangle")
-                {
-                    Fill = "yellow", StrokeWidth = 0,
-                    Height = 6, Stretch = Stretch.Horizontal,
-                }
+                    {
+                        Name = "SHAPE", Cursor = "pointer", StrokeWidth = 0, Height = 10,
+                        PortId = "", FromLinkable = true, ToLinkable = true
+                    }
+                    .Bind(new Binding(nameof(Shape.Fill), nameof(ElecDiagramTheme.BusLineBrush)).OfModel())
+                    .Bind(new Binding(nameof(Shape.Width), nameof(BusNodeData.Width)).MakeTwoWay()),
+                new Shape("Rectangle")
+                    {
+                        StrokeWidth = 0, Height = 4, Stretch = Stretch.Horizontal,
+                        Alignment = Spot.Center
+                    }
+                    .Bind(new Binding(nameof(Shape.Fill), nameof(ElecDiagramTheme.BusBodyBrush)).OfModel()),
+                new TextBlock
+                    {
+                        Alignment = Spot.Right, AlignmentFocus = new Spot(0, 0.5, -20, 0),
+                    }
+                    .Bind("Text", nameof(BusNodeData.Width), val => val.ToString())
+                    .Bind(new Binding(nameof(TextBlock.Background), nameof(ElecDiagramTheme.DefaultTextBackBrush)).OfModel())
+                    .Bind(new Binding(nameof(TextBlock.Stroke), nameof(ElecDiagramTheme.DefaultTextBrush)).OfModel())
+                    .Bind(new Binding(nameof(TextBlock.Font), nameof(ElecDiagramTheme.DefaultFont)).OfModel()),
+                new TextBlock
+                    {
+                        Alignment = Spot.TopLeft, AlignmentFocus = new Spot(0, 1, 0, 10),
+                    }
+                    .Bind("Text", nameof(BusNodeData.Location), val => val.ToString())
+                    .Bind(new Binding(nameof(TextBlock.Background), nameof(ElecDiagramTheme.DefaultTextBackBrush)).OfModel())
+                    .Bind(new Binding(nameof(TextBlock.Stroke), nameof(ElecDiagramTheme.DefaultTextBrush)).OfModel())
+                    .Bind(new Binding(nameof(TextBlock.Font), nameof(ElecDiagramTheme.DefaultFont)).OfModel())
             );
     }
 }
