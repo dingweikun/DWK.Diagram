@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using DWK.Diagram.Adornment;
 using Northwoods.Go.Models;
 using Northwoods.Go.Tools;
 using GoPanel = Northwoods.Go.Panel;
@@ -33,51 +34,7 @@ public static class WireNodeTemplate
 
 
         // var commandsAdornment = Builder.Make<Adornment>("ContextMenu")
-        var commandsAdornment = new GoAdornment(PanelLayoutHorizontal.Instance) { Padding = 16 }
-            .Add(
-                // new Panel("Auto")
-                //   .Add(
-                //     new Shape { Fill = null, Stroke = "red", StrokeWidth = 2, ShadowVisible = false },
-                //     new Placeholder()
-                //   ),
-                MakeButton(IconGeometry.ShiftOrientation, "Shift Orientation", CommiteOperation.ShiftOrientation),
-                Builder.Make<GoPanel>("Button")
-                    .Add(
-                        new Shape
-                        {
-                            GeometryString = icon, Height = 18, Width = 18, Margin = 4
-                        }
-                    )
-                    .Set(new
-                    {
-                        Click = new Action<InputEvent, GraphObject>(CommiteOperation.ShiftOrientation),
-                    }),
-                Builder.Make<GoPanel>("Button")
-                    .Add(
-                        new Shape
-                        {
-                            GeometryString = icon, Height = 18, Width = 18, Margin = 4
-                        }
-                    )
-                    .Set(new
-                    {
-                        Click = new Action<InputEvent, GraphObject>(CommiteOperation.ShiftOrientation),
-                    }),
-                Builder.Make<GoPanel>("Button")
-                    .Add(
-                        new Shape
-                        {
-                            GeometryString = icon, Height = 18, Width = 18, Margin = 4
-                        }
-                    )
-                    .Set(new
-                    {
-                        Click = new Action<InputEvent, GraphObject>(CommiteOperation.ShiftOrientation),
-                        ToolTip = Builder.Make<GoAdornment>("ToolTip")
-                            .Add(
-                                new GoTextBlock("Shift Orientation").Bind(new Binding("Font", nameof(ElecDiagramTheme.DefaultFont)).OfModel()))
-                    })
-            );
+              
 
 
         //--------------------------------------------------------------------------------------------------------------------------------------------
@@ -88,7 +45,7 @@ public static class WireNodeTemplate
                 LocationElementName = "SHAPE", LocationSpot = new Spot(0, 0.5),
                 Resizable = true, ResizeElementName = "SHAPE", ResizeAdornmentTemplate = ResizeAdornments.Horizontal,
                 // LinkValidation = LinkValidation,
-                ContextMenu = commandsAdornment
+                ContextMenu = ElecNodeContextToolbar.Make(ElecNodeCategory.Wire)
             }
             .Bind(new Binding("Angle", nameof(WireNodeData.Angle)).MakeTwoWay())
             .Add(

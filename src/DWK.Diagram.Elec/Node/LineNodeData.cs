@@ -1,11 +1,13 @@
 using DWK.Diagram.ElecModels;
+using Northwoods.Go.Models;
 
 namespace DWK.Diagram.Node;
 
-public class SwitchNodeData : ElecNodeData, IOrientation
+public class LineNodeData : ElecNodeData, IOrientation
 {
-    public SwitchNodeData()
+    public LineNodeData()
     {
+        
         Ports = new Dictionary<string, EPort>
         {
             {
@@ -17,17 +19,15 @@ public class SwitchNodeData : ElecNodeData, IOrientation
                 new EPort(EPortType.NODE, EPortType.LINK)
             }
         };
-        
-        Tag = Category = ElecNodeCategory.Switch;
+
+        Tag = Category = ElecNodeCategory.Line;
     }
 
     public override string Category
     {
         get => base.Category;
-        set => base.Category = ElecNodeCategory.Switch;
+        set => base.Category = ElecNodeCategory.Line;
     }
-
-    public bool Opened { get; set; }
 
     public bool IsVertical { get; set; }
 }

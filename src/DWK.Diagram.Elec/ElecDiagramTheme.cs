@@ -6,6 +6,8 @@ public class ElecDiagramTheme
 
     public GoFont TagFont { get; set; } = new("Noto Sans CJK SC", 18);
 
+    public GoFont TinyFont { get; set; } = new("Noto Sans CJK SC", 10);
+    
     public GoBrush DefaultTextBrush { get; set; } = "black";
     public GoBrush DefaultTextBackBrush { get; set; } = "transparent";
 
