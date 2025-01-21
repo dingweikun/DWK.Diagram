@@ -1,4 +1,5 @@
 using DWK.Diagram.Adornment;
+using DWK.Diagram.ElecModels;
 using Northwoods.Go.Models;
 
 namespace DWK.Diagram.Node;
@@ -12,6 +13,7 @@ internal class SwitchNodeTemplate : ElecNodeTemplate<SwitchNodeData>
                 SelectionElementName = "SHAPE",
                 LocationElementName = "SHAPE", LocationSpot = Spot.BottomLeft,
                 ContextMenu = ElecNodeContextToolbar.Make(Sample.Category),
+                LinkValidation = LinkValidation
             }
             .Bind(BindingLocation())
             .Bind(BindingOrientation())
@@ -36,16 +38,33 @@ internal class SwitchNodeTemplate : ElecNodeTemplate<SwitchNodeData>
                     }
                     .Bind(new Binding("Visible", nameof(SwitchNodeData.Opened), o => o is true)),
                 // 连接锚点
-                new Shape("Rectangle")
+                DefaultPortShape()
+                    .Set(ElecPortSetting("EIN", EPortType.LINK, EPortType.NODE))
+                    .Set(new
                     {
-                        Height = 8, Width = 8, StrokeWidth = 0, Alignment = new Spot(0, 1), AlignmentFocus = Spot.Center
-                    }
-                    .Bind(new Binding("Fill", nameof(ElecDiagramTheme.PortBrush)).OfModel()),
-                new Shape("Rectangle")
+                        Alignment = Spot.BottomLeft,
+                        ToLinkable = true, ToMaxLinks = 1, ToSpot = Spot.Left,
+                        FromLinkable = true, FromMaxLinks = 1, FromSpot = Spot.Left
+                    }),
+                DefaultPortShape()
+                    .Set(ElecPortSetting("EOUT", EPortType.LINK, EPortType.NODE))
+                    .Set(new
                     {
-                        Height = 8, Width = 8, StrokeWidth = 0, Alignment = new Spot(1, 1), AlignmentFocus = Spot.Center
-                    }
-                    .Bind(new Binding("Fill", nameof(ElecDiagramTheme.PortBrush)).OfModel())
+                        Alignment = Spot.BottomRight,
+                        ToLinkable = true, ToMaxLinks = 1, ToSpot = Spot.Right,
+                        FromLinkable = true, FromMaxLinks = 1, FromSpot = Spot.Right
+                    })
             );
+    }
+    
+    private static bool LinkValidation(Northwoods.Go.Node formNode, GraphObject fromPort, Northwoods.Go.Node toNode, GraphObject toPort, Link link)
+    {
+        if (formNode.Data is SwitchNodeData && formNode.FindLinksConnected(fromPort.PortId).Any())
+            return false;
+
+        if (toNode.Data is SwitchNodeData && toNode.FindLinksConnected(toNode.PortId).Any())
+            return false;
+
+        return true;
     }
 }

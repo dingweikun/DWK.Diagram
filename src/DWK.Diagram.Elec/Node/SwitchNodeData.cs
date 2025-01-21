@@ -1,23 +1,9 @@
-using DWK.Diagram.ElecModels;
-
 namespace DWK.Diagram.Node;
 
 public class SwitchNodeData : ElecNodeData, IOrientation
 {
     public SwitchNodeData()
     {
-        Ports = new Dictionary<string, EPort>
-        {
-            {
-                "EIN",
-                new EPort(EPortType.NODE, EPortType.LINK)
-            },
-            {
-                "EOUT",
-                new EPort(EPortType.NODE, EPortType.LINK)
-            }
-        };
-        
         Tag = Category = ElecNodeCategory.Switch;
     }
 
@@ -27,7 +13,7 @@ public class SwitchNodeData : ElecNodeData, IOrientation
         set => base.Category = ElecNodeCategory.Switch;
     }
 
-    public bool Opened { get; set; }
+    public bool Opened { get; set; } = true;
 
     public bool IsVertical { get; set; }
 }

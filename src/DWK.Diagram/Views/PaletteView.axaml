@@ -7,5 +7,5 @@
              x:Class="DWK.Diagram.Views.PaletteView">
     <avalonia:PaletteControl
         Name="PART_PaletteControl"
-        BorderBrush="Black" BorderThickness="1" />
+        BorderBrush="Black" BorderThickness="0" />
 </UserControl>

@@ -145,8 +145,6 @@ public class ElecModel : GraphLinksModel<ElecNodeData, Guid, object, ElecLinkDat
 
 public class ElecNodeData : ElecModel.NodeData
 {
-    public IReadOnlyDictionary<string, EPort> Ports { get; protected init; } = new Dictionary<string, EPort>();
-
     public string Tag { get; set; }
 }
 

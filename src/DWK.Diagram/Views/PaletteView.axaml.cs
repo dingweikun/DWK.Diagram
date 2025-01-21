@@ -1,13 +1,16 @@
 namespace DWK.Diagram.Views;
 
+using GoPalette = Northwoods.Go.Palette;
+
 public partial class PaletteView : UserControl
 {
     public PaletteView()
     {
         InitializeComponent();
 
-        // var _Palette = PART_PaletteControl.Diagram as GoPalette;
-        //SetupPalette(PART_PaletteControl.Diagram as GoPalette);
+        var palette = PART_PaletteControl.Diagram as GoPalette;
+        var builder = new ElecPaletteBuilder();
+        builder.BuildPalette(palette);
     }
 
     // private void SetupPalette(GoPalette _Palette)

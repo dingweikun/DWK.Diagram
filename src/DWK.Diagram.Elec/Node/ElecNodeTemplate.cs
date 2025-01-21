@@ -71,4 +71,22 @@ public abstract class ElecNodeTemplate<TNodeData> where TNodeData : ElecNodeData
     };
 
     #endregion
+    
+    #region pre-defined link validation
+    
+    /// <summary>
+    /// 限制端口连接数量为1
+    /// </summary>
+    protected static bool OneLinkValidation<TNodeData>(Northwoods.Go.Node formNode, GraphObject fromPort, Northwoods.Go.Node toNode, GraphObject toPort, Link link)
+    {
+        if (formNode.Data is TNodeData && formNode.FindLinksConnected(fromPort.PortId).Any())
+            return false;
+
+        if (toNode.Data is TNodeData && toNode.FindLinksConnected(toNode.PortId).Any())
+            return false;
+
+        return true;
+    } 
+    
+    #endregion
 }
