@@ -10,6 +10,12 @@ public static class ElecNodeCategory
     /// </summary>
     public const string Bus = nameof(Bus);
 
+    /// <summary>
+    /// 节点（母线）
+    /// </summary>
+    public const string BusPoint = nameof(BusPoint);
+
+
     public const string Wire = nameof(Wire);
 
     /// <summary>

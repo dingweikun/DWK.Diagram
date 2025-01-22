@@ -55,7 +55,7 @@ public abstract class ElecNodeTemplate<TNodeData> where TNodeData : ElecNodeData
 
     protected Shape DefaultPortShape() => new Shape("Rectangle")
     {
-        Height = 8, Width = 8, Fill = "blue", StrokeWidth = 0, AlignmentFocus = Spot.Center
+        Height = 8, Width = 8, Fill = "Aqua", StrokeWidth = 0, AlignmentFocus = Spot.Center
     };
 
     protected object ElecPortSetting(string portName, EPortType type, EPortType target) => new
@@ -71,13 +71,14 @@ public abstract class ElecNodeTemplate<TNodeData> where TNodeData : ElecNodeData
     };
 
     #endregion
-    
+
     #region pre-defined link validation
-    
+
     /// <summary>
     /// 限制端口连接数量为1
     /// </summary>
-    protected static bool OneLinkValidation<TNodeData>(Northwoods.Go.Node formNode, GraphObject fromPort, Northwoods.Go.Node toNode, GraphObject toPort, Link link)
+    protected static bool OneLinkValidation(
+        Northwoods.Go.Node formNode, GraphObject fromPort, Northwoods.Go.Node toNode, GraphObject toPort, Link link)
     {
         if (formNode.Data is TNodeData && formNode.FindLinksConnected(fromPort.PortId).Any())
             return false;
@@ -86,7 +87,7 @@ public abstract class ElecNodeTemplate<TNodeData> where TNodeData : ElecNodeData
             return false;
 
         return true;
-    } 
-    
+    }
+
     #endregion
 }

@@ -10,7 +10,7 @@ public class LoadNodeTemplate : ElecNodeTemplate<LoadNodeData>
             {
                 SelectionElementName = "SHAPE",
                 LocationElementName = "SHAPE", LocationSpot = Spot.Center,
-                LinkValidation = LinkValidation
+                LinkValidation = OneLinkValidation
             }
             .Bind(BindingLocation())
             .Add(
@@ -34,12 +34,5 @@ public class LoadNodeTemplate : ElecNodeTemplate<LoadNodeData>
                     .Set(ElecPortSetting("EP", EPortType.NODE, EPortType.LINK)),
                 new Shape("Ellipse") { Width = 80, Height = 80, Fill = "red", Stroke = "white", StrokeWidth = 8 }
             );
-    }
-
-
-    private static bool LinkValidation(Northwoods.Go.Node formNode, GraphObject fromPort, Northwoods.Go.Node toNode, GraphObject toPort, Link link)
-    {
-        var duplicate = toNode.Data is LoadNodeData && toNode.FindLinksConnected(toNode.PortId).Any();
-        return duplicate is false;
     }
 }

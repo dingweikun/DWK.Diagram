@@ -13,7 +13,7 @@ internal class SwitchNodeTemplate : ElecNodeTemplate<SwitchNodeData>
                 SelectionElementName = "SHAPE",
                 LocationElementName = "SHAPE", LocationSpot = Spot.BottomLeft,
                 ContextMenu = ElecNodeContextToolbar.Make(Sample.Category),
-                LinkValidation = LinkValidation
+                LinkValidation = OneLinkValidation
             }
             .Bind(BindingLocation())
             .Bind(BindingOrientation())
@@ -55,16 +55,5 @@ internal class SwitchNodeTemplate : ElecNodeTemplate<SwitchNodeData>
                         FromLinkable = true, FromMaxLinks = 1, FromSpot = Spot.Right
                     })
             );
-    }
-    
-    private static bool LinkValidation(Northwoods.Go.Node formNode, GraphObject fromPort, Northwoods.Go.Node toNode, GraphObject toPort, Link link)
-    {
-        if (formNode.Data is SwitchNodeData && formNode.FindLinksConnected(fromPort.PortId).Any())
-            return false;
-
-        if (toNode.Data is SwitchNodeData && toNode.FindLinksConnected(toNode.PortId).Any())
-            return false;
-
-        return true;
     }
 }

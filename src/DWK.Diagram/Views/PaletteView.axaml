@@ -4,8 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:avalonia="clr-namespace:Northwoods.Go.Avalonia;assembly=Northwoods.GoDiagram.Avalonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="DWK.Diagram.Views.PaletteView">
-    <avalonia:PaletteControl
-        Name="PART_PaletteControl"
-        BorderBrush="Black" BorderThickness="0" />
+             x:Class="DWK.Diagram.Views.PaletteView" Background="{DynamicResource WindowDefaultBackground}">
+    <avalonia:PaletteControl Name="PART_PaletteControl" BorderThickness="0" />
 </UserControl>

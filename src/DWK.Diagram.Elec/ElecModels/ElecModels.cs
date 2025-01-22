@@ -4,6 +4,7 @@ namespace DWK.Diagram.ElecModels;
 
 public record EPort(EPortType Type, EPortType Target);
 
+[SuppressMessage("ReSharper", "InconsistentNaming")]
 public enum EPortType
 {
     NULL = 0,
@@ -26,27 +27,29 @@ public enum ENodeType
     LOAD = 4
 }
 
-/// <summary>
-/// 电气程序节点类模型接口
-/// </summary>
-public interface IENode
-{
-    /// <summary>
-    /// 节点类型
-    /// </summary>
-    ENodeType Type { get; }
-}
 
-/// <summary>
-/// 电气程序支路类模型接口
-/// </summary>
-public interface IELink
-{
-}
-
-/// <summary>
-/// 电气程序信息类模型接口
-/// </summary>
-public interface IEInfo
-{
-}
+//
+// /// <summary>
+// /// 电气程序节点类模型接口
+// /// </summary>
+// public interface IENode
+// {
+//     /// <summary>
+//     /// 节点类型
+//     /// </summary>
+//     ENodeType Type { get; }
+// }
+//
+// /// <summary>
+// /// 电气程序支路类模型接口
+// /// </summary>
+// public interface IELink
+// {
+// }
+//
+// /// <summary>
+// /// 电气程序信息类模型接口
+// /// </summary>
+// public interface IEInfo
+// {
+// }

@@ -1,3 +1,4 @@
+using DWK.Diagram.ElecModels;
 using Northwoods.Go.Models;
 
 namespace DWK.Diagram.Node;
@@ -43,16 +44,22 @@ internal class TransfNodeTemplate : ElecNodeTemplate<TransfNodeData>
                 // }
 
                 // 连接锚点
-                new Shape("Rectangle")
+                DefaultPortShape()
+                    .Set(ElecPortSetting("EIN", EPortType.LINK, EPortType.NODE))
+                    .Set(new
                     {
-                        Height = 8, Width = 8, StrokeWidth = 0, Alignment = Spot.Top, AlignmentFocus = Spot.Center
-                    }
-                    .Bind(new Binding("Fill", nameof(ElecDiagramTheme.PortBrush)).OfModel()),
-                new Shape("Rectangle")
+                        Alignment = Spot.Top,
+                        ToLinkable = true, ToMaxLinks = 1, ToSpot = Spot.Top,
+                        FromLinkable = true, FromMaxLinks = 1, FromSpot = Spot.Top
+                    }),
+                DefaultPortShape()
+                    .Set(ElecPortSetting("EOUT", EPortType.LINK, EPortType.NODE))
+                    .Set(new
                     {
-                        Height = 8, Width = 8, StrokeWidth = 0, Alignment = Spot.Bottom, AlignmentFocus = Spot.Center
-                    }
-                    .Bind(new Binding("Fill", nameof(ElecDiagramTheme.PortBrush)).OfModel())
+                        Alignment = Spot.Bottom,
+                        ToLinkable = true, ToMaxLinks = 1, ToSpot = Spot.Bottom,
+                        FromLinkable = true, FromMaxLinks = 1, FromSpot = Spot.Bottom
+                    })
             );
     }
 }

@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using DWK.Diagram.Node;
 using Northwoods.Go.Models;
 
@@ -7,7 +8,7 @@ using GoAdornment = Northwoods.Go.Adornment;
 
 public static class ElecNodeContextToolbar
 {
-    public static GoAdornment Make(string category) => category switch
+    public static GoAdornment? Make(string category) => category switch
     {
         ElecNodeCategory.Switch => MakeToolbar()
             .Add(ButtonShiftOrientation())
@@ -16,11 +17,17 @@ public static class ElecNodeContextToolbar
 
         ElecNodeCategory.Wire => MakeToolbar()
             .Add(ButtonShiftOrientation()),
-        
+
         ElecNodeCategory.Line => MakeToolbar()
             .Add(ButtonShiftOrientation()),
 
-        _ => throw new ArgumentOutOfRangeException(nameof(category))
+        ElecNodeCategory.Bus => MakeToolbar()
+            .Add(ButtonBusToBusPoint()),
+
+        ElecNodeCategory.BusPoint => MakeToolbar()
+            .Add(ButtonBusPointToBus()),
+
+        _ => null
     };
 
     #region common make function
@@ -30,12 +37,12 @@ public static class ElecNodeContextToolbar
         Padding = 8,
     };
 
-    private static Panel MakeButton(string iconString, string tip, Action<InputEvent, GraphObject> action, string stroke = "black")
+    private static Panel MakeButton(string iconString, Size iconSize, string tip, Action<InputEvent, GraphObject> action, string stroke = "black")
     {
         return Builder.Make<Panel>("Button")
             .Add(new Shape
             {
-                GeometryString = iconString, StrokeWidth = 2, Stroke = stroke, Fill = "transparent"
+                GeometryString = iconString, DesiredSize = iconSize, StrokeWidth = 1.5, Stroke = stroke, Fill = "transparent"
             })
             .Set(new { Height = 36, Width = 36, Click = action, ToolTip = MakeToolTip(tip) });
     }
@@ -53,7 +60,7 @@ public static class ElecNodeContextToolbar
 
     private static Panel ButtonShiftOrientation()
     {
-        return MakeButton(IconGeometry.ShiftOrientation, "Shift Orientation", ShiftOrientation);
+        return MakeButton(IconGeometry.ShiftOrientation, new Size(20, 20), "Shift Orientation", ShiftOrientation);
 
         void ShiftOrientation(InputEvent e, GraphObject obj)
         {
@@ -67,7 +74,7 @@ public static class ElecNodeContextToolbar
 
     private static Panel ButtonSwitchOpen()
     {
-        return MakeButton(IconGeometry.SwitchOpen, "Open Switch", OpenSwitch, "red")
+        return MakeButton(IconGeometry.SwitchOpen, new Size(13, 20), "Open Switch", OpenSwitch, "red")
             .Bind(new Binding("Visible", "", CanOpenSwitch).OfElement());
 
         void OpenSwitch(InputEvent e, GraphObject obj)
@@ -85,7 +92,7 @@ public static class ElecNodeContextToolbar
 
     private static Panel ButtonSwitchClose()
     {
-        return MakeButton(IconGeometry.SwitchClose, "Close Switch", CloseSwitch, "green")
+        return MakeButton(IconGeometry.SwitchClose, new Size(13, 20), "Close Switch", CloseSwitch, "green")
             .Bind(new Binding("Visible", "", CanCloseSwitch).OfElement());
 
         void CloseSwitch(InputEvent e, GraphObject obj)
@@ -98,6 +105,82 @@ public static class ElecNodeContextToolbar
         object CanCloseSwitch(object val, object targetObj)
         {
             return val is GoAdornment { AdornedPart: Northwoods.Go.Node { Data: SwitchNodeData { Opened: true } } };
+        }
+    }
+
+    private static Panel ButtonBusToBusPoint()
+    {
+        return MakeButton(IconGeometry.BusPoint, new Size(16, 16), "Turn To BusPoint", BusToBusPoint, "blue");
+
+        void BusToBusPoint(InputEvent e, GraphObject obj)
+        {
+            if (obj.Part is not GoAdornment { AdornedPart: Northwoods.Go.Node { Data: BusNodeData busNodedata } }) return;
+
+            if (e.Diagram.Model is not ElecModel em) return;
+
+            var fromlinks = em.LinkDataSource.Where(link => link.From == busNodedata.Key).ToArray();
+            var tolinks = em.LinkDataSource.Where(link => link.To == busNodedata.Key).ToArray();
+
+            e.Diagram.Model.Commit(m =>
+            {
+                // TODO: 完全复制模型数据
+                var busPointNodeData = new BusPointNodeData()
+                {
+                    Location = busNodedata.Location
+                };
+
+                em.AddNodeData(busPointNodeData);
+
+                foreach (var link in fromlinks)
+                {
+                    em.SetFromKeyForLinkData(link, busPointNodeData.Key);
+                }
+
+                foreach (var link in tolinks)
+                {
+                    em.SetToKeyForLinkData(link, busPointNodeData.Key);
+                }
+
+                em.RemoveNodeData(busNodedata);
+            }, nameof(BusToBusPoint));
+        }
+    }
+
+    private static Panel ButtonBusPointToBus()
+    {
+        return MakeButton(IconGeometry.Bus, new Size(20, double.NaN), "Turn To Bus", BusPointToBus, "red");
+
+        void BusPointToBus(InputEvent e, GraphObject obj)
+        {
+            if (obj.Part is not GoAdornment { AdornedPart: Northwoods.Go.Node { Data: BusPointNodeData busPointNodedata } }) return;
+
+            if (e.Diagram.Model is not ElecModel em) return;
+
+            var fromlinks = em.LinkDataSource.Where(link => link.From == busPointNodedata.Key).ToArray();
+            var tolinks = em.LinkDataSource.Where(link => link.To == busPointNodedata.Key).ToArray();
+
+            e.Diagram.Model.Commit(m =>
+            {
+                // TODO: 完全复制模型数据
+                var busNodeData = new BusNodeData()
+                {
+                    Location = busPointNodedata.Location
+                };
+
+                em.AddNodeData(busNodeData);
+
+                foreach (var link in fromlinks)
+                {
+                    em.SetFromKeyForLinkData(link, busPointNodedata.Key);
+                }
+
+                foreach (var link in tolinks)
+                {
+                    em.SetToKeyForLinkData(link, busPointNodedata.Key);
+                }
+
+                em.RemoveNodeData(busPointNodedata);
+            }, nameof(BusPointToBus));
         }
     }
 

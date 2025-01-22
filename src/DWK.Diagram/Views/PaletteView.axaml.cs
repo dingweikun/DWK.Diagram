@@ -1,6 +1,9 @@
+using Avalonia.Interactivity;
+using Avalonia.Media;
+
 namespace DWK.Diagram.Views;
 
-using GoPalette = Northwoods.Go.Palette;
+using GoPalette = Go.Palette;
 
 public partial class PaletteView : UserControl
 {
@@ -12,6 +15,18 @@ public partial class PaletteView : UserControl
         var builder = new ElecPaletteBuilder();
         builder.BuildPalette(palette);
     }
+
+    // protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    // {
+    //     base.OnPropertyChanged(change);
+    //     
+    //
+    //     if (change.Property == ForegroundProperty && Background is IBrush brush)
+    //     {
+    //         ;
+    //         PART_PaletteControl.Background = brush;
+    //     }
+    // }
 
     // private void SetupPalette(GoPalette _Palette)
     // {
@@ -34,4 +49,5 @@ public partial class PaletteView : UserControl
     //         }
     //     };
     // }
+    
 }

@@ -18,12 +18,13 @@ public class ElecDiagramBuilder : IDiagramBuilder
                 // new BusNodeData { Key = Guid.NewGuid() },
                 // new WireNodeData { Key = Guid.NewGuid(), Angle = 45 },
                 // new WireNodeData { Key = Guid.NewGuid(), Angle = 90 },
-                new TransfNodeData { Key = Guid.NewGuid() },
-                new LoadNodeData { Key = Guid.NewGuid() },
-                new LineNodeData { Key = Guid.NewGuid() },
-                new SwitchNodeData { Key = Guid.NewGuid(), Opened = true, IsVertical = true },
-                new SwitchNodeData { Key = Guid.NewGuid(), Opened = false },
+                // new TransfNodeData { Key = Guid.NewGuid() },
+                // new LoadNodeData { Key = Guid.NewGuid() },
+                // new LineNodeData { Key = Guid.NewGuid() },
+                // new SwitchNodeData { Key = Guid.NewGuid(), Opened = true, IsVertical = true },
+                // new SwitchNodeData { Key = Guid.NewGuid(), Opened = false },
             },
+            
         };
 
         // 设置模板
@@ -37,8 +38,11 @@ public class ElecDiagramBuilder : IDiagramBuilder
 
         //TODO: Test.....
 
-        diagram.Grid.Visible = true;
+        // 功能设置
+        diagram.UndoManager.IsEnabled = true;
+        // diagram.Grid.Visible = true;
         diagram.ToolManager.ClickCreatingTool.ArchetypeNodeData = new SwitchNodeData();
+        
 
 
         diagram.Add(
@@ -103,7 +107,9 @@ public class ElecDiagramBuilder : IDiagramBuilder
         // 未定义
         { string.Empty, MakeDefaultNodeTemplate() },
         // 母线
-        { ElecNodeCategory.Bus, BusNodeTemplate.Make() },
+        { ElecNodeCategory.Bus, new BusNodeTemplate().Make() },
+        // 节点（母线）
+        { ElecNodeCategory.BusPoint, new BusPointNodeTemplate().Make() },
         // 刀闸
         { ElecNodeCategory.Switch, new SwitchNodeTemplate().Make() },
         // 支路
@@ -117,6 +123,11 @@ public class ElecDiagramBuilder : IDiagramBuilder
 
     private bool GeneralLinkValidation(Northwoods.Go.Node formNode, GraphObject fromPort, Northwoods.Go.Node toNode, GraphObject toPort, Link link)
     {
+        // 限制重复连接
+        if (formNode.FindNodesConnected().Contains(toNode)) return false;
+        if (toNode.FindNodesConnected().Contains(formNode)) return false;
+        
+        // 端口连接规则
         if (fromPort["_PortType"] is not EPortType fromType ||
             fromPort["_PortTarget"] is not EPortType fromTarget ||
             toPort["_PortType"] is not EPortType toType ||
@@ -145,7 +156,7 @@ public class ElecModel : GraphLinksModel<ElecNodeData, Guid, object, ElecLinkDat
 
 public class ElecNodeData : ElecModel.NodeData
 {
-    public string Tag { get; set; }
+    public string Tag { get; set; } = string.Empty;
 }
 
 public class ElecLinkData : ElecModel.LinkData

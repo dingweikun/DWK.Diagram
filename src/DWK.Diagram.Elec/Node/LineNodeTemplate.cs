@@ -13,7 +13,7 @@ public class LineNodeTemplate : ElecNodeTemplate<LineNodeData>
                 SelectionElementName = "SHAPE",
                 LocationElementName = "SHAPE", LocationSpot = Spot.Left,
                 ContextMenu = ElecNodeContextToolbar.Make(Sample.Category),
-                LinkValidation = OneLinkValidation<LineNodeData>
+                LinkValidation = OneLinkValidation
             }
             .Bind(BindingLocation())
             .Bind(BindingOrientation())

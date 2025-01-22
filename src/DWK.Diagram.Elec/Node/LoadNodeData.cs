@@ -6,12 +6,6 @@ public class LoadNodeData : ElecNodeData
 {
     public LoadNodeData()
     {
-        Tag = Category = ElecNodeCategory.Load;
-    }
-
-    public override string Category
-    {
-        get => base.Category;
-        set => base.Category = ElecNodeCategory.Load;
+        base.Category = Tag = ElecNodeCategory.Load;
     }
 }
