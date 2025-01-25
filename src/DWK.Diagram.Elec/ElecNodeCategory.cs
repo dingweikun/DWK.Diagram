@@ -31,7 +31,7 @@ public static class ElecNodeCategory
     /// <summary>
     /// 断路器/熔断器
     /// </summary>
-    public const string Break = nameof(Break);
+    public const string Breaker = nameof(Breaker);
 
     /// <summary>
     /// 变压器
@@ -42,4 +42,14 @@ public static class ElecNodeCategory
     /// 负载
     /// </summary>
     public const string Load = nameof(Load);
+
+    /// <summary>
+    /// 发电机（简单）
+    /// </summary>
+    public const string Generator = nameof(Generator);
+    
+    /// <summary>
+    /// 电动机
+    /// </summary>
+    public const string Motor = nameof(Motor);
 }

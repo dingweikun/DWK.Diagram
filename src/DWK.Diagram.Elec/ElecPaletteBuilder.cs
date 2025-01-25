@@ -19,6 +19,9 @@ public class ElecPaletteBuilder
                 new LineNodeData(),
                 new TransfNodeData(),
                 new SwitchNodeData(),
+                new LoadNodeData(),
+                new GeneratorNodeData(),
+                new MotorNodeData(),
             }
         };
 
@@ -30,12 +33,13 @@ public class ElecPaletteBuilder
 
     private static Dictionary<string, Part> MakeNodeTemplateMap() => new()
     {
-        // 未定义
         {
-            string.Empty, TemplateNode().Add(new Shape("XLine") { Stretch = Stretch.Fill })
+            // 未定义
+            string.Empty,
+            TemplateNode().Add(new Shape("XLine") { Stretch = Stretch.Fill })
         },
-        // 母线
         {
+            // 母线
             ElecNodeCategory.Bus,
             TemplateNode().Add(new Shape
             {
@@ -43,8 +47,8 @@ public class ElecPaletteBuilder
                 GeometryString = IconGeometry.Bus
             })
         },
-        // 节点(母线)
         {
+            // 节点(母线)
             ElecNodeCategory.BusPoint,
             TemplateNode().Add(new Shape
             {
@@ -52,8 +56,8 @@ public class ElecPaletteBuilder
                 GeometryString = IconGeometry.BusPoint
             })
         },
-        // 刀闸
         {
+            // 刀闸
             ElecNodeCategory.Switch,
             TemplateNode().Add(new Shape
             {
@@ -61,8 +65,8 @@ public class ElecPaletteBuilder
                 GeometryString = IconGeometry.SwitchOpen
             })
         },
-        // 支路
         {
+            // 支路
             ElecNodeCategory.Line,
             TemplateNode().Add(new Shape
             {
@@ -70,8 +74,8 @@ public class ElecPaletteBuilder
                 GeometryString = IconGeometry.BranchLine
             })
         },
-        // 变压器
         {
+            // 变压器
             ElecNodeCategory.Transformer,
             TemplateNode().Add(new Shape
             {
@@ -79,8 +83,33 @@ public class ElecPaletteBuilder
                 GeometryString = IconGeometry.Transformer
             })
         },
-        // // 负载
-        // { ElecNodeCategory.Load, new LoadNodeTemplate().Make() },
+        {
+            // 负载
+            ElecNodeCategory.Load,
+            TemplateNode().Add(new Shape
+            {
+                Width = 30, Height = 30,
+                GeometryString = IconGeometry.Load
+            })
+        },
+        {
+            // 发电机（简单）
+            ElecNodeCategory.Generator,
+            TemplateNode().Add(new Shape
+            {
+                Width = 30, Height = 30,
+                GeometryString = IconGeometry.Generator
+            })
+        },
+        {
+            // 电动机
+            ElecNodeCategory.Motor,
+            TemplateNode().Add(new Shape
+            {
+                Width = 30, Height = 30,
+                GeometryString = IconGeometry.Motor
+            })
+        },
     };
 
     private static Northwoods.Go.Node TemplateNode() => new Northwoods.Go.Node(PanelLayoutSpot.Instance)

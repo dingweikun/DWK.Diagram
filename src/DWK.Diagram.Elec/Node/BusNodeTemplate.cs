@@ -6,28 +6,34 @@ namespace DWK.Diagram.Node;
 
 public class BusNodeTemplate : ElecNodeTemplate<BusNodeData>
 {
+    public const double DefaultWidth = 200;
+
+    private static GoBrush Color1 { get; } = new("red");
+    private static GoBrush Color2 { get; } = new("lightyellow");
+
     public override Northwoods.Go.Node Make()
     {
         return new Northwoods.Go.Node(PanelLayoutSpot.Instance)
             {
                 SelectionElementName = "SHAPE",
                 LocationElementName = "SHAPE", LocationSpot = Spot.Left,
-                Resizable = true, ResizeElementName = "SHAPE", ResizeAdornmentTemplate = ResizeAdornments.Horizontal,
+                ResizeElementName = "SHAPE", Resizable = true, ResizeAdornmentTemplate = ResizeAdornments.Horizontal,
+                ResizeCellSize = new Size(10, double.NaN),
                 ContextMenu = ElecNodeContextToolbar.Make(Sample.Category)
             }
             .Bind(BindingLocation())
             .Add(
                 new Shape("Rectangle")
                     {
-                        Name = "SHAPE", Fill = "lightyellow", StrokeWidth = 0,
-                        Width = 200, Height = 20, MinSize = new Size(100, double.NaN)
+                        Name = "SHAPE", Fill = Color2, StrokeWidth = 0,
+                        Height = 20, MinSize = new Size(100, double.NaN)
                     }
-                    .Bind(new Binding(nameof(Shape.Width), nameof(Sample.Width)).MakeTwoWay()),
+                    .Bind(new Binding(nameof(Shape.Width), nameof(Sample.ResizedWidth)).MakeTwoWay()),
                 // 模块图案
                 new Shape
                     {
                         GeometryString = "M0,0 L 200,0 M0,18 L 200,18",
-                        Stroke = "red", StrokeWidth = 6, StrokeCap = LineCap.Square, Stretch = Stretch.Fill,
+                        Stroke = Color1, StrokeWidth = 6, StrokeCap = LineCap.Square, Stretch = Stretch.Fill,
 
                         // 锚点属性
                         FromLinkable = true, FromSpot = Spot.TopBottomSides,
@@ -41,7 +47,7 @@ public class BusNodeTemplate : ElecNodeTemplate<BusNodeData>
                     {
                         Alignment = Spot.Right, AlignmentFocus = new Spot(0, 0.5, -20, 0),
                     }
-                    .Bind("Text", nameof(Sample.Width), val => val.ToString())
+                    .Bind("Text", nameof(Sample.ResizedWidth), val => val.ToString())
                     .Bind(new Binding(nameof(TextBlock.Background), nameof(ElecDiagramTheme.DefaultTextBackBrush)).OfModel())
                     .Bind(new Binding(nameof(TextBlock.Stroke), nameof(ElecDiagramTheme.DefaultTextBrush)).OfModel())
                     .Bind(new Binding(nameof(TextBlock.Font), nameof(ElecDiagramTheme.DefaultFont)).OfModel()),

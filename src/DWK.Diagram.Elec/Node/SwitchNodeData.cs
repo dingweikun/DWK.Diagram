@@ -1,6 +1,6 @@
 namespace DWK.Diagram.Node;
 
-public class SwitchNodeData : ElecNodeData, IOrientation
+public class SwitchNodeData : ElecNodeData, IOrientation, IToggle
 {
     public SwitchNodeData()
     {

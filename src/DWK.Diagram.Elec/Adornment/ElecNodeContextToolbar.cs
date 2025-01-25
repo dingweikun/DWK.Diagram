@@ -114,34 +114,34 @@ public static class ElecNodeContextToolbar
 
         void BusToBusPoint(InputEvent e, GraphObject obj)
         {
-            if (obj.Part is not GoAdornment { AdornedPart: Northwoods.Go.Node { Data: BusNodeData busNodedata } }) return;
+            if (obj.Part is not GoAdornment { AdornedPart: Northwoods.Go.Node { Data: BusNodeData currentNodeData } }) return;
 
             if (e.Diagram.Model is not ElecModel em) return;
 
-            var fromlinks = em.LinkDataSource.Where(link => link.From == busNodedata.Key).ToArray();
-            var tolinks = em.LinkDataSource.Where(link => link.To == busNodedata.Key).ToArray();
+            var fromlinks = em.LinkDataSource.Where(link => link.From == currentNodeData.Key).ToArray();
+            var tolinks = em.LinkDataSource.Where(link => link.To == currentNodeData.Key).ToArray();
 
             e.Diagram.Model.Commit(m =>
             {
                 // TODO: 完全复制模型数据
-                var busPointNodeData = new BusPointNodeData()
+                var newNodeData = new BusPointNodeData()
                 {
-                    Location = busNodedata.Location
+                    Location = currentNodeData.Location
                 };
 
-                em.AddNodeData(busPointNodeData);
+                em.AddNodeData(newNodeData);
 
                 foreach (var link in fromlinks)
                 {
-                    em.SetFromKeyForLinkData(link, busPointNodeData.Key);
+                    em.SetFromKeyForLinkData(link, newNodeData.Key);
                 }
 
                 foreach (var link in tolinks)
                 {
-                    em.SetToKeyForLinkData(link, busPointNodeData.Key);
+                    em.SetToKeyForLinkData(link, newNodeData.Key);
                 }
 
-                em.RemoveNodeData(busNodedata);
+                em.RemoveNodeData(currentNodeData);
             }, nameof(BusToBusPoint));
         }
     }
@@ -152,34 +152,34 @@ public static class ElecNodeContextToolbar
 
         void BusPointToBus(InputEvent e, GraphObject obj)
         {
-            if (obj.Part is not GoAdornment { AdornedPart: Northwoods.Go.Node { Data: BusPointNodeData busPointNodedata } }) return;
+            if (obj.Part is not GoAdornment { AdornedPart: Northwoods.Go.Node { Data: BusPointNodeData currentNodeData } }) return;
 
             if (e.Diagram.Model is not ElecModel em) return;
 
-            var fromlinks = em.LinkDataSource.Where(link => link.From == busPointNodedata.Key).ToArray();
-            var tolinks = em.LinkDataSource.Where(link => link.To == busPointNodedata.Key).ToArray();
+            var fromlinks = em.LinkDataSource.Where(link => link.From == currentNodeData.Key).ToArray();
+            var tolinks = em.LinkDataSource.Where(link => link.To == currentNodeData.Key).ToArray();
 
             e.Diagram.Model.Commit(m =>
             {
                 // TODO: 完全复制模型数据
-                var busNodeData = new BusNodeData()
+                var newNodeData = new BusNodeData()
                 {
-                    Location = busPointNodedata.Location
+                    Location = currentNodeData.Location
                 };
 
-                em.AddNodeData(busNodeData);
+                em.AddNodeData(newNodeData);
 
                 foreach (var link in fromlinks)
                 {
-                    em.SetFromKeyForLinkData(link, busPointNodedata.Key);
+                    em.SetFromKeyForLinkData(link, newNodeData.Key);
                 }
 
                 foreach (var link in tolinks)
                 {
-                    em.SetToKeyForLinkData(link, busPointNodedata.Key);
+                    em.SetToKeyForLinkData(link, newNodeData.Key);
                 }
 
-                em.RemoveNodeData(busPointNodedata);
+                em.RemoveNodeData(currentNodeData);
             }, nameof(BusPointToBus));
         }
     }

@@ -24,7 +24,6 @@ public class ElecDiagramBuilder : IDiagramBuilder
                 // new SwitchNodeData { Key = Guid.NewGuid(), Opened = true, IsVertical = true },
                 // new SwitchNodeData { Key = Guid.NewGuid(), Opened = false },
             },
-            
         };
 
         // 设置模板
@@ -42,41 +41,6 @@ public class ElecDiagramBuilder : IDiagramBuilder
         diagram.UndoManager.IsEnabled = true;
         // diagram.Grid.Visible = true;
         diagram.ToolManager.ClickCreatingTool.ArchetypeNodeData = new SwitchNodeData();
-        
-
-
-        diagram.Add(
-            new Northwoods.Go.Node(PanelLayoutSpot.Instance)
-                .Add(
-                    new Shape("Ellipse") { Width = 100, Height = 100, Fill = "red", StrokeWidth = 0 },
-                    new Shape("Ellipse") { Width = 80, Height = 80, Fill = "red", Stroke = "white", StrokeWidth = 8 },
-                    new Shape
-                    {
-                        Height = 36, Width = 36, Fill = "white", StrokeWidth = 0,
-                        GeometryString =
-                            "F M 8.3923339e-8,1075.287 H 19.300024 v -44.8399 c 0,-10.1579 -1.741356,-25.1046 -2.757146,-35.26247 h 0.580451 c 7.711934,23.76337 16.610317,47.01597 25.249656,70.37977 h 12.334601 c 8.779043,-23.306 17.116734,-46.7943 25.249655,-70.37977 h 0.725565 c -1.160903,10.15787 -2.757146,25.10457 -2.757146,35.26247 v 44.8399 H 97.51591 V 967.75828 H 73.717384 C 64.84767,990.67797 56.773927,1016.6971 49.338407,1038.7185 H 48.612842 C 41.475761,1014.8228 32.580843,991.94451 23.798526,967.75828 H 8.3923339e-8 Z"
-                    })
-        );
-
-
-        diagram.Add(
-            new Northwoods.Go.Node(PanelLayoutSpot.Instance)
-                .Add(
-                    new Shape("Ellipse") { Width = 100, Height = 100, Fill = "red", StrokeWidth = 0 },
-                    new Shape("Ellipse") { Width = 80, Height = 80, Fill = "red", Stroke = "white", StrokeWidth = 8 },
-                    new Shape
-                    {
-                        Stroke = "white", StrokeWidth = 8,
-                        GeometryString = "M 0,0 L 0,-40 M 0,0 L 34.64,20 M 0,0 L -34.64,20 M0,40"
-                    }
-                    // new Shape
-                    // {
-                    //     Height = 40, Width = 40, Fill = "white", StrokeWidth = 0,
-                    //     GeometryString =
-                    //         "F M 8.3923339e-8,1075.287 H 19.300024 v -44.8399 c 0,-10.1579 -1.741356,-25.1046 -2.757146,-35.26247 h 0.580451 c 7.711934,23.76337 16.610317,47.01597 25.249656,70.37977 h 12.334601 c 8.779043,-23.306 17.116734,-46.7943 25.249655,-70.37977 h 0.725565 c -1.160903,10.15787 -2.757146,25.10457 -2.757146,35.26247 v 44.8399 H 97.51591 V 967.75828 H 73.717384 C 64.84767,990.67797 56.773927,1016.6971 49.338407,1038.7185 H 48.612842 C 41.475761,1014.8228 32.580843,991.94451 23.798526,967.75828 H 8.3923339e-8 Z"
-                    // }
-                )
-        );
     }
 
     #region private methods
@@ -118,6 +82,10 @@ public class ElecDiagramBuilder : IDiagramBuilder
         { ElecNodeCategory.Transformer, new TransfNodeTemplate().Make() },
         // 负载
         { ElecNodeCategory.Load, new LoadNodeTemplate().Make() },
+        // 发电机（简单）
+        { ElecNodeCategory.Generator, new GeneratorNodeTemplate().Make() },
+        // 电动机
+        { ElecNodeCategory.Motor, new MotorNodeTemplate().Make() },
     };
 
 
@@ -126,7 +94,7 @@ public class ElecDiagramBuilder : IDiagramBuilder
         // 限制重复连接
         if (formNode.FindNodesConnected().Contains(toNode)) return false;
         if (toNode.FindNodesConnected().Contains(formNode)) return false;
-        
+
         // 端口连接规则
         if (fromPort["_PortType"] is not EPortType fromType ||
             fromPort["_PortTarget"] is not EPortType fromTarget ||

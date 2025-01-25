@@ -31,6 +31,16 @@ public abstract class ElecNodeTemplate<TNodeData> where TNodeData : ElecNodeData
     protected static Binding BindingOrientation(bool antiClockwise = false) =>
         new Binding("Angle", nameof(IOrientation.IsVertical), val => val is true ? (antiClockwise ? -90 : 90) : 0);
 
+
+    protected static Binding[] BindingUniformSize() =>
+    [
+        new Binding("Width", nameof(IResizedWidth.ResizedWidth)).MakeTwoWay(),
+        new Binding("Height", nameof(IResizedWidth.ResizedWidth))
+    ];
+
+    protected static Binding BindingScale(string source, double reference) =>
+        new Binding("Scale", source, val => (double)val / reference);
+
     #endregion
 
     #region pre-defined graph object

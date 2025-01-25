@@ -1,25 +1,30 @@
 using DWK.Diagram.Adornment;
 using DWK.Diagram.ElecModels;
+using Northwoods.Go.Models;
 
 namespace DWK.Diagram.Node;
 
 public class BusPointNodeTemplate : ElecNodeTemplate<BusPointNodeData>
 {
+    public const double DefaultWidth = 20;
+    
     public override Northwoods.Go.Node Make()
     {
         return new Northwoods.Go.Node(PanelLayoutSpot.Instance)
             {
                 SelectionElementName = "SHAPE",
-                LocationElementName = "SHAPE", LocationSpot = Spot.Left,
+                LocationElementName = "SHAPE", LocationSpot = Spot.Center,
+                Resizable = true, ResizeElementName = "SHAPE", ResizeAdornmentTemplate = ResizeAdornments.Uniform, ResizeCellSize = new Size(20, 20),
                 ContextMenu = ElecNodeContextToolbar.Make(Sample.Category)
             }
             .Bind(BindingLocation())
             .Add(
                 new Shape("Rectangle")
-                {
-                    Name = "SHAPE", Fill = "lightblue", StrokeWidth = 0,
-                    Width = 20, Height = 20,
-                },
+                    {
+                        Name = "SHAPE", Fill = "lightblue", StrokeWidth = 0,
+                        MinSize = new Size(20, double.NaN), MaxSize = new Size(40, double.NaN),
+                    }
+                    .Bind(BindingUniformSize()),
                 // 模块图案
                 new Shape
                     {

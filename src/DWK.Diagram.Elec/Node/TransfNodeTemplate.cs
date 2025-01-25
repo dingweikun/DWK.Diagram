@@ -1,5 +1,4 @@
 using DWK.Diagram.ElecModels;
-using Northwoods.Go.Models;
 
 namespace DWK.Diagram.Node;
 
