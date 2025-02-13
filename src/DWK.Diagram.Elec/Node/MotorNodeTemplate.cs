@@ -4,7 +4,7 @@ using Northwoods.Go.Models;
 
 namespace DWK.Diagram.Node;
 
-public class MotorNodeTemplate : ElecNodeTemplate<MotorNodeData>
+internal class MotorNodeTemplate : ElecNodeTemplate<MotorNodeData>
 {
     public const double DefaultWidth = 100;
     private const double MaxSize = 400;

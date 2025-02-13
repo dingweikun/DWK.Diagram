@@ -1,13 +1,10 @@
-using Avalonia.Interactivity;
-using Avalonia.Media;
-
-namespace DWK.Diagram.Views;
+namespace DWK.Diagram.Controls;
 
 using GoPalette = Go.Palette;
 
-public partial class PaletteView : UserControl
+public partial class PaletteControl : UserControl
 {
-    public PaletteView()
+    public PaletteControl()
     {
         InitializeComponent();
 

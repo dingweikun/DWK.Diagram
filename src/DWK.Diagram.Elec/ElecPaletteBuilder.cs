@@ -19,6 +19,7 @@ public class ElecPaletteBuilder
                 new LineNodeData(),
                 new TransfNodeData(),
                 new SwitchNodeData(),
+                new BreakerNodeData(),
                 new LoadNodeData(),
                 new GeneratorNodeData(),
                 new MotorNodeData(),
@@ -27,6 +28,9 @@ public class ElecPaletteBuilder
 
         // 设置模板
         diagram.NodeTemplateMap = MakeNodeTemplateMap();
+        
+        // -------
+        diagram.AnimationManager.IsEnabled = false;
     }
 
     #region private methods
@@ -63,6 +67,15 @@ public class ElecPaletteBuilder
             {
                 Width = 17, Height = 30,
                 GeometryString = IconGeometry.SwitchOpen
+            })
+        },
+        {
+            // 断路器
+            ElecNodeCategory.Breaker,
+            TemplateNode().Add(new Shape
+            {
+                Width = 15, Height = 30,
+                GeometryString = IconGeometry.BreakerOpen
             })
         },
         {
@@ -110,6 +123,7 @@ public class ElecPaletteBuilder
                 GeometryString = IconGeometry.Motor
             })
         },
+        
     };
 
     private static Northwoods.Go.Node TemplateNode() => new Northwoods.Go.Node(PanelLayoutSpot.Instance)

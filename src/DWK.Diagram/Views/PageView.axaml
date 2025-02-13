@@ -1,0 +1,35 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:diagram="clr-namespace:DWK.Diagram;assembly=DWK.Diagram.Common"
+             xmlns:models="clr-namespace:DWK.Diagram.Models;assembly=DWK.Diagram.Common"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="DWK.Diagram.Views.PageView">
+    
+    <TabControl x:DataType="models:DiagramDoc"
+                ItemsSource="{Binding Pages}">
+        <TabControl.Styles>
+            <Style Selector="TabItem">
+                <Setter Property="HeaderTemplate">
+                    <Setter.Value>
+                        <DataTemplate DataType="models:DiagramPage">
+                            <DockPanel LastChildFill="True">
+                                <PathIcon Data="{StaticResource Folder}" Width="14" DockPanel.Dock="Left" Margin="5,0,5,0" />
+                                <TextBlock Text="{Binding PageName}" VerticalAlignment="Center" Margin="5,0,5,0" />
+                                <Button Content="X" DockPanel.Dock="Right" Margin="5,0,5,0" Click="CloseTabButton_Click" />
+                            </DockPanel>
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="ContentTemplate">
+                    <Setter.Value>
+                        <DataTemplate DataType="models:DiagramPage">
+                            <TextBlock Text="{Binding  PageName}"></TextBlock>
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </TabControl.Styles>
+    </TabControl>
+</UserControl>

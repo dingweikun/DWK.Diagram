@@ -3,21 +3,29 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:DWK.Diagram.ViewModels"
+             xmlns:md="clr-namespace:DWK.Diagram.Models;assembly=DWK.Diagram.Common"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="DWK.Diagram.Views.LeftPanelExplorerView"
              x:DataType="vm:LeftPanelExplorerViewModel">
-    
+
+    <Interaction.Behaviors>
+        <EventTriggerBehavior EventName="PageItemDoubleTapped">
+            <InvokeCommandAction Command="{Binding OpenPageCommand}" PassEventArgsToCommand="True" />
+        </EventTriggerBehavior>
+    </Interaction.Behaviors>
+
+
     <DockPanel Classes="DynamicHeaderToolbarHolder">
         <Panel Classes="Header" DockPanel.Dock="Top">
             <TextBlock HorizontalAlignment="Left" Text="{Binding Title}" />
             <StackPanel Classes="HeaderToolbar" HorizontalAlignment="Right">
-                <Button>
+                <Button Click="Button_TreeViewItemsExpand">
                     <PathIcon Data="{StaticResource Expand-V}" />
                 </Button>
-                <Button>
+                <Button Click="Button_TreeViewItemsCollapse">
                     <PathIcon Data="{StaticResource Collapse-V}" />
                 </Button>
-                <Button>
+                <Button Click="Button_OnClick">
                     <PathIcon Data="{StaticResource Dots-V}" />
                 </Button>
                 <Button Click="HidePanelButton_OnClick">
@@ -27,7 +35,26 @@
         </Panel>
 
         <Border BorderBrush="{DynamicResource DividerBorderBrush}" BorderThickness="0,1,0,0">
-            <TextBox />
+            <TreeView IsEnabled="{Binding DocService.CurrentDoc, Converter={x:Static ObjectConverters.IsNotNull}}"
+                      DoubleTapped="TreeView_DoubleTapped">
+                <TreeView.Styles>
+                    <Style Selector="TreeViewItem.root > TreeViewItem">
+                        <Setter Property="HeaderTemplate">
+                            <DataTemplate x:DataType="md:DiagramPage">
+                                <StackPanel Orientation="Horizontal">
+                                    <PathIcon Data="{StaticResource File-Line}" Width="12" Margin="0,0,8,0" />
+                                    <TextBlock Text="{Binding Path=PageName}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </Setter>
+                    </Style>
+                </TreeView.Styles>
+
+                <TreeViewItem x:Name="PART_TreeViewRootItem" Classes="root"
+                              Header="{Binding DocService.CurrentDoc.ProjectName, FallbackValue='[No Project]'}"
+                              ItemsSource="{Binding DocService.PageList }" />
+
+            </TreeView>
         </Border>
 
     </DockPanel>

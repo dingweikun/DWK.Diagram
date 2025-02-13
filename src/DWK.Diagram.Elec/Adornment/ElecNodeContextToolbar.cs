@@ -21,6 +21,11 @@ public static class ElecNodeContextToolbar
         ElecNodeCategory.Line => MakeToolbar()
             .Add(ButtonShiftOrientation()),
 
+        ElecNodeCategory.Breaker => MakeToolbar()
+            .Add(ButtonShiftOrientation())
+            .Add(ButtonBreakerOpen())
+            .Add(ButtonBreakerClose()),
+
         ElecNodeCategory.Bus => MakeToolbar()
             .Add(ButtonBusToBusPoint()),
 
@@ -42,7 +47,7 @@ public static class ElecNodeContextToolbar
         return Builder.Make<Panel>("Button")
             .Add(new Shape
             {
-                GeometryString = iconString, DesiredSize = iconSize, StrokeWidth = 1.5, Stroke = stroke, Fill = "transparent"
+                GeometryString = iconString, DesiredSize = iconSize, StrokeWidth = 2, Stroke = stroke, Fill = "transparent"
             })
             .Set(new { Height = 36, Width = 36, Click = action, ToolTip = MakeToolTip(tip) });
     }
@@ -72,40 +77,48 @@ public static class ElecNodeContextToolbar
         }
     }
 
+    #region toggle function
+
+    private static void _toggle(InputEvent e, GraphObject obj)
+    {
+        if (obj.Part is not GoAdornment { AdornedPart: Northwoods.Go.Node { Data: IToggle toggle } }) return;
+
+        var toState = !toggle.Opened;
+        var commit = toState ? "toggle to open" : "toggle to close";
+
+        e.Diagram.Model.Commit(m => m.Set(toggle, nameof(IToggle.Opened), toState), commit);
+    }
+
+    private static object _toggleCanOpen(object val, object targetObj) =>
+        val is GoAdornment { AdornedPart: Northwoods.Go.Node { Data: IToggle { Opened: false } } };
+
+    private static object _toggleCanClose(object val, object targetObj) =>
+        val is GoAdornment { AdornedPart: Northwoods.Go.Node { Data: IToggle { Opened: true } } };
+
+    #endregion
+
+    private static Panel ButtonBreakerOpen()
+    {
+        return MakeButton(IconGeometry.BreakerOpen, new Size(10, 22), "Open Breaker", _toggle, "red")
+            .Bind(new Binding("Visible", "", _toggleCanOpen).OfElement());
+    }
+
+    private static Panel ButtonBreakerClose()
+    {
+        return MakeButton(IconGeometry.BreakerClose, new Size(10, 22), "Close Breaker", _toggle, "green")
+            .Bind(new Binding("Visible", "", _toggleCanClose).OfElement());
+    }
+
     private static Panel ButtonSwitchOpen()
     {
-        return MakeButton(IconGeometry.SwitchOpen, new Size(13, 20), "Open Switch", OpenSwitch, "red")
-            .Bind(new Binding("Visible", "", CanOpenSwitch).OfElement());
-
-        void OpenSwitch(InputEvent e, GraphObject obj)
-        {
-            if (obj.Part is not GoAdornment { AdornedPart: Northwoods.Go.Node { Data: SwitchNodeData data } }) return;
-            if (!data.Opened)
-                e.Diagram.Model.Commit(m => m.Set(data, nameof(SwitchNodeData.Opened), true), nameof(OpenSwitch));
-        }
-
-        object CanOpenSwitch(object val, object targetObj)
-        {
-            return val is GoAdornment { AdornedPart: Northwoods.Go.Node { Data: SwitchNodeData { Opened: false } } };
-        }
+        return MakeButton(IconGeometry.SwitchOpen, new Size(13, 22), "Open Switch", _toggle, "red")
+            .Bind(new Binding("Visible", "", _toggleCanOpen).OfElement());
     }
 
     private static Panel ButtonSwitchClose()
     {
-        return MakeButton(IconGeometry.SwitchClose, new Size(13, 20), "Close Switch", CloseSwitch, "green")
-            .Bind(new Binding("Visible", "", CanCloseSwitch).OfElement());
-
-        void CloseSwitch(InputEvent e, GraphObject obj)
-        {
-            if (obj.Part is not GoAdornment { AdornedPart: Northwoods.Go.Node { Data: SwitchNodeData data } }) return;
-            if (data.Opened)
-                e.Diagram.Model.Commit(m => m.Set(data, nameof(SwitchNodeData.Opened), false), nameof(CloseSwitch));
-        }
-
-        object CanCloseSwitch(object val, object targetObj)
-        {
-            return val is GoAdornment { AdornedPart: Northwoods.Go.Node { Data: SwitchNodeData { Opened: true } } };
-        }
+        return MakeButton(IconGeometry.SwitchClose, new Size(13, 22), "Close Switch", _toggle, "green")
+            .Bind(new Binding("Visible", "", _toggleCanClose).OfElement());
     }
 
     private static Panel ButtonBusToBusPoint()

@@ -2,6 +2,10 @@ namespace DWK.Diagram.Node;
 
 public class ElecDiagramTheme
 {
+    public bool TagVisible { get; set; }
+    
+    //--------------------------------
+    
     public GoFont DefaultFont { get; set; } = new("Noto Sans CJK SC", 16);
 
     public GoFont TagFont { get; set; } = new("Noto Sans CJK SC", 18);

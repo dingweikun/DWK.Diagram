@@ -23,9 +23,11 @@ public class ElecDiagramBuilder : IDiagramBuilder
                 // new LineNodeData { Key = Guid.NewGuid() },
                 // new SwitchNodeData { Key = Guid.NewGuid(), Opened = true, IsVertical = true },
                 // new SwitchNodeData { Key = Guid.NewGuid(), Opened = false },
+                // new BreakerNodeData() { Key = Guid.NewGuid(), Opened = false },
             },
         };
-
+        
+        
         // 设置模板
         // diagram.NodeTemplate = MakeDefaultNodeTemplate();
         diagram.NodeTemplateMap = MakeNodeTemplateMap();
@@ -36,6 +38,21 @@ public class ElecDiagramBuilder : IDiagramBuilder
         // diagram.ToolManager.RelinkingTool.LinkValidation = GeneralLinkValidation;
 
         //TODO: Test.....
+
+        // diagram.Add(new Northwoods.Go.Node(PanelLayoutAuto.Instance)
+        //     .Add(new Shape()
+        //     {
+        //         // GeometryString = "M-40,20 L-30,20 L-30 10 A 32.5 32.5 0 0 1 30 10 L30,20 L40,20",
+        //         GeometryString = "M-40,20 L-30,20 M-30 10 A 32.5 32.5 0 0 1 30 10 M30,20 L40,20",
+        //         Stroke = "blue", StrokeWidth = 6
+        //     }));
+        //
+        // diagram.Add(new Northwoods.Go.Node(PanelLayoutAuto.Instance)
+        //     .Add(new Shape()
+        //     {
+        //         GeometryString = "M-40,20 L-30,20 L-30 10 A 32.5 32.5 0 0 1 30 10 L30,20 L40,20",
+        //         Stroke = "blue", StrokeWidth = 6
+        //     }));
 
         // 功能设置
         diagram.UndoManager.IsEnabled = true;
@@ -86,6 +103,8 @@ public class ElecDiagramBuilder : IDiagramBuilder
         { ElecNodeCategory.Generator, new GeneratorNodeTemplate().Make() },
         // 电动机
         { ElecNodeCategory.Motor, new MotorNodeTemplate().Make() },
+        // 断路器
+        { ElecNodeCategory.Breaker, new BreakerNodeTemplate().Make() },
     };
 
 

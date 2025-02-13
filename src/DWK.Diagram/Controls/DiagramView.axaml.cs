@@ -1,11 +1,11 @@
-using System.Collections.Generic;
 using Avalonia.Interactivity;
+using DWK.Diagram.Node;
 
-namespace DWK.Diagram.Views;
+namespace DWK.Diagram.Controls;
 
-public partial class DiagramView : UserControl
+public partial class DiagramControl : UserControl
 {
-    public DiagramView()
+    public DiagramControl()
     {
         InitializeComponent();
 
@@ -61,23 +61,30 @@ public partial class DiagramView : UserControl
     {
         var link = PART_DiagramControl.Diagram.FindLinkForData(linkData);
         if (link == null) return;
-        
+
         var node = PART_DiagramControl.Diagram.FindNodeForData(nodeData);
         if (node == null) return;
 
         var elinks = node.FindLinksConnected("e");
         var slinks = node.FindLinksConnected("s");
 
-        if (elinks.SingleOrDefault() is { } el)
+        if (Enumerable.SingleOrDefault<Go.Link>(elinks) is { } el)
         {
             bool ok = el == link;
-            if(ok) Console.WriteLine("el ok");
+            if (ok) Console.WriteLine("el ok");
         }
-        
-        if (slinks.SingleOrDefault() is { } sl)
+
+        if (Enumerable.SingleOrDefault<Go.Link>(slinks) is { } sl)
         {
             bool ok = sl == link;
-            if(ok) Console.WriteLine("sl ok");
+            if (ok) Console.WriteLine("sl ok");
         }
+    }
+
+    private void TagButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        if (PART_DiagramControl.Diagram.Model is not { SharedData: ElecDiagramTheme sharedData } model) return;
+
+        model.Commit(m => m.Set(m.SharedData, nameof(ElecDiagramTheme.TagVisible), !sharedData.TagVisible), "Toggle Tag Visible");
     }
 }

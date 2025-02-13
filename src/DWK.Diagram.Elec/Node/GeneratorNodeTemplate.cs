@@ -4,7 +4,7 @@ using Northwoods.Go.Models;
 
 namespace DWK.Diagram.Node;
 
-public class GeneratorNodeTemplate : ElecNodeTemplate<GeneratorNodeData>
+internal class GeneratorNodeTemplate : ElecNodeTemplate<GeneratorNodeData>
 {
     public const double DefaultWidth = 100;
     private const double MaxSize = 400;

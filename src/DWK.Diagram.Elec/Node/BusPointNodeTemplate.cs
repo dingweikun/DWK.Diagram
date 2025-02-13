@@ -4,7 +4,7 @@ using Northwoods.Go.Models;
 
 namespace DWK.Diagram.Node;
 
-public class BusPointNodeTemplate : ElecNodeTemplate<BusPointNodeData>
+internal class BusPointNodeTemplate : ElecNodeTemplate<BusPointNodeData>
 {
     public const double DefaultWidth = 20;
     

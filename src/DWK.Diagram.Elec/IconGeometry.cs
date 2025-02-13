@@ -9,6 +9,10 @@ internal static class IconGeometry
 
     public const string SwitchClose = "M 70.252374,146.8507 67.072,158.72 m -2.56,-10.69795 h 8.192 M 67.072,143.36 v 5.12 m 0,10.24 v 5.12";
 
+    public const string BreakerOpen = "m 128.512,143.36 v 2.56 m 2.56,0 a 8.32,8.32 0 0 1 0,15.36 m -2.56,0 v 2.56";
+    
+    public const string BreakerClose = "m 128.512,143.36 v 2.56 l 2.56,0 a 8.32,8.32 0 0 1 0,15.36 l -2.56,0 v 2.56";
+    
     public const string BusPoint = "M0,0 h 21 v 21 h -21 z M0,7 h-5 M21,7 h5 M0,14 h-5 M21,14 h5 M7,0 v-5 M14,0 v-5 M7,21 v5 M14,21 v5";
 
     public const string Bus = "M 0,55.808 H 15.36 M 0,60.930653 h 15.36";

@@ -6,10 +6,10 @@ namespace DWK.Diagram.Node;
 /// <summary>
 /// 电气节点模板基类
 /// </summary>
-public abstract class ElecNodeTemplate<TNodeData> where TNodeData : ElecNodeData, new()
+internal abstract class ElecNodeTemplate<TNodeData> where TNodeData : ElecNodeData, new()
 {
     protected TNodeData Sample { get; } = new TNodeData();
-
+    
     public abstract Northwoods.Go.Node Make();
 
     #region pre-defined binding function
@@ -27,6 +27,9 @@ public abstract class ElecNodeTemplate<TNodeData> where TNodeData : ElecNodeData
         new Binding("Font", nameof(ElecDiagramTheme.TagFont)).OfModel(),
         new Binding("Stroke", nameof(ElecDiagramTheme.DefaultTextBrush)).OfModel(),
     ];
+    
+    protected static Binding BindingTagVisible() =>  new Binding("Visible", nameof(ElecDiagramTheme.TagVisible)).OfModel();
+
 
     protected static Binding BindingOrientation(bool antiClockwise = false) =>
         new Binding("Angle", nameof(IOrientation.IsVertical), val => val is true ? (antiClockwise ? -90 : 90) : 0);
@@ -49,7 +52,8 @@ public abstract class ElecNodeTemplate<TNodeData> where TNodeData : ElecNodeData
         {
             TextAlign = TextAlign.Center, Alignment = Spot.Bottom, AlignmentFocus = new Spot(0.5, 0, 0, -10)
         }
-        .Bind(BindingTag());
+        .Bind(BindingTag())
+        .Bind(BindingTagVisible());
 
     protected static TextBlock LocationTextBlock() => new TextBlock
         {

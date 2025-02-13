@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:DWK.Diagram.ViewModels"
              xmlns:views="clr-namespace:DWK.Diagram.Views"
+             xmlns:controls="clr-namespace:DWK.Diagram.Controls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="DWK.Diagram.Views.LeftPanelComponentView"
              x:DataType="vm:LeftPanelComponentViewModel">
@@ -25,7 +26,7 @@
         </Panel>
 
         <Border BorderBrush="{DynamicResource DividerBorderBrush}" BorderThickness="0,1,0,0">
-            <views:PaletteView />
+            <controls:PaletteControl />
         </Border>
 
     </DockPanel>

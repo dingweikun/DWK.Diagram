@@ -4,7 +4,7 @@ using Northwoods.Go.Models;
 
 namespace DWK.Diagram.Node;
 
-public class LoadNodeTemplate : ElecNodeTemplate<LoadNodeData>
+internal class LoadNodeTemplate : ElecNodeTemplate<LoadNodeData>
 {
     public const double DefaultWidth = 100;
     private const double MaxSize = 400;
