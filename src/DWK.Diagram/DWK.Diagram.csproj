@@ -36,7 +36,7 @@
         <DependentUpon>PaletteView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Controls\DiagramView.axaml.cs">
+      <Compile Update="Controls\ElecDiagramControl.axaml.cs">
         <DependentUpon>DiagramView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>

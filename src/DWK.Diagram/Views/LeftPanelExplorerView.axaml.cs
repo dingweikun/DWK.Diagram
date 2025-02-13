@@ -25,7 +25,7 @@ public partial class LeftPanelExplorerView : ViewBase
         var service = (DataContext as LeftPanelExplorerViewModel).DocService;
         if (service is null) return;
 
-        service.OpenProject("../../../模拟路径");
+        service.OpenProject();
     }
 
     private void Button_TreeViewItemsExpand(object? sender, RoutedEventArgs e)

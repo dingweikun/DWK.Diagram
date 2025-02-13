@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.Input;
 using DWK.Diagram.Models;
 using DWK.Diagram.Services;
+using Ursa.Controls;
 
 namespace DWK.Diagram.ViewModels;
 
@@ -18,6 +19,6 @@ public partial class LeftPanelExplorerViewModel : ViewModelBase
     [RelayCommand]
     private void OpenPage(DiagramPage page)
     {
-        DocService.OpenPage(page.Id);
+        DocService.SetEditingPage(page);
     }
 }

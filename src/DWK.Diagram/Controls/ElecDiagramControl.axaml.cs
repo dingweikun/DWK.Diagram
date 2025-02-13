@@ -3,9 +3,9 @@ using DWK.Diagram.Node;
 
 namespace DWK.Diagram.Controls;
 
-public partial class DiagramControl : UserControl
+public partial class ElecDiagramControl : UserControl
 {
-    public DiagramControl()
+    public ElecDiagramControl()
     {
         InitializeComponent();
 

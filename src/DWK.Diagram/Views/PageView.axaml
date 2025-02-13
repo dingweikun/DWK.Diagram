@@ -2,18 +2,41 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:diagram="clr-namespace:DWK.Diagram;assembly=DWK.Diagram.Common"
-             xmlns:models="clr-namespace:DWK.Diagram.Models;assembly=DWK.Diagram.Common"
+             xmlns:md="using:DWK.Diagram.Models"
+             xmlns:vm="using:DWK.Diagram.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="DWK.Diagram.Views.PageView">
-    
-    <TabControl x:DataType="models:DiagramDoc"
-                ItemsSource="{Binding Pages}">
+             x:Class="DWK.Diagram.Views.PageView"
+             x:DataType="vm:PageViewModel">
+    <UserControl.Styles>
+        <Style Selector="TabControl">
+            <Setter Property="ItemsPanel">
+                <Setter.Value>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <!-- <Setter Property="Template"> -->
+            <!--     <ControlTemplate> -->
+            <!--         <DockPanel LastChildFill="True"> -->
+            <!--             <ScrollViewer DockPanel.Dock="Top" HorizontalScrollBarVisibility="Auto"> -->
+            <!--                 <ItemsPresenter Name="PART_ItemsPresenter" /> -->
+            <!--             </ScrollViewer> -->
+            <!--             <ContentPresenter Name="PART_ContentPresenter" /> -->
+            <!--         </DockPanel> -->
+            <!--     </ControlTemplate> -->
+            <!-- </Setter> -->
+        </Style>
+    </UserControl.Styles>
+
+
+    <TabControl ItemsSource="{Binding OpenedPages}" SelectedItem="{Binding CurrentPage}">
         <TabControl.Styles>
             <Style Selector="TabItem">
                 <Setter Property="HeaderTemplate">
                     <Setter.Value>
-                        <DataTemplate DataType="models:DiagramPage">
+                        <DataTemplate DataType="md:DiagramPage">
                             <DockPanel LastChildFill="True">
                                 <PathIcon Data="{StaticResource Folder}" Width="14" DockPanel.Dock="Left" Margin="5,0,5,0" />
                                 <TextBlock Text="{Binding PageName}" VerticalAlignment="Center" Margin="5,0,5,0" />
@@ -24,7 +47,7 @@
                 </Setter>
                 <Setter Property="ContentTemplate">
                     <Setter.Value>
-                        <DataTemplate DataType="models:DiagramPage">
+                        <DataTemplate DataType="md:DiagramPage">
                             <TextBlock Text="{Binding  PageName}"></TextBlock>
                         </DataTemplate>
                     </Setter.Value>
