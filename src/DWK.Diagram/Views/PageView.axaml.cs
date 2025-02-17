@@ -1,27 +1,14 @@
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
+using Avalonia.VisualTree;
 
-namespace DWK.Diagram.Views;
-
-public partial class PageView : ViewBase
+namespace DWK.Diagram.Views
 {
-    public PageView()
+    public partial class PageView : ViewBase
     {
-        InitializeComponent();
-    }
-    
-    private void CloseTabButton_Click(object sender, RoutedEventArgs e)
-    {
-        if (sender is Button button && button.TemplatedParent is TabItem tabItem)
+        public PageView()
         {
-            var tabControl = tabItem.Parent as TabControl;
-            if (tabControl != null)
-            {
-                tabControl.Items.Remove(tabItem);
-            }
+            InitializeComponent();
         }
     }
-
 }

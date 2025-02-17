@@ -4,55 +4,162 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:md="using:DWK.Diagram.Models"
              xmlns:vm="using:DWK.Diagram.ViewModels"
+             xmlns:v="using:DWK.Diagram.Views"
+             xmlns:ctrl="clr-namespace:DWK.Diagram.Controls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="DWK.Diagram.Views.PageView"
-             x:DataType="vm:PageViewModel">
+             x:DataType="vm:PageViewModel"
+             x:Name="RootControl">
+
     <UserControl.Styles>
+
+        <Style Selector=":is(Button).mini">
+            <Setter Property="MinHeight" Value="22" />
+            <Setter Property="MinWidth" Value="22" />
+            <Setter Property="Height" Value="22" />
+            <Setter Property="Width" Value="22" />
+            <Setter Property="CornerRadius" Value="3" />
+            <Setter Property="Padding" Value="0" />
+
+            <Setter Property="Foreground" Value="{DynamicResource ButtonSolidForeground}" />
+            <Setter Property="Background" Value="{DynamicResource ButtonSolidPrimaryBackground}" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource ButtonInputInnerForeground}" />
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+            </Style>
+
+            <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource ButtonInputInnerForeground}" />
+                <Setter Property="Background" Value="{DynamicResource ButtonDefaultPointeroverBackground}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource ButtonDefaultPointeroverBorderBrush}" />
+            </Style>
+
+            <Style Selector="^:flyout-open /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="{TemplateBinding Foreground}" />
+                <Setter Property="Background" Value="{TemplateBinding Background}" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+            </Style>
+
+            <Style Selector="^:checked /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="{TemplateBinding Foreground}" />
+                <Setter Property="Background" Value="{TemplateBinding Background}" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+            </Style>
+
+            <Style Selector="^:disabled">
+                <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Foreground" Value="{DynamicResource ButtonDefaultDisabledForeground}" />
+                    <Setter Property="Background" Value="Transparent" />
+                </Style>
+                <Style Selector="^:checked /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Foreground" Value="{DynamicResource ButtonSolidDisabledForeground}" />
+                    <Setter Property="Background" Value="{DynamicResource ButtonSolidDisabledBackground}" />
+                </Style>
+            </Style>
+        </Style>
+
         <Style Selector="TabControl">
-            <Setter Property="ItemsPanel">
-                <Setter.Value>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal" />
-                    </ItemsPanelTemplate>
-                </Setter.Value>
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Grid RowDefinitions="Auto,*">
+
+                        <!-- TabStrip 部分 -->
+                        <DockPanel MinHeight="40">
+                            <Button DockPanel.Dock="Right" Classes="mini" Margin="8,0">
+                                <PathIcon Data="{StaticResource Dots-V}" Height="12" />
+                                <Button.Flyout>
+                                    <Flyout>
+                                        <StackPanel>
+                                            <Button Classes="Tertiary" Theme="{DynamicResource BorderlessButton}"
+                                                    HorizontalAlignment="Stretch"
+                                                    Content="关闭所有页面"
+                                                    Command="{Binding #RootControl.((vm:PageViewModel)DataContext).CloseAllPagesCommand}" />
+                                            <Separator />
+                                            <ListBox ItemsSource="{Binding #RootControl.((vm:PageViewModel)DataContext).OpenedPages}"
+                                                     SelectedItem="{Binding #RootControl.((vm:PageViewModel)DataContext).CurrentPage}">
+                                                <ListBox.ItemTemplate>
+                                                    <DataTemplate x:DataType="md:DiagramPage">
+                                                        <DockPanel>
+                                                            <Button Classes="mini" VerticalAlignment="Center" DockPanel.Dock="Right"
+                                                                    Command="{Binding #RootControl.((vm:PageViewModel)DataContext).ClosePageCommand}"
+                                                                    CommandParameter="{Binding }">
+                                                                <PathIcon Data="{StaticResource X-Line}" Width="8" />
+                                                            </Button>
+                                                            <TextBlock Text="{Binding Path=PageName}" />
+                                                        </DockPanel>
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                            </ListBox>
+                                        </StackPanel>
+
+                                    </Flyout>
+                                </Button.Flyout>
+                            </Button>
+
+                            <ScrollViewer Name="PART_TabStripScrollViewer"
+                                          HorizontalScrollBarVisibility="Hidden"
+                                          VerticalScrollBarVisibility="Disabled">
+                                <!-- Items="{TemplateBinding Items}" -->
+                                <ItemsPresenter Name="PART_ItemsPresenter"
+                                                ItemsPanel="{TemplateBinding ItemsPanel}"
+                                                Margin="{TemplateBinding Padding}"
+                                                KeyboardNavigation.TabIndex="1" />
+                            </ScrollViewer>
+                        </DockPanel>
+
+                        <!-- Content 部分 -->
+                        <Border Grid.Row="1"
+                                BorderBrush="{DynamicResource DividerBorderBrush}"
+                                BorderThickness="0,1,0,0">
+                            <ContentPresenter Name="PART_SelectedContentHost"
+                                              Content="{TemplateBinding SelectedContent}"
+                                              ContentTemplate="{TemplateBinding SelectedContentTemplate}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter>
+            <Setter Property="ItemTemplate">
+                <DataTemplate x:DataType="md:DiagramPage">
+                    <StackPanel Orientation="Horizontal" Height="28" Spacing="10">
+                        <PathIcon Data="{StaticResource File-Line}" Width="12" Margin="8,0, 0,0" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding PageName}" VerticalAlignment="Center" />
+                        <Button Classes="mini" VerticalAlignment="Center"
+                                Command="{Binding #RootControl.((vm:PageViewModel)DataContext).ClosePageCommand}"
+                                CommandParameter="{Binding }">
+                            <PathIcon Data="{StaticResource X-Line}" Width="8" />
+                        </Button>
+                    </StackPanel>
+                </DataTemplate>
             </Setter>
 
-            <!-- <Setter Property="Template"> -->
-            <!--     <ControlTemplate> -->
-            <!--         <DockPanel LastChildFill="True"> -->
-            <!--             <ScrollViewer DockPanel.Dock="Top" HorizontalScrollBarVisibility="Auto"> -->
-            <!--                 <ItemsPresenter Name="PART_ItemsPresenter" /> -->
-            <!--             </ScrollViewer> -->
-            <!--             <ContentPresenter Name="PART_ContentPresenter" /> -->
-            <!--         </DockPanel> -->
-            <!--     </ControlTemplate> -->
-            <!-- </Setter> -->
         </Style>
+
     </UserControl.Styles>
 
-
-    <TabControl ItemsSource="{Binding OpenedPages}" SelectedItem="{Binding CurrentPage}">
-        <TabControl.Styles>
-            <Style Selector="TabItem">
-                <Setter Property="HeaderTemplate">
-                    <Setter.Value>
-                        <DataTemplate DataType="md:DiagramPage">
-                            <DockPanel LastChildFill="True">
-                                <PathIcon Data="{StaticResource Folder}" Width="14" DockPanel.Dock="Left" Margin="5,0,5,0" />
-                                <TextBlock Text="{Binding PageName}" VerticalAlignment="Center" Margin="5,0,5,0" />
-                                <Button Content="X" DockPanel.Dock="Right" Margin="5,0,5,0" Click="CloseTabButton_Click" />
-                            </DockPanel>
-                        </DataTemplate>
-                    </Setter.Value>
-                </Setter>
-                <Setter Property="ContentTemplate">
-                    <Setter.Value>
-                        <DataTemplate DataType="md:DiagramPage">
-                            <TextBlock Text="{Binding  PageName}"></TextBlock>
-                        </DataTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-        </TabControl.Styles>
+    <!-- <TabControl ItemsSource="{Binding OpenedPages}" AutoScrollToSelectedItem="True" -->
+    <!--             SelectedItem="{Binding CurrentPage}" -->
+    <!--             IsVisible="{Binding CurrentPage, Converter={x:Static ObjectConverters.IsNotNull}}"> -->
+    <!--     <TabControl.DataTemplates> -->
+    <!--         <DataTemplate DataType="md:DiagramPage"> -->
+    <!--             ~1~ <ctrl:ElecDiagramControl DiagramPage="{Binding}"/> @1@ -->
+    <!--             <ctrl:TestControl DiagramPage="{Binding}"/> -->
+    <!--         </DataTemplate> -->
+    <!--     </TabControl.DataTemplates> -->
+    <!-- </TabControl> -->
+    
+    <TabControl ItemsSource="{Binding OpenedControl}" AutoScrollToSelectedItem="True"
+                SelectedItem="{Binding CurrentControl}">
+                <!-- IsVisible="{Binding CurrentControl, Converter={x:Static ObjectConverters.IsNotNull}}"> -->
+        <!-- <TabControl.DataTemplates> -->
+        <!--     <DataTemplate DataType="md:DiagramPage"> -->
+        <!--         ~1~ <ctrl:ElecDiagramControl DiagramPage="{Binding}"/> @1@ -->
+        <!--         <ctrl:TestControl DiagramPage="{Binding}"/> -->
+        <!--     </DataTemplate> -->
+        <!-- </TabControl.DataTemplates> -->
     </TabControl>
 </UserControl>

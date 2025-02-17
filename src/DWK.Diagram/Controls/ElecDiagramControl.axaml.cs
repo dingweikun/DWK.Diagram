@@ -1,14 +1,39 @@
 using Avalonia.Interactivity;
+using DWK.Diagram.Models;
 using DWK.Diagram.Node;
 
 namespace DWK.Diagram.Controls;
 
 public partial class ElecDiagramControl : UserControl
 {
+    #region DiagramPageProperty
+
+    public static readonly DirectProperty<ElecDiagramControl, DiagramPage?> DiagramPageProperty =
+        AvaloniaProperty.RegisterDirect<ElecDiagramControl, DiagramPage?>(
+            nameof(DiagramPage),
+            o => o.DiagramPage,
+            (o, v) => o.DiagramPage = v);
+
+    private DiagramPage? _diagramPage;
+
+    public DiagramPage? DiagramPage
+    {
+        get => _diagramPage;
+        set => SetAndRaise(DiagramPageProperty, ref _diagramPage, value);
+    }
+
+    #endregion
+
     public ElecDiagramControl()
     {
         InitializeComponent();
 
+        //InitDiagramControl();
+        
+    }
+
+    private void InitDiagramControl()
+    {
         var builder = new LogicDiagramBuilder()
             .WithSettings(settings =>
             {
@@ -33,6 +58,21 @@ public partial class ElecDiagramControl : UserControl
         //Testing.Setup0(PART_DiagramControl.Diagram);
         // Testing.Setup(PART_DiagramControl.Diagram);
     }
+
+    // protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    // {
+    //     base.OnPropertyChanged(change);
+    //
+    //     if (change.Property == DiagramPageProperty)
+    //     {
+    //         if (change.NewValue is DiagramPage page)
+    //         {
+    //             PART_DiagramControl.Diagram.Model = new ElecModel();
+    //             PART_DiagramControl.Diagram.Model.SetDataPropertyName(nameof(ElecNodeData.Tag), nameof(ElecNodeData.Tag));
+    //         }
+    //     }
+    // }
+    
 
     private void Button_OnClick(object? sender, RoutedEventArgs e)
     {

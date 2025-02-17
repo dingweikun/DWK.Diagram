@@ -26,8 +26,8 @@ public class ElecDiagramBuilder : IDiagramBuilder
                 // new BreakerNodeData() { Key = Guid.NewGuid(), Opened = false },
             },
         };
-        
-        
+
+
         // 设置模板
         // diagram.NodeTemplate = MakeDefaultNodeTemplate();
         diagram.NodeTemplateMap = MakeNodeTemplateMap();
@@ -52,6 +52,12 @@ public class ElecDiagramBuilder : IDiagramBuilder
         //     {
         //         GeometryString = "M-40,20 L-30,20 L-30 10 A 32.5 32.5 0 0 1 30 10 L30,20 L40,20",
         //         Stroke = "blue", StrokeWidth = 6
+        //     }));
+        //
+        // diagram.Add(new Northwoods.Go.Node(PanelLayoutAuto.Instance)
+        //     .Add(new TextBlock(Guid.NewGuid().ToString())
+        //     {
+        //         Font = new Font("Noto Sans CJK SC", 20)
         //     }));
 
         // 功能设置
