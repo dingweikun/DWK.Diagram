@@ -1,48 +1,25 @@
 namespace DWK.Diagram.Models;
 
-public class DiagramDoc
+public interface IDiagramPage
 {
-    public Guid Id { get; }
-    public string ProjectName { get; set; }
-    public string Description { get; set; }
-    public List<DiagramPage> Pages { get; }
-
-    public DiagramDoc(string projectName, string description = "")
-    {
-        Id = Guid.NewGuid();
-        ProjectName = projectName;
-        Description = description;
-        Pages = new List<DiagramPage>();
-    }
-
-    public void AddPage(DiagramPage page)
-    {
-        Pages.Add(page);
-    }
-
-    // 静态方法，返回一个用于测试的 DiagramDoc 实例
-    private static DiagramDoc GetTestInstance()
-    {
-        var doc = new DiagramDoc("Test Project", "This is a test project for DiagramDoc.");
-        doc.AddPage(new DiagramPage("Page 1", 800, 600));
-        doc.AddPage(new DiagramPage("Page 2", 1024, 768));
-        doc.AddPage(new DiagramPage("Page 3", 1280, 1024));
-        return doc;
-    }
-
-    public static DiagramDoc TestInstance => GetTestInstance();
+    Guid Id { get; }
+    string PageName { get; }
 }
 
-public class DiagramPage
+public interface IDiagramDoc
 {
-    public Guid Id { get; }
-    public string PageName { get; set; }
-    public (int, int) PageSize { get; set; }
+    Guid Id { get; }
+    string ProjectName { get; set; }
+    string Description { get; set; }
+    Type PageType { get; }
+    List<IDiagramPage> Pages { get; }
+}
 
-    public DiagramPage(string pageName, int pageHeight, int pageWidth)
-    {
-        Id = Guid.NewGuid();
-        PageName = pageName;
-        PageSize = (pageWidth, pageHeight);
-    }
+public class DiagramDoc<TPage>(Guid id, string projectName, string description = "") : IDiagramDoc where TPage : IDiagramPage
+{
+    public Guid Id { get; } = id;
+    public string ProjectName { get; set; } = projectName;
+    public string Description { get; set; } = description;
+    public Type PageType => typeof(TPage);
+    public List<IDiagramPage> Pages { get; init; } = [];
 }

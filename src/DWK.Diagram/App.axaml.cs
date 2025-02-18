@@ -2,7 +2,6 @@ using System.Threading;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
-using DWK.Diagram.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -56,7 +55,8 @@ public class App : Application, IServiceProviderApp
 
         services.AddSingleton<LeftPanelComponentViewModel>();
         services.AddSingleton<LeftPanelExplorerViewModel>();
-        services.AddSingleton<PageViewModel>();
+
+        services.AddSingleton<DiagramPageTabViewModel>();
     }
 
     public override void Initialize()

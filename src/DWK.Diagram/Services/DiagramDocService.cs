@@ -1,18 +1,17 @@
 using System.Collections.Generic;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-using DWK.Diagram.Models;
 
 namespace DWK.Diagram.Services;
 
-public class SetEditingPageMessage(DiagramPage value) : ValueChangedMessage<DiagramPage>(value);
+public class SetEditingPageMessage(IDiagramPage value) : ValueChangedMessage<IDiagramPage>(value);
 
 public interface IDiagramDocService
 {
-    DiagramDoc? CurrentDoc { get; }
+    IDiagramDoc? CurrentDoc { get; }
 
-    IReadOnlyList<DiagramPage> PageList { get; }
+    IReadOnlyList<IDiagramPage> PageList { get; }
 
-    void SetEditingPage(DiagramPage page);
+    void SetEditingPage(IDiagramPage diagramPage);
 
     void OpenProject();
 }
@@ -20,20 +19,28 @@ public interface IDiagramDocService
 internal partial class DiagramDocService : ObservableRecipient, IDiagramDocService
 {
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(PageList))]
-    private DiagramDoc? _currentDoc;
+    private IDiagramDoc? _currentDoc;
 
-    public IReadOnlyList<DiagramPage> PageList => CurrentDoc is null ? [] : CurrentDoc.Pages;
+    public IReadOnlyList<IDiagramPage> PageList => CurrentDoc is null ? [] : CurrentDoc.Pages;
 
-    
 
-    public void SetEditingPage(DiagramPage page)
+    public void SetEditingPage(IDiagramPage diagramPage)
     {
         Console.Error.WriteLine("设置当前编辑页面");
-        Messenger.Send(new SetEditingPageMessage(page));
+        Messenger.Send(new SetEditingPageMessage(diagramPage));
     }
 
+    // TODO: 测试电气系统
     public void OpenProject()
     {
-        CurrentDoc = DiagramDoc.TestInstance;
+        CurrentDoc = new DiagramDoc<ElecDiagramPage>(Guid.NewGuid(), "测试项目", "这是测试项目")
+        {
+            Pages =
+            {
+                new ElecDiagramPage(Guid.NewGuid(), "测试页面"),
+                new ElecDiagramPage(Guid.NewGuid(), "测试页面2"),
+                new ElecDiagramPage(Guid.NewGuid(), "测试页面3"),
+            }
+        };
     }
 }

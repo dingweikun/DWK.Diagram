@@ -2,17 +2,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:md="using:DWK.Diagram.Models"
              xmlns:vm="using:DWK.Diagram.ViewModels"
-             xmlns:v="using:DWK.Diagram.Views"
              xmlns:ctrl="clr-namespace:DWK.Diagram.Controls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="DWK.Diagram.Views.PageView"
-             x:DataType="vm:PageViewModel"
+             x:Class="DWK.Diagram.Views.DiagramPageTabView"
+             x:DataType="vm:DiagramPageTabViewModel"
              x:Name="RootControl">
 
     <UserControl.Styles>
-
         <Style Selector=":is(Button).mini">
             <Setter Property="MinHeight" Value="22" />
             <Setter Property="MinWidth" Value="22" />
@@ -70,39 +67,38 @@
                         <DockPanel MinHeight="40">
                             <Button DockPanel.Dock="Right" Classes="mini" Margin="8,0">
                                 <PathIcon Data="{StaticResource Dots-V}" Height="12" />
-                                <Button.Flyout>
-                                    <Flyout>
-                                        <StackPanel>
-                                            <Button Classes="Tertiary" Theme="{DynamicResource BorderlessButton}"
-                                                    HorizontalAlignment="Stretch"
-                                                    Content="关闭所有页面"
-                                                    Command="{Binding #RootControl.((vm:PageViewModel)DataContext).CloseAllPagesCommand}" />
-                                            <Separator />
-                                            <ListBox ItemsSource="{Binding #RootControl.((vm:PageViewModel)DataContext).OpenedPages}"
-                                                     SelectedItem="{Binding #RootControl.((vm:PageViewModel)DataContext).CurrentPage}">
-                                                <ListBox.ItemTemplate>
-                                                    <DataTemplate x:DataType="md:DiagramPage">
-                                                        <DockPanel>
-                                                            <Button Classes="mini" VerticalAlignment="Center" DockPanel.Dock="Right"
-                                                                    Command="{Binding #RootControl.((vm:PageViewModel)DataContext).ClosePageCommand}"
-                                                                    CommandParameter="{Binding }">
-                                                                <PathIcon Data="{StaticResource X-Line}" Width="8" />
-                                                            </Button>
-                                                            <TextBlock Text="{Binding Path=PageName}" />
-                                                        </DockPanel>
-                                                    </DataTemplate>
-                                                </ListBox.ItemTemplate>
-                                            </ListBox>
-                                        </StackPanel>
-
-                                    </Flyout>
-                                </Button.Flyout>
+                                <!-- <Button.Flyout> -->
+                                <!--     <Flyout> -->
+                                <!--         <StackPanel> -->
+                                <!--             <Button Classes="Tertiary" Theme="{DynamicResource BorderlessButton}" -->
+                                <!--                     HorizontalAlignment="Stretch" -->
+                                <!--                     Content="关闭所有页面" -->
+                                <!--                     Command="{Binding #RootControl.((vm:PageViewModel)DataContext).CloseAllPagesCommand}" /> -->
+                                <!--             <Separator /> -->
+                                <!--             <ListBox ItemsSource="{Binding #RootControl.((vm:PageViewModel)DataContext).OpenedPages}" -->
+                                <!--                      SelectedItem="{Binding #RootControl.((vm:PageViewModel)DataContext).CurrentPage}"> -->
+                                <!--                 <ListBox.ItemTemplate> -->
+                                <!--                     <DataTemplate x:DataType="md:DiagramPage"> -->
+                                <!--                         <DockPanel> -->
+                                <!--                             <Button Classes="mini" VerticalAlignment="Center" DockPanel.Dock="Right" -->
+                                <!--                                     Command="{Binding #RootControl.((vm:PageViewModel)DataContext).ClosePageCommand}" -->
+                                <!--                                     CommandParameter="{Binding }"> -->
+                                <!--                                 <PathIcon Data="{StaticResource X-Line}" Width="8" /> -->
+                                <!--                             </Button> -->
+                                <!--                             <TextBlock Text="{Binding Path=PageName}" /> -->
+                                <!--                         </DockPanel> -->
+                                <!--                     </DataTemplate> -->
+                                <!--                 </ListBox.ItemTemplate> -->
+                                <!--             </ListBox> -->
+                                <!--         </StackPanel> -->
+                                <!-- -->
+                                <!--     </Flyout> -->
+                                <!-- </Button.Flyout> -->
                             </Button>
 
                             <ScrollViewer Name="PART_TabStripScrollViewer"
                                           HorizontalScrollBarVisibility="Hidden"
                                           VerticalScrollBarVisibility="Disabled">
-                                <!-- Items="{TemplateBinding Items}" -->
                                 <ItemsPresenter Name="PART_ItemsPresenter"
                                                 ItemsPanel="{TemplateBinding ItemsPanel}"
                                                 Margin="{TemplateBinding Padding}"
@@ -123,43 +119,43 @@
                     </Grid>
                 </ControlTemplate>
             </Setter>
+
+            <!-- Item Header -->
+            <!-- <Setter Property="ItemTemplate"> -->
+            <!--     <DataTemplate x:DataType="ctrl:IDiagramControl"> -->
+            <!--         <StackPanel Orientation="Horizontal" Height="28" Spacing="10"> -->
+            <!--             <PathIcon Data="{StaticResource File-Line}" Width="12" Margin="8,0, 0,0" VerticalAlignment="Center" /> -->
+            <!--             <TextBlock Text="{Binding  DiagramPage.PageName}" VerticalAlignment="Center" /> -->
+            <!--             <Button Classes="mini" VerticalAlignment="Center" -->
+            <!--                     Command="{Binding #RootControl.((vm:DiagramPageTabViewModel)DataContext).ClosePageCommand}" -->
+            <!--                     CommandParameter="{Binding DiagramPage }"> -->
+            <!--                 <PathIcon Data="{StaticResource X-Line}" Width="8" /> -->
+            <!--             </Button> -->
+            <!--         </StackPanel> -->
+            <!--     </DataTemplate> -->
+            <!-- </Setter> -->
             <Setter Property="ItemTemplate">
-                <DataTemplate x:DataType="md:DiagramPage">
-                    <StackPanel Orientation="Horizontal" Height="28" Spacing="10">
-                        <PathIcon Data="{StaticResource File-Line}" Width="12" Margin="8,0, 0,0" VerticalAlignment="Center" />
-                        <TextBlock Text="{Binding PageName}" VerticalAlignment="Center" />
-                        <Button Classes="mini" VerticalAlignment="Center"
-                                Command="{Binding #RootControl.((vm:PageViewModel)DataContext).ClosePageCommand}"
-                                CommandParameter="{Binding }">
-                            <PathIcon Data="{StaticResource X-Line}" Width="8" />
-                        </Button>
-                    </StackPanel>
+                <DataTemplate x:DataType="vm:DiagramPageTabViewModel">
+                    <TextBlock Text="{Binding PageName}" />
                 </DataTemplate>
             </Setter>
-
         </Style>
+
 
     </UserControl.Styles>
 
-    <!-- <TabControl ItemsSource="{Binding OpenedPages}" AutoScrollToSelectedItem="True" -->
-    <!--             SelectedItem="{Binding CurrentPage}" -->
-    <!--             IsVisible="{Binding CurrentPage, Converter={x:Static ObjectConverters.IsNotNull}}"> -->
-    <!--     <TabControl.DataTemplates> -->
-    <!--         <DataTemplate DataType="md:DiagramPage"> -->
-    <!--             ~1~ <ctrl:ElecDiagramControl DiagramPage="{Binding}"/> @1@ -->
-    <!--             <ctrl:TestControl DiagramPage="{Binding}"/> -->
-    <!--         </DataTemplate> -->
-    <!--     </TabControl.DataTemplates> -->
-    <!-- </TabControl> -->
-    
-    <TabControl ItemsSource="{Binding OpenedControl}" AutoScrollToSelectedItem="True"
-                SelectedItem="{Binding CurrentControl}">
-                <!-- IsVisible="{Binding CurrentControl, Converter={x:Static ObjectConverters.IsNotNull}}"> -->
-        <!-- <TabControl.DataTemplates> -->
-        <!--     <DataTemplate DataType="md:DiagramPage"> -->
-        <!--         ~1~ <ctrl:ElecDiagramControl DiagramPage="{Binding}"/> @1@ -->
-        <!--         <ctrl:TestControl DiagramPage="{Binding}"/> -->
-        <!--     </DataTemplate> -->
-        <!-- </TabControl.DataTemplates> -->
-    </TabControl>
+
+    <DockPanel>
+
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+            <Button Content="New Page" />
+            <Button Content="New Page" />
+            <Button Content="New Page" />
+            <Button Content="New Page" />
+        </StackPanel>
+
+        <TabControl ItemsSource="{Binding DiagramControls}" AutoScrollToSelectedItem="True"
+                    SelectedItem="{Binding CurrentPageDiagram}" />
+    </DockPanel>
+
 </UserControl>

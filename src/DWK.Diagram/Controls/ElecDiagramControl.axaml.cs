@@ -1,35 +1,20 @@
 using Avalonia.Interactivity;
-using DWK.Diagram.Models;
 using DWK.Diagram.Node;
 
 namespace DWK.Diagram.Controls;
 
-public partial class ElecDiagramControl : UserControl
+public partial class ElecDiagramControl : UserControl, IDiagramControl
 {
-    #region DiagramPageProperty
+    private readonly ElecDiagramPage _diagramPage;
 
-    public static readonly DirectProperty<ElecDiagramControl, DiagramPage?> DiagramPageProperty =
-        AvaloniaProperty.RegisterDirect<ElecDiagramControl, DiagramPage?>(
-            nameof(DiagramPage),
-            o => o.DiagramPage,
-            (o, v) => o.DiagramPage = v);
+    public IDiagramPage DiagramPage => _diagramPage;
 
-    private DiagramPage? _diagramPage;
-
-    public DiagramPage? DiagramPage
+    public ElecDiagramControl(ElecDiagramPage diagramPage)
     {
-        get => _diagramPage;
-        set => SetAndRaise(DiagramPageProperty, ref _diagramPage, value);
-    }
+        _diagramPage = diagramPage;
 
-    #endregion
-
-    public ElecDiagramControl()
-    {
         InitializeComponent();
-
         //InitDiagramControl();
-        
     }
 
     private void InitDiagramControl()
@@ -46,48 +31,33 @@ public partial class ElecDiagramControl : UserControl
                 // settings.LinkTipForeColor = "rgba(255,255,255)";
             });
 
-        //builder.BuildDiagram(PART_DiagramControl.Diagram);
+        //builder.BuildDiagram(PART_GoDiagramControl.Diagram);
 
         var esbuilder = new ElecDiagramBuilder();
-        esbuilder.BuildDiagram(PART_DiagramControl.Diagram);
+        esbuilder.BuildDiagram(PART_GoDiagramControl.Diagram);
 
-        PART_DiagramControl.Diagram.ToolManager.DraggingTool.IsGridSnapEnabled = true;
-        PART_DiagramControl.Diagram.ToolManager.ResizingTool.IsGridSnapEnabled = true;
-        // Testing.Setup3(PART_DiagramControl.Diagram);
-        // Testing.Setup2(PART_DiagramControl.Diagram);
-        //Testing.Setup0(PART_DiagramControl.Diagram);
-        // Testing.Setup(PART_DiagramControl.Diagram);
+        PART_GoDiagramControl.Diagram.ToolManager.DraggingTool.IsGridSnapEnabled = true;
+        PART_GoDiagramControl.Diagram.ToolManager.ResizingTool.IsGridSnapEnabled = true;
+        // Testing.Setup3(PART_GoDiagramControl.Diagram);
+        // Testing.Setup2(PART_GoDiagramControl.Diagram);
+        //Testing.Setup0(PART_GoDiagramControl.Diagram);
+        // Testing.Setup(PART_GoDiagramControl.Diagram);
     }
-
-    // protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
-    // {
-    //     base.OnPropertyChanged(change);
-    //
-    //     if (change.Property == DiagramPageProperty)
-    //     {
-    //         if (change.NewValue is DiagramPage page)
-    //         {
-    //             PART_DiagramControl.Diagram.Model = new ElecModel();
-    //             PART_DiagramControl.Diagram.Model.SetDataPropertyName(nameof(ElecNodeData.Tag), nameof(ElecNodeData.Tag));
-    //         }
-    //     }
-    // }
-    
 
     private void Button_OnClick(object? sender, RoutedEventArgs e)
     {
-        var b = PART_DiagramControl.Diagram.Grid.Background.ToString();
+        var b = PART_GoDiagramControl.Diagram.Grid.Background.ToString();
 
-        var state = !PART_DiagramControl.Diagram.Grid.Visible;
+        var state = !PART_GoDiagramControl.Diagram.Grid.Visible;
 
-        PART_DiagramControl.Diagram.Grid.Visible = state;
+        PART_GoDiagramControl.Diagram.Grid.Visible = state;
 
-        // PART_DiagramControl.Background = 
+        // PART_GoDiagramControl.Background = 
     }
 
     private void SpyButton_OnClick(object? sender, RoutedEventArgs e)
     {
-        if (PART_DiagramControl.Diagram.Model is not ElecModel m) return;
+        if (PART_GoDiagramControl.Diagram.Model is not ElecModel m) return;
         if (m.LinkDataSource.FirstOrDefault() is not { } l) return;
 
         ElecNodeData fromData = m.NodeDataSource.Single(n => n.Key == l.From)!;
@@ -99,10 +69,10 @@ public partial class ElecDiagramControl : UserControl
 
     private void Spy(ElecNodeData nodeData, ElecLinkData linkData)
     {
-        var link = PART_DiagramControl.Diagram.FindLinkForData(linkData);
+        var link = PART_GoDiagramControl.Diagram.FindLinkForData(linkData);
         if (link == null) return;
 
-        var node = PART_DiagramControl.Diagram.FindNodeForData(nodeData);
+        var node = PART_GoDiagramControl.Diagram.FindNodeForData(nodeData);
         if (node == null) return;
 
         var elinks = node.FindLinksConnected("e");
@@ -123,7 +93,7 @@ public partial class ElecDiagramControl : UserControl
 
     private void TagButton_OnClick(object? sender, RoutedEventArgs e)
     {
-        if (PART_DiagramControl.Diagram.Model is not { SharedData: ElecDiagramTheme sharedData } model) return;
+        if (PART_GoDiagramControl.Diagram.Model is not { SharedData: ElecDiagramTheme sharedData } model) return;
 
         model.Commit(m => m.Set(m.SharedData, nameof(ElecDiagramTheme.TagVisible), !sharedData.TagVisible), "Toggle Tag Visible");
     }

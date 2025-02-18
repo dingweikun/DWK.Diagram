@@ -1,13 +1,12 @@
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.VisualTree;
-using DWK.Diagram.Models;
 
 namespace DWK.Diagram.Views;
 
 public partial class LeftPanelExplorerView : ViewBase
 {
-    public event EventHandler<DiagramPage> PageItemDoubleTapped;
+    public event EventHandler<IDiagramPage> PageItemDoubleTapped;
 
     public LeftPanelExplorerView()
     {
@@ -41,7 +40,7 @@ public partial class LeftPanelExplorerView : ViewBase
     private void TreeView_DoubleTapped(object? sender, TappedEventArgs e)
     {
         var item = (e.Source as Control)?.FindAncestorOfType<TreeViewItem>();
-        if (item is { DataContext: DiagramPage page })
+        if (item is { DataContext: IDiagramPage page })
             PageItemDoubleTapped?.Invoke(this, page);
     }
 }

@@ -2,8 +2,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="clr-namespace:DWK.Diagram.ViewModels"
-             xmlns:md="clr-namespace:DWK.Diagram.Models;assembly=DWK.Diagram.Common"
+             xmlns:vm="using:DWK.Diagram.ViewModels"
+             xmlns:md="using:DWK.Diagram.Models"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="DWK.Diagram.Views.LeftPanelExplorerView"
              x:DataType="vm:LeftPanelExplorerViewModel">
@@ -40,7 +40,7 @@
                 <TreeView.Styles>
                     <Style Selector="TreeViewItem.root > TreeViewItem">
                         <Setter Property="HeaderTemplate">
-                            <DataTemplate x:DataType="md:DiagramPage">
+                            <DataTemplate x:DataType="md:IDiagramPage">
                                 <StackPanel Orientation="Horizontal">
                                     <PathIcon Data="{StaticResource File-Line}" Width="12" Margin="0,0,8,0" />
                                     <TextBlock Text="{Binding Path=PageName}" />

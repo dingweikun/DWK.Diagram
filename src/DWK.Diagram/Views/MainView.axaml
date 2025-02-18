@@ -50,8 +50,7 @@
 
             <!-- Main Content -->
             <Border Grid.Column="2">
-                <!-- <views:DiagramView /> -->
-                <views:PageView/>
+                <views:DiagramPageTabView />
             </Border>
         </Grid>
 
