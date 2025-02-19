@@ -14,7 +14,7 @@ public partial class ElecDiagramControl : UserControl, IDiagramControl
         _diagramPage = diagramPage;
 
         InitializeComponent();
-        //InitDiagramControl();
+        InitDiagramControl();
     }
 
     private void InitDiagramControl()

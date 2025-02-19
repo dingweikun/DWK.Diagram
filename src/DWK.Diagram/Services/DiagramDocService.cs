@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.Messaging.Messages;
 
 namespace DWK.Diagram.Services;
 
-public class SetEditingPageMessage(IDiagramPage value) : ValueChangedMessage<IDiagramPage>(value);
+public class OpenningPageMessage(IDiagramPage value) : ValueChangedMessage<IDiagramPage>(value);
 
 public interface IDiagramDocService
 {
@@ -11,9 +11,9 @@ public interface IDiagramDocService
 
     IReadOnlyList<IDiagramPage> PageList { get; }
 
-    void SetEditingPage(IDiagramPage diagramPage);
-
     void OpenProject();
+
+    void OpenPage(IDiagramPage diagramPage);
 }
 
 internal partial class DiagramDocService : ObservableRecipient, IDiagramDocService
@@ -24,10 +24,10 @@ internal partial class DiagramDocService : ObservableRecipient, IDiagramDocServi
     public IReadOnlyList<IDiagramPage> PageList => CurrentDoc is null ? [] : CurrentDoc.Pages;
 
 
-    public void SetEditingPage(IDiagramPage diagramPage)
+    public void OpenPage(IDiagramPage diagramPage)
     {
-        Console.Error.WriteLine("设置当前编辑页面");
-        Messenger.Send(new SetEditingPageMessage(diagramPage));
+        Console.Error.WriteLine("打开页面");
+        Messenger.Send(new OpenningPageMessage(diagramPage));
     }
 
     // TODO: 测试电气系统

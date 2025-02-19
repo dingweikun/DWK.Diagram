@@ -1,54 +1,60 @@
+using System.Collections.Generic;
+
 namespace DWK.Diagram.ViewModels;
 
-public partial class DiagramPageTabViewModel : ViewModelBase, IRecipient<SetEditingPageMessage>
+public partial class DiagramPageTabViewModel : ViewModelBase, IRecipient<OpenningPageMessage>
 {
-    public ObservableCollection<IDiagramControl> DiagramControls { get; } = [];
+    public ObservableCollection<IDiagramPage> OpenedPages { get; } = [];
 
-    [ObservableProperty] private IDiagramControl? _currentPageDiagram;
-    
+    [ObservableProperty, NotifyPropertyChangedFor(nameof(CurrentDiagram))]
+    private IDiagramPage? _currentPage;
+
+    public IDiagramControl? CurrentDiagram
+    {
+        get
+        {
+            if (CurrentPage is null) return null;
+
+            if (DiagramControlMap.TryGetValue(CurrentPage.Id, out var diagram))
+                return diagram;
+
+            var newDiagram = DiagramControlFactory.CreateDiagramControl(CurrentPage);
+            if (newDiagram is not null) DiagramControlMap.Add(CurrentPage.Id, newDiagram);
+            return newDiagram;
+        }
+    }
+
+
+    private Dictionary<Guid, IDiagramControl> DiagramControlMap { get; } = [];
+
+
     public DiagramPageTabViewModel()
     {
         IsActive = true; // 激活 IRecipient 消息
     }
-    
-   
-    // NOTE: 在此处根据页面数据类型，创建相应的 IDiagramControl 对象，实现统一建模
-    protected IDiagramControl CreateDiagramPageControl(IDiagramPage pageData)
+
+
+    public void Receive(OpenningPageMessage message)
     {
-        switch (pageData)
-        {
-            case ElecDiagramPage elecDiagramPage:
-                return new ElecDiagramControl(elecDiagramPage);
-            default:
-                return null;
-        }
-    }
+        Console.WriteLine($"收到消息 {nameof(OpenningPageMessage)}");
 
+        if (OpenedPages.Contains(message.Value) is false)
+            OpenedPages.Add(message.Value);
 
-    public void Receive(SetEditingPageMessage message)
-    {
-        Console.WriteLine("收到消息");
-
-        var control = DiagramControls.SingleOrDefault(ctrl => ctrl.DiagramPage == message.Value);
-        if (control is null)
-        {
-            control = CreateDiagramPageControl(message.Value);
-            DiagramControls.Add(control);
-        }
-
-        CurrentPageDiagram = control;
+        CurrentPage = message.Value;
     }
 
     [RelayCommand]
     private void ClosePage(IDiagramPage diagramPage)
     {
-        var control = DiagramControls.SingleOrDefault(ctrl => ctrl.DiagramPage == diagramPage);
-        if (control is not null) DiagramControls.Remove(control);
+        OpenedPages.Remove(diagramPage);
+        DiagramControlMap.Remove(diagramPage.Id);
     }
 
     [RelayCommand]
     private void CloseAllPages()
     {
-        DiagramControls.Clear();
+        OpenedPages.Clear();
+        DiagramControlMap.Clear();
     }
 }

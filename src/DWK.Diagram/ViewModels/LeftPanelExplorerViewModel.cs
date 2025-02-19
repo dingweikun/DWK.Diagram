@@ -14,8 +14,5 @@ public partial class LeftPanelExplorerViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void OpenPage(IDiagramPage diagramPage)
-    {
-        DocService.SetEditingPage(diagramPage);
-    }
+    private void OpenPage(IDiagramPage diagramPage) => DocService.OpenPage(diagramPage);
 }
