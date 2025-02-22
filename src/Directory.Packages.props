@@ -6,24 +6,24 @@
   <ItemGroup>
     <!-- Avalonia packages -->
     <!-- Important: keep version in sync! -->
-    <PackageVersion Include="Avalonia" Version="11.2.2" />
-    <PackageVersion Include="Avalonia.Diagnostics" Version="11.2.2" />
-    <PackageVersion Include="Avalonia.Desktop" Version="11.2.2" />
+    <PackageVersion Include="Avalonia" Version="11.2.4" />
+    <PackageVersion Include="Avalonia.Diagnostics" Version="11.2.4" />
+    <PackageVersion Include="Avalonia.Desktop" Version="11.2.4" />
     <PackageVersion Include="Avalonia.iOS" Version="11.2.1" />
     <PackageVersion Include="Avalonia.Browser" Version="11.2.2" />
     <PackageVersion Include="Avalonia.Android" Version="11.2.1" />
-    <PackageVersion Include="Avalonia.Xaml.Behaviors" Version="11.2.0.8" />
+    <PackageVersion Include="Avalonia.Xaml.Behaviors" Version="11.2.0.9" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-    <PackageVersion Include="Irihi.Ursa" Version="1.6.2" />
-    <PackageVersion Include="Irihi.Ursa.Themes.Semi" Version="1.6.2" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Logging" Version="9.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Options" Version="9.0.0" />
+    <PackageVersion Include="Irihi.Ursa" Version="1.8.1" />
+    <PackageVersion Include="Irihi.Ursa.Themes.Semi" Version="1.8.1" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.2" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.2" />
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="9.0.2" />
+    <PackageVersion Include="Microsoft.Extensions.Options" Version="9.0.2" />
     <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.0" />
     <PackageVersion Include="Northwoods.GoDiagram.Avalonia" Version="10.0.12" />
     <PackageVersion Include="Northwoods.GoDiagram.Console" Version="10.0.12" />
-    <PackageVersion Include="Semi.Avalonia" Version="11.2.1.2" />
+    <PackageVersion Include="Semi.Avalonia" Version="11.2.1.4" />
     <PackageVersion Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.0.1.1" />
   </ItemGroup>
 </Project>

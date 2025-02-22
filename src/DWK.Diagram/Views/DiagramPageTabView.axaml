@@ -9,7 +9,7 @@
              x:DataType="vm:DiagramPageTabViewModel"
              x:Name="RootControl">
 
-    <DockPanel>
+    <DockPanel IsVisible="{Binding CurrentPage, Converter={x:Static ObjectConverters.IsNotNull }}">
         <DockPanel Classes="Header" DockPanel.Dock="Top">
             <Button DockPanel.Dock="Right" Margin="8,0" Classes="Tertiary Small"
                     Theme="{DynamicResource BorderlessButton}">
@@ -19,8 +19,8 @@
                         <StackPanel Background="Transparent" Margin="0">
                             <Button Classes="Tertiary" Theme="{DynamicResource BorderlessButton}"
                                     HorizontalAlignment="Stretch"
-                                    Content="关闭所有页面" 
-                                    Command="{Binding #RootControl.((vm:DiagramPageTabViewModel)DataContext).CloseAllPagesCommand}"/>
+                                    Content="关闭所有页面"
+                                    Command="{Binding #RootControl.((vm:DiagramPageTabViewModel)DataContext).CloseAllPagesCommand}" />
                             <Separator />
                             <ListBox ItemsSource="{Binding OpenedPages}"
                                      SelectedItem="{Binding CurrentPage}">

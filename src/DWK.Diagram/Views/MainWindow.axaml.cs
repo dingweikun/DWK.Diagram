@@ -19,7 +19,7 @@ public partial class MainWindow : UrsaWindow
             ThemeVariant.Light,
             SemiTheme.Desert,
             ThemeVariant.Dark,
-            SemiTheme.Dust,
+            SemiTheme.Dusk,
             SemiTheme.Aquatic,
             SemiTheme.NightSky,
         };
