@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using CommunityToolkit.Mvvm.Messaging.Messages;
 
 namespace DWK.Diagram.Services;
@@ -7,11 +8,11 @@ public class OpenningPageMessage(IDiagramPage value) : ValueChangedMessage<IDiag
 
 public interface IDiagramDocService
 {
-    IDiagramDoc? CurrentDoc { get; }
+    IDiagramDoc? ActiveDoc { get; }
 
     IReadOnlyList<IDiagramPage> PageList { get; }
 
-    void OpenProject();
+    void OpenDoc();
 
     void OpenPage(IDiagramPage diagramPage);
 }
@@ -19,21 +20,35 @@ public interface IDiagramDocService
 internal partial class DiagramDocService : ObservableRecipient, IDiagramDocService
 {
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(PageList))]
-    private IDiagramDoc? _currentDoc;
+    private IDiagramDoc? _activeDoc;
 
-    public IReadOnlyList<IDiagramPage> PageList => CurrentDoc is null ? [] : CurrentDoc.Pages;
+    public IReadOnlyList<IDiagramPage> PageList => ActiveDoc?.Pages ?? [];
 
 
     public void OpenPage(IDiagramPage diagramPage)
     {
-        Console.Error.WriteLine("打开页面");
+        ArgumentNullException.ThrowIfNull(diagramPage);
+        
+        if (ActiveDoc == null)
+        {
+            throw new InvalidOperationException("No active document");
+        }
+
+        if (!ActiveDoc.Pages.Contains(diagramPage))
+        {
+            throw new ArgumentException("Page does not belong to current document");
+        }
+        
+        Debug.WriteLine($"打开页面 {diagramPage.PageName}");
         Messenger.Send(new OpenningPageMessage(diagramPage));
     }
 
     // TODO: 测试电气系统
-    public void OpenProject()
+    public void OpenDoc()
     {
-        CurrentDoc = new DiagramDoc<ElecDiagramPage>(Guid.NewGuid(), "测试项目", "这是测试项目")
+        if (ActiveDoc != null) throw new InvalidOperationException("ActiveDoc is not null");
+
+        ActiveDoc = new DiagramDoc<ElecDiagramPage>(Guid.NewGuid(), "测试项目", "这是测试项目")
         {
             Pages =
             {

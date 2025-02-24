@@ -93,8 +93,6 @@
             </TabStrip>
         </DockPanel>
 
-        <Border BorderBrush="{DynamicResource DividerBorderBrush}" BorderThickness="0,1,0,0">
-            <ContentControl Content="{Binding CurrentDiagram}" />
-        </Border>
+        <ContentControl Content="{Binding CurrentDiagram}" />
     </DockPanel>
 </UserControl>

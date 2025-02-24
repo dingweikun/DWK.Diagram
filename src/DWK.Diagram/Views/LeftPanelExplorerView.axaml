@@ -34,7 +34,7 @@
         </Panel>
 
         <Border BorderBrush="{DynamicResource DividerBorderBrush}" BorderThickness="0,1,0,0">
-            <TreeView IsEnabled="{Binding DocService.CurrentDoc, Converter={x:Static ObjectConverters.IsNotNull}}"
+            <TreeView IsEnabled="{Binding DocService.ActiveDoc, Converter={x:Static ObjectConverters.IsNotNull}}"
                       DoubleTapped="TreeView_DoubleTapped">
                 <TreeView.Styles>
                     <Style Selector="TreeViewItem.root > TreeViewItem">
@@ -50,7 +50,7 @@
                 </TreeView.Styles>
 
                 <TreeViewItem x:Name="PART_TreeViewRootItem" Classes="root"
-                              Header="{Binding DocService.CurrentDoc.ProjectName, FallbackValue='[No Project]'}"
+                              Header="{Binding DocService.ActiveDoc.ProjectName, FallbackValue='[No Project]'}"
                               ItemsSource="{Binding DocService.PageList }" />
 
             </TreeView>

@@ -12,21 +12,8 @@ public class ElecDiagramBuilder : IDiagramBuilder
         diagram.Model = new ElecModel
         {
             SharedData = new ElecDiagramTheme(),
-
-            NodeDataSource = new List<ElecNodeData>
-            {
-                // new BusNodeData { Key = Guid.NewGuid() },
-                // new WireNodeData { Key = Guid.NewGuid(), Angle = 45 },
-                // new WireNodeData { Key = Guid.NewGuid(), Angle = 90 },
-                // new TransfNodeData { Key = Guid.NewGuid() },
-                // new LoadNodeData { Key = Guid.NewGuid() },
-                // new LineNodeData { Key = Guid.NewGuid() },
-                // new SwitchNodeData { Key = Guid.NewGuid(), Opened = true, IsVertical = true },
-                // new SwitchNodeData { Key = Guid.NewGuid(), Opened = false },
-                // new BreakerNodeData() { Key = Guid.NewGuid(), Opened = false },
-            },
+            NodeDataSource = new List<ElecNodeData>()
         };
-
 
         // 设置模板
         // diagram.NodeTemplate = MakeDefaultNodeTemplate();
@@ -37,33 +24,11 @@ public class ElecDiagramBuilder : IDiagramBuilder
         diagram.ToolManager.LinkingTool.LinkValidation = GeneralLinkValidation;
         // diagram.ToolManager.RelinkingTool.LinkValidation = GeneralLinkValidation;
 
-        //TODO: Test.....
-
-        // diagram.Add(new Northwoods.Go.Node(PanelLayoutAuto.Instance)
-        //     .Add(new Shape()
-        //     {
-        //         // GeometryString = "M-40,20 L-30,20 L-30 10 A 32.5 32.5 0 0 1 30 10 L30,20 L40,20",
-        //         GeometryString = "M-40,20 L-30,20 M-30 10 A 32.5 32.5 0 0 1 30 10 M30,20 L40,20",
-        //         Stroke = "blue", StrokeWidth = 6
-        //     }));
-        //
-        // diagram.Add(new Northwoods.Go.Node(PanelLayoutAuto.Instance)
-        //     .Add(new Shape()
-        //     {
-        //         GeometryString = "M-40,20 L-30,20 L-30 10 A 32.5 32.5 0 0 1 30 10 L30,20 L40,20",
-        //         Stroke = "blue", StrokeWidth = 6
-        //     }));
-        //
-        // diagram.Add(new Northwoods.Go.Node(PanelLayoutAuto.Instance)
-        //     .Add(new TextBlock(Guid.NewGuid().ToString())
-        //     {
-        //         Font = new Font("Noto Sans CJK SC", 20)
-        //     }));
-
         // 功能设置
+        diagram.Grid.Visible = true;
         diagram.UndoManager.IsEnabled = true;
-        // diagram.Grid.Visible = true;
-        diagram.ToolManager.ClickCreatingTool.ArchetypeNodeData = new SwitchNodeData();
+        diagram.AnimationManager.IsEnabled = false;
+        // diagram.ToolManager.ClickCreatingTool.ArchetypeNodeData = new SwitchNodeData();
     }
 
     #region private methods
