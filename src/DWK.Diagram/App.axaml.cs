@@ -74,7 +74,8 @@ public class App : Application, IServiceProviderApp
             DisableAvaloniaDataAnnotationValidation();
 
             // create main window
-            desktop.MainWindow = new MainWindow();
+            // desktop.MainWindow = new MainWindow();
+            desktop.MainWindow = new StartupWindow();
 
             // start host
             var hostCts = new CancellationTokenSource();

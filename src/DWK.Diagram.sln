@@ -13,6 +13,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DWK.Diagram.Common", "DWK.D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DWK.Diagram.Elec", "DWK.Diagram.Elec\DWK.Diagram.Elec.csproj", "{FAF226F1-DC96-49FF-9603-D027D1996A9C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_solution_items", "_solution_items", "{18453A47-0421-4571-BE4F-57502A8AA2E9}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+		Directory.Packages.props = Directory.Packages.props
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

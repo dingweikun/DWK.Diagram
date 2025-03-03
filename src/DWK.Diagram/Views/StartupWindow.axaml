@@ -1,0 +1,8 @@
+<u:SplashWindow xmlns="https://github.com/avaloniaui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:u="https://irihi.tech/ursa"
+                Width="800" Height="600"
+                x:Class="DWK.Diagram.Views.StartupWindow"
+                Title="StartupWindow">
+    Welcome to Avalonia!
+</u:SplashWindow>
