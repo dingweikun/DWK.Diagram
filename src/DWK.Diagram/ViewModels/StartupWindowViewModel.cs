@@ -4,13 +4,6 @@ namespace DWK.Diagram.ViewModels;
 
 public partial class StartupWindowViewModel : ViewModelBase, IDialogContext
 {
-    
-    
-    
-    
-    
-    
-    
     #region interface IDialogContext impl
 
     public void Close()

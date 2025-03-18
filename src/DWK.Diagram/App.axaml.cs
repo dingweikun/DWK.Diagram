@@ -11,13 +11,15 @@ namespace DWK.Diagram;
 
 public class App : Application, IServiceProviderApp
 {
-    private readonly IHost _host;
+    private IHost? _host;
+    private IHost Host => _host ??= CreateHost();
 
-    public IServiceProvider Services => _host.Services;
+
+    public IServiceProvider Services => Host.Services;
 
     public App()
     {
-        _host = CreateHost();
+        // _host = CreateHost();
 
         AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
         {
@@ -31,7 +33,7 @@ public class App : Application, IServiceProviderApp
     private static IHost CreateHost()
     {
         // create host builder
-        var builder = Host.CreateEmptyApplicationBuilder(null);
+        var builder = Microsoft.Extensions.Hosting.Host.CreateEmptyApplicationBuilder(null);
 
         // set host configuration source
         builder.Configuration.Sources.Clear();
@@ -74,8 +76,8 @@ public class App : Application, IServiceProviderApp
             DisableAvaloniaDataAnnotationValidation();
 
             // create main window
-            // desktop.MainWindow = new MainWindow();
-            desktop.MainWindow = new StartupWindow();
+            desktop.MainWindow = new MainWindow();
+            // desktop.MainWindow = new StartupWindow();
 
             // start host
             var hostCts = new CancellationTokenSource();
