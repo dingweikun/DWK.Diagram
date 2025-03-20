@@ -5,15 +5,48 @@
 
     <Setter Property="Template">
         <ControlTemplate TargetType="local:LayoutControl">
-            <Grid ColumnDefinitions="Auto,*,Auto">
-                <ContentPresenter Grid.Column="0" x:Name="PART_ContentPresenter1" Content="{TemplateBinding SlotLeftSelectedItem}"
-                                  IsVisible="{TemplateBinding SlotLeftSelectedItem, Converter={x:Static ObjectConverters.IsNotNull}}" />
-
-                <Border Grid.Column="1" BorderThickness="1" BorderBrush="Red" />
-
-                <ContentPresenter Grid.Column="2" x:Name="PART_ContentPresenter2" Content="{TemplateBinding SlotRightSelectedItem}"
-                                  IsVisible="{TemplateBinding SlotRightSelectedItem, Converter={x:Static ObjectConverters.IsNotNull}}" />
+            <Grid RowDefinitions="*,Auto,*" ColumnDefinitions="*">
+                <!-- 上半部分 -->
+                <Grid Grid.Row="0" ColumnDefinitions="*,Auto,*,Auto,*">
+                    <!-- 左列 -->
+                    <Grid Grid.Column="0" RowDefinitions="*,Auto,*">
+                        <ContentControl Grid.Row="0" x:Name="PART_SlotLeftTopContent" Classes="slot_content_holder"
+                                        Content="{TemplateBinding SlotLeftTopSelectedItem}"
+                                        IsVisible="{TemplateBinding SlotLeftTopSelectedItem, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                        <GridSplitter Grid.Row="1" Height="4" HorizontalAlignment="Stretch" Background="Gray" />
+                        <ContentControl Grid.Row="2" x:Name="PART_SlotLeftBottumContent" Classes="slot_content_holder"
+                                        Content="{TemplateBinding SlotLeftBottumSelectedItem}"
+                                        IsVisible="{TemplateBinding SlotLeftBottumSelectedItem, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                    </Grid>
+                    <GridSplitter Grid.Column="1" Width="4" VerticalAlignment="Stretch" Background="Gray" />
+                    <!-- 中间列 -->
+                    <Border Grid.Column="2" x:Name="PART_ContentBorder" BorderThickness="1" BorderBrush="Red">
+                        <ContentPresenter Content="{TemplateBinding Content}" />
+                    </Border>
+                    <GridSplitter Grid.Column="3" Width="4" VerticalAlignment="Stretch" Background="Gray" />
+                    <!-- 右列 -->
+                    <Grid Grid.Column="4" RowDefinitions="*,Auto,*">
+                        <ContentPresenter Grid.Row="0" x:Name="PART_SlotRightTopContent" Classes="slot_content_holder"
+                                          Content="{TemplateBinding SlotRightTopSelectedItem}"
+                                          IsVisible="{TemplateBinding SlotRightTopSelectedItem, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                        <GridSplitter Grid.Row="1" Height="4" HorizontalAlignment="Stretch" Background="Gray" />
+                        <ContentPresenter Grid.Row="2" x:Name="PART_SlotRightBottumContent" Classes="slot_content_holder"
+                                          Content="{TemplateBinding SlotRightBottumSelectedItem}"
+                                          IsVisible="{TemplateBinding SlotRightBottumSelectedItem, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                    </Grid>
+                </Grid>
+                <GridSplitter Grid.Row="1" Height="4" HorizontalAlignment="Stretch" Background="Gray" />
+                <!-- 下半部分 -->
+                <Grid Grid.Row="2" ColumnDefinitions="*,Auto,*">
+                    <ContentControl Grid.Column="0" x:Name="PART_SlotBottumLeftContent" Classes="slot_content_holder"
+                                    Content="{TemplateBinding SlotBottumLeftSelectedItem}"
+                                    IsVisible="{TemplateBinding SlotBottumLeftSelectedItem, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                    <GridSplitter Grid.Column="1" Width="4" VerticalAlignment="Stretch" Background="Gray" />
+                    <ContentPresenter Grid.Column="2" x:Name="PART_SlotBottumRightContent" Classes="slot_content_holder"
+                                      Content="{TemplateBinding SlotBottumRightSelectedItem}"
+                                      IsVisible="{TemplateBinding SlotBottumRightSelectedItem, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                </Grid>
             </Grid>
         </ControlTemplate>
     </Setter>
-</Style>
+</Style>    
