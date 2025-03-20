@@ -1,47 +1,51 @@
+using System.Collections.ObjectModel;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Primitives;
-using Avalonia.Controls.Templates;
-using Avalonia.Interactivity;
-using Avalonia.LogicalTree;
-using Avalonia.Media;
 
 namespace DWK.Controls;
 
-
-[TemplatePart("PART_CCC", typeof(Button), IsRequired = true)]
 public class LayoutControl : TemplatedControl
 {
-    private Border? PART_CCC;
-    
-    protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+    public static readonly StyledProperty<Control?> SlotLeftSelectedItemProperty =
+        AvaloniaProperty.Register<LayoutControl, Control?>(nameof(SlotLeftSelectedItem), null,
+            coerce: (avaloniaObject, control) => avaloniaObject is LayoutControl layoutControl
+                ? layoutControl.Slot1Children.SingleOrDefault(c => c == control, null)
+                : null);
+
+    public static readonly StyledProperty<Control?> SlotRightSelectedItemProperty =
+        AvaloniaProperty.Register<LayoutControl, Control?>(nameof(SlotRightSelectedItem), null,
+            coerce: (avaloniaObject, control) => avaloniaObject is LayoutControl layoutControl
+                ? layoutControl.Slot2Children.SingleOrDefault(c => c == control, null)
+                : null);
+
+    public static readonly AttachedProperty<ObservableCollection<Control>> Slot1ChildrenProperty =
+        AvaloniaProperty.RegisterAttached<LayoutControl, Control, ObservableCollection<Control>>(nameof(Slot1Children), []);
+
+    public static readonly AttachedProperty<ObservableCollection<Control>> Slot2ChildrenProperty =
+        AvaloniaProperty.RegisterAttached<LayoutControl, Control, ObservableCollection<Control>>(nameof(Slot2Children), []);
+
+    public Control? SlotLeftSelectedItem
     {
-        base.OnApplyTemplate(e);
-
-        PART_CCC = e.NameScope.Get<Border>("PART_BBB");
-
-        var btn = e.NameScope.Get<Button>("PART_CCC");
-        btn.Content = "Hello";
-        btn.Click += BtnOnClick;
-
-        Control c = new();
-        
+        get => GetValue(SlotLeftSelectedItemProperty);
+        set => SetValue(SlotLeftSelectedItemProperty, value);
     }
-    
 
-    private void BtnOnClick(object? sender, RoutedEventArgs e)
+    public Control? SlotRightSelectedItem
     {
-        Console.WriteLine("Hello" + this is ILogical);
-
-        // if (PART_CCC is null) return;
-        PART_CCC.Background = new SolidColorBrush(Colors.Orange);
+        get => GetValue(SlotRightSelectedItemProperty);
+        set => SetValue(SlotRightSelectedItemProperty, value);
     }
-}
 
-public record LayoutItem
-{
-    public required string Title { get; init; }
-    public required PathIcon Icon { get; init; }
-    public required Control Content { get; init; }
+    public ObservableCollection<Control> Slot1Children
+    {
+        get => GetValue(Slot1ChildrenProperty);
+        set => SetValue(Slot1ChildrenProperty, value);
+    }
+
+    public ObservableCollection<Control> Slot2Children
+    {
+        get => GetValue(Slot2ChildrenProperty);
+        set => SetValue(Slot2ChildrenProperty, value);
+    }
 }

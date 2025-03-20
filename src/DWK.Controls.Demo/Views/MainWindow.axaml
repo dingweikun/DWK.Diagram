@@ -3,7 +3,7 @@
         xmlns:vm="using:DWK.Controls.Demo.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:controls="clr-namespace:DWK.Controls;assembly=DWK.Controls"
+        xmlns:local="clr-namespace:DWK.Controls;assembly=DWK.Controls"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="DWK.Controls.Demo.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
@@ -17,8 +17,39 @@
     </Design.DataContext>
 
 
-    <controls:LayoutControl />
-    
+    <DockPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Bottom">
+            <Button Content="Select Slot1 Item1" Click="SelectSlot1Item1" />
+            <Button Content="Select Slot1 With Slot2 Item1" Click="SelectSlot1WithSlot2Item1" />
+
+            <Button Content="Select Slot2 Item1" Click="SelectSlot2Item1" />
+            <Button Content="Select Slot2 With Slot1 Item1" Click="SelectSlot2WithSlot1Item1" />
+        </StackPanel>
+        
+        <ListBox DockPanel.Dock="Left" 
+                 ItemsSource="{Binding #MyLayoutControl.Slot1Children}"
+                 SelectedItem="{Binding #MyLayoutControl.SlotLeftSelectedItem}">
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="TextBlock">
+                    <TextBlock Text="{Binding  Text}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        
+
+        <local:LayoutControl x:Name="MyLayoutControl">
+            <local:LayoutControl.Slot1Children>
+                <TextBlock Text="Slot 1 Item 1" />
+                <TextBlock Text="Slot 1 Item 2" />
+            </local:LayoutControl.Slot1Children>
+            <local:LayoutControl.Slot2Children>
+                <TextBlock Text="Slot 2 Item 1" />
+                <TextBlock Text="Slot 2 Item 2" />
+            </local:LayoutControl.Slot2Children>
+        </local:LayoutControl>
+
+    </DockPanel>
+
     <!-- <ListBox x:Name="animals"> -->
     <!--     <ListBox.ItemTemplate> -->
     <!--         <DataTemplate> -->
