@@ -1,0 +1,41 @@
+<Style xmlns="https://github.com/avaloniaui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+       xmlns:local="using:DWK.Controls"
+       Selector="local|LayoutControl">
+
+    <Style.Resources>
+        <SolidColorBrush x:Key="LineSolidColorBrush" Color="Red" />
+    </Style.Resources>
+
+    <!-- Set Defaults -->
+    <Setter Property="Template">
+        <ControlTemplate>
+
+            <DockPanel Background="LightBlue">
+
+                <ContentControl x:Name="PART_TopBarContent" MinHeight="40" DockPanel.Dock="Top"
+                                BorderThickness="0,0,0,1" BorderBrush="{StaticResource LineSolidColorBrush}" />
+                <ContentControl x:Name="PART_BottomBarContent" MinHeight="40" DockPanel.Dock="Bottom"
+                                BorderThickness="0,1,0,0" BorderBrush="{StaticResource LineSolidColorBrush}" />
+
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                    <Border Grid.Column="0" MinWidth="40" x:Name="PART_BBB"
+                            BorderThickness="0,0,1,0" BorderBrush="{StaticResource LineSolidColorBrush}">
+                    </Border>
+
+                    <Border Grid.Column="1" BorderThickness="0,0" BorderBrush="{StaticResource LineSolidColorBrush}"
+                            Background="LightYellow">
+                        <ContentPresenter x:Name="PART_ContentPresenter" />
+                    </Border>
+
+                    <StackPanel MinWidth="40" Grid.Column="2">
+                        <ToggleButton IsChecked="{Binding #PART_BBB.IsVisible}" Content="Test" />
+                        <Button Content="Test 2 " x:Name="PART_CCC" />
+                    </StackPanel>
+                </Grid>
+
+            </DockPanel>
+
+        </ControlTemplate>
+    </Setter>
+</Style>

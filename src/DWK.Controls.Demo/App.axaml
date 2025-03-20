@@ -1,0 +1,17 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="DWK.Controls.Demo.App"
+             xmlns:local="using:DWK.Controls.Demo"
+             RequestedThemeVariant="Default">
+             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+    <Application.DataTemplates>
+        <local:ViewLocator/>
+    </Application.DataTemplates>
+  
+    <Application.Styles>
+        <!-- <FluentTheme /> -->
+        <SimpleTheme/>
+        <StyleInclude Source="avares://DWK.Controls/Styles/index.axaml"/>
+    </Application.Styles>
+</Application>
