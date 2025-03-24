@@ -4,4 +4,5 @@ namespace DWK.Controls.Demo.ViewModels;
 
 public class ViewModelBase : ObservableObject
 {
+    
 }
