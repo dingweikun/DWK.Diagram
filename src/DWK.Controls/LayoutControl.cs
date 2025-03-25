@@ -1,7 +1,11 @@
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Globalization;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Data;
+using Avalonia.Data.Converters;
 using Avalonia.Media;
 using Avalonia.Metadata;
 
@@ -9,6 +13,34 @@ namespace DWK.Controls;
 
 public class LayoutControl : TemplatedControl
 {
+    public LayoutControl()
+    {
+        ItemsControl it = new();
+        SelectingItemsControl it2 = new();
+
+        SlotItems.CollectionChanged += (_, _) => UpdateSlotLayout();
+    }
+
+    public ObservableCollection<SlotItem> SlotItems { get; } = [];
+
+    public void UpdateSlotLayout()
+    {
+        SlotLeftTopChildren = new ObservableCollection<SlotItem>(SlotItems.Where(item => item.Position == SlotPosition.LeftTop));
+        SlotLeftBottumChildren = new ObservableCollection<SlotItem>(SlotItems.Where(item => item.Position == SlotPosition.LeftBottom));
+        SlotRightTopChildren = new ObservableCollection<SlotItem>(SlotItems.Where(item => item.Position == SlotPosition.RightTop));
+        SlotRightBottumChildren = new ObservableCollection<SlotItem>(SlotItems.Where(item => item.Position == SlotPosition.RightBottom));
+        SlotBottumLeftChildren = new ObservableCollection<SlotItem>(SlotItems.Where(item => item.Position == SlotPosition.BottomLeft));
+        SlotBottumRightChildren = new ObservableCollection<SlotItem>(SlotItems.Where(item => item.Position == SlotPosition.BottomRight));
+
+        SlotLeftTopSelectedItem = SlotLeftTopChildren.FirstOrDefault();
+        SlotLeftBottumSelectedItem = SlotLeftBottumChildren.FirstOrDefault();
+        SlotRightTopSelectedItem = SlotRightTopChildren.FirstOrDefault();
+        SlotRightBottumSelectedItem = SlotRightBottumChildren.FirstOrDefault();
+        SlotBottumLeftSelectedItem = SlotBottumLeftChildren.FirstOrDefault();
+        SlotBottumRightSelectedItem = SlotBottumRightChildren.FirstOrDefault();
+    }
+
+
     // 定义 SlotLeftTop 的相关属性
     public static readonly StyledProperty<SlotItem?> SlotLeftTopSelectedItemProperty =
         AvaloniaProperty.Register<LayoutControl, SlotItem?>(nameof(SlotLeftTopSelectedItem), null,
@@ -16,20 +48,21 @@ public class LayoutControl : TemplatedControl
                 ? layoutControl.SlotLeftTopChildren.SingleOrDefault(c => c == control, null)
                 : null);
 
-    public static readonly StyledProperty<ObservableCollection<SlotItem>> SlotLeftTopChildrenProperty =
-        AvaloniaProperty.Register<LayoutControl, ObservableCollection<SlotItem>>(nameof(SlotLeftTopChildren), []);
+    public static readonly StyledProperty<IList<SlotItem>> SlotLeftTopChildrenProperty =
+        AvaloniaProperty.Register<LayoutControl, IList<SlotItem>>(nameof(SlotLeftTopChildren), []);
 
-    public SlotItem? SlotLeftTopSelectedItem
+    private SlotItem? SlotLeftTopSelectedItem
     {
         get => GetValue(SlotLeftTopSelectedItemProperty);
         set => SetValue(SlotLeftTopSelectedItemProperty, value);
     }
 
-    public ObservableCollection<SlotItem> SlotLeftTopChildren
+    private IList<SlotItem> SlotLeftTopChildren
     {
         get => GetValue(SlotLeftTopChildrenProperty);
         set => SetValue(SlotLeftTopChildrenProperty, value);
     }
+
 
     // 定义 SlotLeftBottum 的相关属性
     public static readonly StyledProperty<SlotItem?> SlotLeftBottumSelectedItemProperty =
@@ -38,16 +71,16 @@ public class LayoutControl : TemplatedControl
                 ? layoutControl.SlotLeftBottumChildren.SingleOrDefault(c => c == control, null)
                 : null);
 
-    public static readonly StyledProperty<ObservableCollection<SlotItem>> SlotLeftBottumChildrenProperty =
-        AvaloniaProperty.Register<LayoutControl, ObservableCollection<SlotItem>>(nameof(SlotLeftBottumChildren), []);
+    public static readonly StyledProperty<IList<SlotItem>> SlotLeftBottumChildrenProperty =
+        AvaloniaProperty.Register<LayoutControl, IList<SlotItem>>(nameof(SlotLeftBottumChildren), []);
 
-    public SlotItem? SlotLeftBottumSelectedItem
+    private SlotItem? SlotLeftBottumSelectedItem
     {
         get => GetValue(SlotLeftBottumSelectedItemProperty);
         set => SetValue(SlotLeftBottumSelectedItemProperty, value);
     }
 
-    public ObservableCollection<SlotItem> SlotLeftBottumChildren
+    private IList<SlotItem> SlotLeftBottumChildren
     {
         get => GetValue(SlotLeftBottumChildrenProperty);
         set => SetValue(SlotLeftBottumChildrenProperty, value);
@@ -60,16 +93,16 @@ public class LayoutControl : TemplatedControl
                 ? layoutControl.SlotRightTopChildren.SingleOrDefault(c => c == control, null)
                 : null);
 
-    public static readonly StyledProperty<ObservableCollection<SlotItem>> SlotRightTopChildrenProperty =
-        AvaloniaProperty.Register<LayoutControl, ObservableCollection<SlotItem>>(nameof(SlotRightTopChildren), []);
+    public static readonly StyledProperty<IList<SlotItem>> SlotRightTopChildrenProperty =
+        AvaloniaProperty.Register<LayoutControl, IList<SlotItem>>(nameof(SlotRightTopChildren), []);
 
-    public SlotItem? SlotRightTopSelectedItem
+    private SlotItem? SlotRightTopSelectedItem
     {
         get => GetValue(SlotRightTopSelectedItemProperty);
         set => SetValue(SlotRightTopSelectedItemProperty, value);
     }
 
-    public ObservableCollection<SlotItem> SlotRightTopChildren
+    private IList<SlotItem> SlotRightTopChildren
     {
         get => GetValue(SlotRightTopChildrenProperty);
         set => SetValue(SlotRightTopChildrenProperty, value);
@@ -82,16 +115,16 @@ public class LayoutControl : TemplatedControl
                 ? layoutControl.SlotRightBottumChildren.SingleOrDefault(c => c == control, null)
                 : null);
 
-    public static readonly StyledProperty<ObservableCollection<SlotItem>> SlotRightBottumChildrenProperty =
-        AvaloniaProperty.Register<LayoutControl, ObservableCollection<SlotItem>>(nameof(SlotRightBottumChildren), []);
+    public static readonly StyledProperty<IList<SlotItem>> SlotRightBottumChildrenProperty =
+        AvaloniaProperty.Register<LayoutControl, IList<SlotItem>>(nameof(SlotRightBottumChildren), []);
 
-    public SlotItem? SlotRightBottumSelectedItem
+    private SlotItem? SlotRightBottumSelectedItem
     {
         get => GetValue(SlotRightBottumSelectedItemProperty);
         set => SetValue(SlotRightBottumSelectedItemProperty, value);
     }
 
-    public ObservableCollection<SlotItem> SlotRightBottumChildren
+    private IList<SlotItem> SlotRightBottumChildren
     {
         get => GetValue(SlotRightBottumChildrenProperty);
         set => SetValue(SlotRightBottumChildrenProperty, value);
@@ -104,16 +137,16 @@ public class LayoutControl : TemplatedControl
                 ? layoutControl.SlotBottumLeftChildren.SingleOrDefault(c => c == control, null)
                 : null);
 
-    public static readonly StyledProperty<ObservableCollection<SlotItem>> SlotBottumLeftChildrenProperty =
-        AvaloniaProperty.Register<LayoutControl, ObservableCollection<SlotItem>>(nameof(SlotBottumLeftChildren), []);
+    public static readonly StyledProperty<IList<SlotItem>> SlotBottumLeftChildrenProperty =
+        AvaloniaProperty.Register<LayoutControl, IList<SlotItem>>(nameof(SlotBottumLeftChildren), []);
 
-    public SlotItem? SlotBottumLeftSelectedItem
+    private SlotItem? SlotBottumLeftSelectedItem
     {
         get => GetValue(SlotBottumLeftSelectedItemProperty);
         set => SetValue(SlotBottumLeftSelectedItemProperty, value);
     }
 
-    public ObservableCollection<SlotItem> SlotBottumLeftChildren
+    private IList<SlotItem> SlotBottumLeftChildren
     {
         get => GetValue(SlotBottumLeftChildrenProperty);
         set => SetValue(SlotBottumLeftChildrenProperty, value);
@@ -126,16 +159,16 @@ public class LayoutControl : TemplatedControl
                 ? layoutControl.SlotBottumRightChildren.SingleOrDefault(c => c == control, null)
                 : null);
 
-    public static readonly StyledProperty<ObservableCollection<SlotItem>> SlotBottumRightChildrenProperty =
-        AvaloniaProperty.Register<LayoutControl, ObservableCollection<SlotItem>>(nameof(SlotBottumRightChildren), []);
+    public static readonly StyledProperty<IList<SlotItem>> SlotBottumRightChildrenProperty =
+        AvaloniaProperty.Register<LayoutControl, IList<SlotItem>>(nameof(SlotBottumRightChildren), []);
 
-    public SlotItem? SlotBottumRightSelectedItem
+    private SlotItem? SlotBottumRightSelectedItem
     {
         get => GetValue(SlotBottumRightSelectedItemProperty);
         set => SetValue(SlotBottumRightSelectedItemProperty, value);
     }
 
-    public ObservableCollection<SlotItem> SlotBottumRightChildren
+    private IList<SlotItem> SlotBottumRightChildren
     {
         get => GetValue(SlotBottumRightChildrenProperty);
         set => SetValue(SlotBottumRightChildrenProperty, value);
@@ -152,8 +185,21 @@ public class LayoutControl : TemplatedControl
     }
 }
 
+public enum SlotPosition
+{
+    None = 0,
+    LeftTop = 1,
+    LeftBottom = 2,
+    RightTop = 3,
+    RightBottom = 4,
+    BottomLeft = 5,
+    BottomRight = 6
+}
+
 public class SlotItem
 {
+    public SlotPosition Position { get; set; }
+
     [Content] public required Control Content { get; init; }
 
     public required string Title { get; init; }
@@ -163,4 +209,23 @@ public class SlotItem
     public double IconHeight { get; init; } = 20.0;
 
     public double IconWidth { get; init; } = 20.0;
-}    
+}
+
+public class SlotItemContentConverter : IValueConverter
+{
+    public static readonly SlotItemContentConverter Instance = new();
+
+    public object? Convert(object? value, Type targetType, object? parameter,
+        CultureInfo culture)
+    {
+        if (value is SlotItem item)
+            return item.Content;
+        else
+            return null;
+    }
+
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}

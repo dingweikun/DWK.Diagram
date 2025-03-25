@@ -1,3 +1,5 @@
+
+
 <Style xmlns="https://github.com/avaloniaui"
        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
        xmlns:local="using:DWK.Controls"
@@ -5,51 +7,117 @@
 
     <Setter Property="Template">
         <ControlTemplate TargetType="local:LayoutControl">
-            <Grid RowDefinitions="*,Auto,*" ColumnDefinitions="40,*,40">
+            <DockPanel>
+                
                 <!-- 左侧新增区域 -->
-                <Border Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" MinWidth="40" BorderBrush="Black" BorderThickness="1"/>
-                <!-- 原布局 -->
-                <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="*,Auto,*,Auto,*">
-                    <!-- 左列 -->
-                    <Grid Grid.Column="0" RowDefinitions="*,Auto,*">
-                        <ContentControl Grid.Row="0" x:Name="PART_SlotLeftTopContent" Classes="slot_content_holder"
-                                        Content="{TemplateBinding SlotLeftTopSelectedItem}"
-                                        IsVisible="{TemplateBinding SlotLeftTopSelectedItem, Converter={x:Static ObjectConverters.IsNotNull}}"/>
-                        <GridSplitter Grid.Row="1" Height="4" HorizontalAlignment="Stretch" Background="Gray" />
-                        <ContentControl Grid.Row="2" x:Name="PART_SlotLeftBottumContent" Classes="slot_content_holder"
-                                        Content="{TemplateBinding SlotLeftBottumSelectedItem}"
-                                        IsVisible="{TemplateBinding SlotLeftBottumSelectedItem, Converter={x:Static ObjectConverters.IsNotNull}}"/>
-                    </Grid>
-                    <GridSplitter Grid.Column="1" Width="4" VerticalAlignment="Stretch" Background="Gray" />
-                    <!-- 中间列 -->
-                    <Border Grid.Column="2" x:Name="PART_ContentBorder" BorderThickness="1" BorderBrush="Red">
-                        <ContentPresenter Content="{TemplateBinding Content}" />
-                    </Border>
-                    <GridSplitter Grid.Column="3" Width="4" VerticalAlignment="Stretch" Background="Gray" />
-                    <!-- 右列 -->
-                    <Grid Grid.Column="4" RowDefinitions="*,Auto,*">
-                        <ContentPresenter Grid.Row="0" x:Name="PART_SlotRightTopContent" Classes="slot_content_holder"
-                                          Content="{TemplateBinding SlotRightTopSelectedItem}"
-                                          IsVisible="{TemplateBinding SlotRightTopSelectedItem, Converter={x:Static ObjectConverters.IsNotNull}}" />
-                        <GridSplitter Grid.Row="1" Height="4" HorizontalAlignment="Stretch" Background="Gray" />
-                        <ContentPresenter Grid.Row="2" x:Name="PART_SlotRightBottumContent" Classes="slot_content_holder"
-                                          Content="{TemplateBinding SlotRightBottumSelectedItem}"
-                                          IsVisible="{TemplateBinding SlotRightBottumSelectedItem, Converter={x:Static ObjectConverters.IsNotNull}}" />
-                    </Grid>
-                </Grid>
-                <GridSplitter Grid.Row="1" Grid.Column="1" Height="4" HorizontalAlignment="Stretch" Background="Gray" />
-                <Grid Grid.Row="2" Grid.Column="1" ColumnDefinitions="*,Auto,*">
-                    <ContentControl Grid.Column="0" x:Name="PART_SlotBottumLeftContent" Classes="slot_content_holder"
-                                    Content="{TemplateBinding SlotBottumLeftSelectedItem}"
-                                    IsVisible="{TemplateBinding SlotBottumLeftSelectedItem, Converter={x:Static ObjectConverters.IsNotNull}}"/>
-                    <GridSplitter Grid.Column="1" Width="4" VerticalAlignment="Stretch" Background="Gray" />
-                    <ContentPresenter Grid.Column="2" x:Name="PART_SlotBottumRightContent" Classes="slot_content_holder"
-                                      Content="{TemplateBinding SlotBottumRightSelectedItem}"
-                                      IsVisible="{TemplateBinding SlotBottumRightSelectedItem, Converter={x:Static ObjectConverters.IsNotNull}}" />
-                </Grid>
+                <Panel Background="LightBlue" DockPanel.Dock="Left" MinWidth="40">
+                    <Panel.IsVisible>
+                        <MultiBinding Converter="{x:Static BoolConverters.Or}" Mode="OneWay">
+                            <Binding Path="#PART_LeftSideStakePanel.IsVisible" />
+                            <Binding Path="#PART_NavbarBottomLeft.IsVisible" />
+                        </MultiBinding>
+                    </Panel.IsVisible>
+
+                    <StackPanel x:Name="PART_LeftSideStakePanel">
+                        <StackPanel.IsVisible>
+                            <MultiBinding Converter="{x:Static BoolConverters.Or}" Mode="OneWay">
+                                <Binding Path="#PART_NavbarLeftTop.IsVisible" />
+                                <Binding Path="#PART_NavbarLeftBottom.IsVisible" />
+                            </MultiBinding>
+                        </StackPanel.IsVisible>
+                        <!-- <Border x:Name="PART_NavbarLeftTop" -->
+                        <!--         Height="100" Background="LightYellow" IsVisible="False" /> -->
+                        <ListBox x:Name="PART_NavListBoxLeftTop"
+                                 SelectionMode="Toggle"
+                                 ItemsSource="{TemplateBinding SlotLeftTopChildren}"
+                                 SelectedItem="{TemplateBinding SlotLeftTopSelectedItem}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate DataType="local:SlotItem">
+                                    <Border>
+                                        <Border.ContextMenu>
+                                            <ContextMenu>
+                                                <!-- <MenuItem Header="Hide" Click="HideSlotItem"/> -->
+                                                <!-- <MenuItem Header="Move To"> -->
+                                                <!--     <MenuItem Header="Left Top" Click="MoveSlotItemToLeftTop"/> -->
+                                                <!--     <MenuItem Header="Left Bottom" Click="MoveSlotItemToLeftBottom"/> -->
+                                                <!--     <MenuItem Header="Right Top" Click="MoveSlotItemToRightTop"/> -->
+                                                <!--     <MenuItem Header="Right Bottom" Click="MoveSlotItemToRightBottom"/> -->
+                                                <!--     <MenuItem Header="Bottom Left" Click="MoveSlotItemToBottomLeft" /> -->
+                                                <!--     <MenuItem Header="Bottom Right" Click="MoveSlotItemToBottomRight"/> -->
+                                                <!-- </MenuItem> -->
+                                            </ContextMenu>
+                                        </Border.ContextMenu>
+                                        <PathIcon Data="{Binding IconPath}"
+                                                  Width="{Binding IconWidth}"
+                                                  Height="{Binding IconHeight}" />
+
+                                    </Border>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        
+                        <Rectangle Height="1" Width="40" Fill="Red" StrokeThickness="0">
+                            <Rectangle.IsVisible>
+                                <MultiBinding Converter="{x:Static BoolConverters.And}" Mode="OneWay">
+                                    <Binding Path="#PART_NavbarLeftTop.IsVisible" />
+                                    <Binding Path="#PART_NavbarLeftBottom.IsVisible" />
+                                </MultiBinding>
+                            </Rectangle.IsVisible>
+                        </Rectangle>
+                        <Border x:Name="PART_NavbarLeftBottom"
+                                Height="100" Background="LightCoral" IsVisible="false" />
+                    </StackPanel>
+
+                    <Border x:Name="PART_NavbarBottomLeft" Height="100" Background="Green" VerticalAlignment="Bottom"
+                            IsVisible="False" />
+                </Panel>
+                
                 <!-- 右侧新增区域 -->
-                <Border Grid.Row="0" Grid.RowSpan="3" Grid.Column="2" MinWidth="40" BorderBrush="Black" BorderThickness="1"/>
-            </Grid>
+                <Border DockPanel.Dock="Right" MinWidth="40" BorderBrush="Black" BorderThickness="1" />
+                
+                <!-- 原布局 -->
+                <Grid RowDefinitions="*,Auto,*">
+                    <Grid Grid.Row="0" ColumnDefinitions="*,Auto,*,Auto,*">
+                        <!-- 左列 -->
+                        <Grid Grid.Column="0" RowDefinitions="*,Auto,*">
+                            <ContentControl Grid.Row="0" x:Name="PART_SlotLeftTopContent" Classes="slot_content_holder"
+                                            Content="{TemplateBinding SlotLeftTopSelectedItem, Converter={x:Static local:SlotItemContentConverter.Instance}}"
+                                            IsVisible="{TemplateBinding SlotLeftTopSelectedItem, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                            <GridSplitter Grid.Row="1" Height="4" HorizontalAlignment="Stretch" Background="Gray" />
+                            <ContentControl Grid.Row="2" x:Name="PART_SlotLeftBottumContent" Classes="slot_content_holder"
+                                            Content="{TemplateBinding SlotLeftBottumSelectedItem, Converter={x:Static local:SlotItemContentConverter.Instance}}"
+                                            IsVisible="{TemplateBinding SlotLeftBottumSelectedItem, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                        </Grid>
+                        <GridSplitter Grid.Column="1" Width="4" VerticalAlignment="Stretch" Background="Gray" />
+                        <!-- 中间列 -->
+                        <Border Grid.Column="2" x:Name="PART_ContentBorder" BorderThickness="1" BorderBrush="Red">
+                            <ContentPresenter Content="{TemplateBinding Content}" />
+                        </Border>
+                        <GridSplitter Grid.Column="3" Width="4" VerticalAlignment="Stretch" Background="Gray" />
+                        <!-- 右列 -->
+                        <Grid Grid.Column="4" RowDefinitions="*,Auto,*">
+                            <ContentPresenter Grid.Row="0" x:Name="PART_SlotRightTopContent" Classes="slot_content_holder"
+                                              Content="{TemplateBinding SlotRightTopSelectedItem, Converter={x:Static local:SlotItemContentConverter.Instance}}"
+                                              IsVisible="{TemplateBinding SlotRightTopSelectedItem, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                            <GridSplitter Grid.Row="1" Height="4" HorizontalAlignment="Stretch" Background="Gray" />
+                            <ContentPresenter Grid.Row="2" x:Name="PART_SlotRightBottumContent" Classes="slot_content_holder"
+                                              Content="{TemplateBinding SlotRightBottumSelectedItem, Converter={x:Static local:SlotItemContentConverter.Instance}}"
+                                              IsVisible="{TemplateBinding SlotRightBottumSelectedItem, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                        </Grid>
+                    </Grid>
+                    <GridSplitter Grid.Row="1" Height="4" HorizontalAlignment="Stretch" Background="Gray" />
+                    <Grid Grid.Row="2" ColumnDefinitions="*,Auto,*">
+                        <ContentControl Grid.Column="0" x:Name="PART_SlotBottumLeftContent" Classes="slot_content_holder"
+                                        Content="{TemplateBinding SlotBottumLeftSelectedItem, Converter={x:Static local:SlotItemContentConverter.Instance}}"
+                                        IsVisible="{TemplateBinding SlotBottumLeftSelectedItem, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                        <GridSplitter Grid.Column="1" Width="4" VerticalAlignment="Stretch" Background="Gray" />
+                        <ContentPresenter Grid.Column="2" x:Name="PART_SlotBottumRightContent" Classes="slot_content_holder"
+                                          Content="{TemplateBinding SlotBottumRightSelectedItem, Converter={x:Static local:SlotItemContentConverter.Instance}}"
+                                          IsVisible="{TemplateBinding SlotBottumRightSelectedItem, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                    </Grid>
+                </Grid>
+            </DockPanel>
+
         </ControlTemplate>
     </Setter>
-</Style>    
+</Style>
