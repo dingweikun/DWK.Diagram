@@ -61,4 +61,6 @@ public partial class MainWindow : Window
     private void MoveSlotItemToBottomRight(object? sender, RoutedEventArgs e) => TrySetSlotItemPosition(sender, SlotPosition.BottomRight);
 
     #endregion
+
+
 }

@@ -1,13 +1,13 @@
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Globalization;
+using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Avalonia.Media;
 using Avalonia.Metadata;
+using CommunityToolkit.Mvvm.Input;
 
 namespace DWK.Controls;
 
@@ -15,22 +15,29 @@ public class LayoutControl : TemplatedControl
 {
     public LayoutControl()
     {
-        ItemsControl it = new();
-        SelectingItemsControl it2 = new();
-
         SlotItems.CollectionChanged += (_, _) => UpdateSlotLayout();
+
+        SlotItem.LayoutInstance = this;
+
+        HideCommand = new RelayCommand<SlotItem>(item => SetSlotItemPosition(item, SlotPosition.None));
+        MoveToLeftTopCommand = new RelayCommand<SlotItem>(item => SetSlotItemPosition(item, SlotPosition.LeftTop));
+        MoveToLeftBottomCommand = new RelayCommand<SlotItem>(item => SetSlotItemPosition(item, SlotPosition.LeftBottom));
+        MoveToRightTopCommand = new RelayCommand<SlotItem>(item => SetSlotItemPosition(item, SlotPosition.RightTop));
+        MoveToRightBottomCommand = new RelayCommand<SlotItem>(item => SetSlotItemPosition(item, SlotPosition.RightBottom));
+        MoveToBottomLeftCommand = new RelayCommand<SlotItem>(item => SetSlotItemPosition(item, SlotPosition.BottomLeft));
+        MoveToBottomRightCommand = new RelayCommand<SlotItem>(item => SetSlotItemPosition(item, SlotPosition.BottomRight));
     }
 
     public ObservableCollection<SlotItem> SlotItems { get; } = [];
 
     public void UpdateSlotLayout()
     {
-        SlotLeftTopChildren = new ObservableCollection<SlotItem>(SlotItems.Where(item => item.Position == SlotPosition.LeftTop));
-        SlotLeftBottumChildren = new ObservableCollection<SlotItem>(SlotItems.Where(item => item.Position == SlotPosition.LeftBottom));
-        SlotRightTopChildren = new ObservableCollection<SlotItem>(SlotItems.Where(item => item.Position == SlotPosition.RightTop));
-        SlotRightBottumChildren = new ObservableCollection<SlotItem>(SlotItems.Where(item => item.Position == SlotPosition.RightBottom));
-        SlotBottumLeftChildren = new ObservableCollection<SlotItem>(SlotItems.Where(item => item.Position == SlotPosition.BottomLeft));
-        SlotBottumRightChildren = new ObservableCollection<SlotItem>(SlotItems.Where(item => item.Position == SlotPosition.BottomRight));
+        SlotLeftTopChildren = SlotItems.Where(item => item.Position == SlotPosition.LeftTop).ToList();
+        SlotLeftBottumChildren = SlotItems.Where(item => item.Position == SlotPosition.LeftBottom).ToList();
+        SlotRightTopChildren = SlotItems.Where(item => item.Position == SlotPosition.RightTop).ToList();
+        SlotRightBottumChildren = SlotItems.Where(item => item.Position == SlotPosition.RightBottom).ToList();
+        SlotBottumLeftChildren = SlotItems.Where(item => item.Position == SlotPosition.BottomLeft).ToList();
+        SlotBottumRightChildren = SlotItems.Where(item => item.Position == SlotPosition.BottomRight).ToList();
 
         SlotLeftTopSelectedItem = SlotLeftTopChildren.FirstOrDefault();
         SlotLeftBottumSelectedItem = SlotLeftBottumChildren.FirstOrDefault();
@@ -62,7 +69,6 @@ public class LayoutControl : TemplatedControl
         get => GetValue(SlotLeftTopChildrenProperty);
         set => SetValue(SlotLeftTopChildrenProperty, value);
     }
-
 
     // 定义 SlotLeftBottum 的相关属性
     public static readonly StyledProperty<SlotItem?> SlotLeftBottumSelectedItemProperty =
@@ -183,6 +189,27 @@ public class LayoutControl : TemplatedControl
         get => GetValue(ContentProperty);
         set => SetValue(ContentProperty, value);
     }
+
+
+    #region ContextMenu Commands
+
+    public ICommand HideCommand { get; }
+    public ICommand MoveToLeftTopCommand { get; }
+    public ICommand MoveToLeftBottomCommand { get; }
+    public ICommand MoveToRightTopCommand { get; }
+    public ICommand MoveToRightBottomCommand { get; }
+    public ICommand MoveToBottomLeftCommand { get; }
+    public ICommand MoveToBottomRightCommand { get; }
+
+    private void SetSlotItemPosition(SlotItem? slotItem, SlotPosition position)
+    {
+        if (slotItem is null || slotItem.Position == position) return;
+
+        slotItem.Position = position;
+        UpdateSlotLayout();
+    }
+
+    #endregion
 }
 
 public enum SlotPosition
@@ -196,8 +223,33 @@ public enum SlotPosition
     BottomRight = 6
 }
 
+public static class SlotPositionConverters
+{
+    public static IsConverter Is { get; } = new IsConverter();
+    public static NotConverter Not { get; } = new NotConverter();
+
+    public class IsConverter : IValueConverter
+    {
+        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+            value is SlotPosition pos1 && parameter is SlotPosition pos2 && pos1 == pos2;
+
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotImplementedException();
+    }
+
+    public class NotConverter : IValueConverter
+    {
+        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+            value is SlotPosition pos1 && parameter is SlotPosition pos2 && pos1 != pos2;
+
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotImplementedException();
+    }
+}
+
 public class SlotItem
 {
+    public bool InLeftTop => Position == SlotPosition.LeftTop;
+    public static LayoutControl? LayoutInstance { get; internal set; }
+
     public SlotPosition Position { get; set; }
 
     [Content] public required Control Content { get; init; }
@@ -211,21 +263,71 @@ public class SlotItem
     public double IconWidth { get; init; } = 20.0;
 }
 
-public class SlotItemContentConverter : IValueConverter
+public static class SlotItemConverters
 {
-    public static readonly SlotItemContentConverter Instance = new();
+    public static SlotItemContentConverter Content { get; } = new();
 
-    public object? Convert(object? value, Type targetType, object? parameter,
-        CultureInfo culture)
+    public class SlotItemContentConverter : IValueConverter
     {
-        if (value is SlotItem item)
-            return item.Content;
-        else
-            return null;
+        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            return value is SlotItem item ? item.Content : null;
+        }
+
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    
+    public static IsConverter Is { get; } = new IsConverter();
+    public static NotConverter Not { get; } = new NotConverter();
+
+    public class IsConverter : IValueConverter
+    {
+        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+            value is SlotItem item && parameter is SlotPosition pos && item.Position == pos;
+
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotImplementedException();
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public class NotConverter : IValueConverter
     {
-        throw new NotImplementedException();
+        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+            value is SlotItem item && parameter is SlotPosition pos && item.Position != pos;
+
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotImplementedException();
+    }
+}
+
+public static class SlotItemCollectionConverters
+{
+    public static CollecitonIsEmptyConverter IsEmpty { get; } = new();
+    public static CollecitonIsNotEmptyConverter IsNotEmpty { get; } = new();
+
+    public class CollecitonIsEmptyConverter : IValueConverter
+    {
+        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            return value is ICollection<SlotItem> { Count: 0 };
+        }
+
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class CollecitonIsNotEmptyConverter : IValueConverter
+    {
+        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            return value is ICollection<SlotItem> { Count: > 0 };
+        }
+
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
