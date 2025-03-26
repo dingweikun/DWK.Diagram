@@ -33,18 +33,18 @@ public class LayoutControl : TemplatedControl
     public void UpdateSlotLayout()
     {
         SlotLeftTopChildren = SlotItems.Where(item => item.Position == SlotPosition.LeftTop).ToList();
-        SlotLeftBottumChildren = SlotItems.Where(item => item.Position == SlotPosition.LeftBottom).ToList();
+        SlotLeftBottomChildren = SlotItems.Where(item => item.Position == SlotPosition.LeftBottom).ToList();
         SlotRightTopChildren = SlotItems.Where(item => item.Position == SlotPosition.RightTop).ToList();
-        SlotRightBottumChildren = SlotItems.Where(item => item.Position == SlotPosition.RightBottom).ToList();
-        SlotBottumLeftChildren = SlotItems.Where(item => item.Position == SlotPosition.BottomLeft).ToList();
-        SlotBottumRightChildren = SlotItems.Where(item => item.Position == SlotPosition.BottomRight).ToList();
+        SlotRightBottomChildren = SlotItems.Where(item => item.Position == SlotPosition.RightBottom).ToList();
+        SlotBottomLeftChildren = SlotItems.Where(item => item.Position == SlotPosition.BottomLeft).ToList();
+        SlotBottomRightChildren = SlotItems.Where(item => item.Position == SlotPosition.BottomRight).ToList();
 
         SlotLeftTopSelectedItem = SlotLeftTopChildren.FirstOrDefault();
-        SlotLeftBottumSelectedItem = SlotLeftBottumChildren.FirstOrDefault();
+        SlotLeftBottomSelectedItem = SlotLeftBottomChildren.FirstOrDefault();
         SlotRightTopSelectedItem = SlotRightTopChildren.FirstOrDefault();
-        SlotRightBottumSelectedItem = SlotRightBottumChildren.FirstOrDefault();
-        SlotBottumLeftSelectedItem = SlotBottumLeftChildren.FirstOrDefault();
-        SlotBottumRightSelectedItem = SlotBottumRightChildren.FirstOrDefault();
+        SlotRightBottomSelectedItem = SlotRightBottomChildren.FirstOrDefault();
+        SlotBottomLeftSelectedItem = SlotBottomLeftChildren.FirstOrDefault();
+        SlotBottomRightSelectedItem = SlotBottomRightChildren.FirstOrDefault();
     }
 
 
@@ -70,26 +70,26 @@ public class LayoutControl : TemplatedControl
         set => SetValue(SlotLeftTopChildrenProperty, value);
     }
 
-    // 定义 SlotLeftBottum 的相关属性
-    public static readonly StyledProperty<SlotItem?> SlotLeftBottumSelectedItemProperty =
-        AvaloniaProperty.Register<LayoutControl, SlotItem?>(nameof(SlotLeftBottumSelectedItem), null,
+    // 定义 SlotLeftBottom 的相关属性
+    public static readonly StyledProperty<SlotItem?> SlotLeftBottomSelectedItemProperty =
+        AvaloniaProperty.Register<LayoutControl, SlotItem?>(nameof(SlotLeftBottomSelectedItem), null,
             coerce: (avaloniaObject, control) => avaloniaObject is LayoutControl layoutControl
-                ? layoutControl.SlotLeftBottumChildren.SingleOrDefault(c => c == control, null)
+                ? layoutControl.SlotLeftBottomChildren.SingleOrDefault(c => c == control, null)
                 : null);
 
-    public static readonly StyledProperty<IList<SlotItem>> SlotLeftBottumChildrenProperty =
-        AvaloniaProperty.Register<LayoutControl, IList<SlotItem>>(nameof(SlotLeftBottumChildren), []);
+    public static readonly StyledProperty<IList<SlotItem>> SlotLeftBottomChildrenProperty =
+        AvaloniaProperty.Register<LayoutControl, IList<SlotItem>>(nameof(SlotLeftBottomChildren), []);
 
-    private SlotItem? SlotLeftBottumSelectedItem
+    private SlotItem? SlotLeftBottomSelectedItem
     {
-        get => GetValue(SlotLeftBottumSelectedItemProperty);
-        set => SetValue(SlotLeftBottumSelectedItemProperty, value);
+        get => GetValue(SlotLeftBottomSelectedItemProperty);
+        set => SetValue(SlotLeftBottomSelectedItemProperty, value);
     }
 
-    private IList<SlotItem> SlotLeftBottumChildren
+    private IList<SlotItem> SlotLeftBottomChildren
     {
-        get => GetValue(SlotLeftBottumChildrenProperty);
-        set => SetValue(SlotLeftBottumChildrenProperty, value);
+        get => GetValue(SlotLeftBottomChildrenProperty);
+        set => SetValue(SlotLeftBottomChildrenProperty, value);
     }
 
     // 定义 SlotRightTop 的相关属性
@@ -114,70 +114,70 @@ public class LayoutControl : TemplatedControl
         set => SetValue(SlotRightTopChildrenProperty, value);
     }
 
-    // 定义 SlotRightBottum 的相关属性
-    public static readonly StyledProperty<SlotItem?> SlotRightBottumSelectedItemProperty =
-        AvaloniaProperty.Register<LayoutControl, SlotItem?>(nameof(SlotRightBottumSelectedItem), null,
+    // 定义 SlotRightBottom 的相关属性
+    public static readonly StyledProperty<SlotItem?> SlotRightBottomSelectedItemProperty =
+        AvaloniaProperty.Register<LayoutControl, SlotItem?>(nameof(SlotRightBottomSelectedItem), null,
             coerce: (avaloniaObject, control) => avaloniaObject is LayoutControl layoutControl
-                ? layoutControl.SlotRightBottumChildren.SingleOrDefault(c => c == control, null)
+                ? layoutControl.SlotRightBottomChildren.SingleOrDefault(c => c == control, null)
                 : null);
 
-    public static readonly StyledProperty<IList<SlotItem>> SlotRightBottumChildrenProperty =
-        AvaloniaProperty.Register<LayoutControl, IList<SlotItem>>(nameof(SlotRightBottumChildren), []);
+    public static readonly StyledProperty<IList<SlotItem>> SlotRightBottomChildrenProperty =
+        AvaloniaProperty.Register<LayoutControl, IList<SlotItem>>(nameof(SlotRightBottomChildren), []);
 
-    private SlotItem? SlotRightBottumSelectedItem
+    private SlotItem? SlotRightBottomSelectedItem
     {
-        get => GetValue(SlotRightBottumSelectedItemProperty);
-        set => SetValue(SlotRightBottumSelectedItemProperty, value);
+        get => GetValue(SlotRightBottomSelectedItemProperty);
+        set => SetValue(SlotRightBottomSelectedItemProperty, value);
     }
 
-    private IList<SlotItem> SlotRightBottumChildren
+    private IList<SlotItem> SlotRightBottomChildren
     {
-        get => GetValue(SlotRightBottumChildrenProperty);
-        set => SetValue(SlotRightBottumChildrenProperty, value);
+        get => GetValue(SlotRightBottomChildrenProperty);
+        set => SetValue(SlotRightBottomChildrenProperty, value);
     }
 
-    // 定义 SlotBottumLeft 的相关属性
-    public static readonly StyledProperty<SlotItem?> SlotBottumLeftSelectedItemProperty =
-        AvaloniaProperty.Register<LayoutControl, SlotItem?>(nameof(SlotBottumLeftSelectedItem), null,
+    // 定义 SlotBottomLeft 的相关属性
+    public static readonly StyledProperty<SlotItem?> SlotBottomLeftSelectedItemProperty =
+        AvaloniaProperty.Register<LayoutControl, SlotItem?>(nameof(SlotBottomLeftSelectedItem), null,
             coerce: (avaloniaObject, control) => avaloniaObject is LayoutControl layoutControl
-                ? layoutControl.SlotBottumLeftChildren.SingleOrDefault(c => c == control, null)
+                ? layoutControl.SlotBottomLeftChildren.SingleOrDefault(c => c == control, null)
                 : null);
 
-    public static readonly StyledProperty<IList<SlotItem>> SlotBottumLeftChildrenProperty =
-        AvaloniaProperty.Register<LayoutControl, IList<SlotItem>>(nameof(SlotBottumLeftChildren), []);
+    public static readonly StyledProperty<IList<SlotItem>> SlotBottomLeftChildrenProperty =
+        AvaloniaProperty.Register<LayoutControl, IList<SlotItem>>(nameof(SlotBottomLeftChildren), []);
 
-    private SlotItem? SlotBottumLeftSelectedItem
+    private SlotItem? SlotBottomLeftSelectedItem
     {
-        get => GetValue(SlotBottumLeftSelectedItemProperty);
-        set => SetValue(SlotBottumLeftSelectedItemProperty, value);
+        get => GetValue(SlotBottomLeftSelectedItemProperty);
+        set => SetValue(SlotBottomLeftSelectedItemProperty, value);
     }
 
-    private IList<SlotItem> SlotBottumLeftChildren
+    private IList<SlotItem> SlotBottomLeftChildren
     {
-        get => GetValue(SlotBottumLeftChildrenProperty);
-        set => SetValue(SlotBottumLeftChildrenProperty, value);
+        get => GetValue(SlotBottomLeftChildrenProperty);
+        set => SetValue(SlotBottomLeftChildrenProperty, value);
     }
 
-    // 定义 SlotBottumRight 的相关属性
-    public static readonly StyledProperty<SlotItem?> SlotBottumRightSelectedItemProperty =
-        AvaloniaProperty.Register<LayoutControl, SlotItem?>(nameof(SlotBottumRightSelectedItem), null,
+    // 定义 SlotBottomRight 的相关属性
+    public static readonly StyledProperty<SlotItem?> SlotBottomRightSelectedItemProperty =
+        AvaloniaProperty.Register<LayoutControl, SlotItem?>(nameof(SlotBottomRightSelectedItem), null,
             coerce: (avaloniaObject, control) => avaloniaObject is LayoutControl layoutControl
-                ? layoutControl.SlotBottumRightChildren.SingleOrDefault(c => c == control, null)
+                ? layoutControl.SlotBottomRightChildren.SingleOrDefault(c => c == control, null)
                 : null);
 
-    public static readonly StyledProperty<IList<SlotItem>> SlotBottumRightChildrenProperty =
-        AvaloniaProperty.Register<LayoutControl, IList<SlotItem>>(nameof(SlotBottumRightChildren), []);
+    public static readonly StyledProperty<IList<SlotItem>> SlotBottomRightChildrenProperty =
+        AvaloniaProperty.Register<LayoutControl, IList<SlotItem>>(nameof(SlotBottomRightChildren), []);
 
-    private SlotItem? SlotBottumRightSelectedItem
+    private SlotItem? SlotBottomRightSelectedItem
     {
-        get => GetValue(SlotBottumRightSelectedItemProperty);
-        set => SetValue(SlotBottumRightSelectedItemProperty, value);
+        get => GetValue(SlotBottomRightSelectedItemProperty);
+        set => SetValue(SlotBottomRightSelectedItemProperty, value);
     }
 
-    private IList<SlotItem> SlotBottumRightChildren
+    private IList<SlotItem> SlotBottomRightChildren
     {
-        get => GetValue(SlotBottumRightChildrenProperty);
-        set => SetValue(SlotBottumRightChildrenProperty, value);
+        get => GetValue(SlotBottomRightChildrenProperty);
+        set => SetValue(SlotBottomRightChildrenProperty, value);
     }
 
     // 新增 Content 属性
