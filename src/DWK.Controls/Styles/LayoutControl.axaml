@@ -13,7 +13,6 @@
             </Setter>
         </Style>
 
-        <Setter Property="SelectionMode" Value="Toggle" />
         <Setter Property="ItemTemplate">
             <DataTemplate DataType="local:SlotItem">
                 <Border>
@@ -117,6 +116,7 @@
                 </Border>
             </DataTemplate>
         </Setter>
+
     </Style>
 
     <Style Selector="local|LayoutControl">
@@ -126,34 +126,52 @@
                 <DockPanel x:Name="LayoutControlRoot">
 
                     <!-- 左侧新增区域 -->
-                    <Panel Background="LightBlue" DockPanel.Dock="Left" MinWidth="40">
+                    <DockPanel Background="LightBlue" DockPanel.Dock="Left" MinWidth="40">
 
-                        <StackPanel>
-                            <ListBox Classes="layout_nav"
-                                     ItemsSource="{TemplateBinding SlotLeftTopChildren}"
-                                     SelectedItem="{TemplateBinding SlotLeftTopSelectedItem}"
-                                     IsVisible="{TemplateBinding SlotLeftTopChildren, Converter={x:Static local:SlotItemCollectionConverters.IsNotEmpty}}" />
+                        <ListBox x:Name="PART_NavbarLeftTop"
+                                 Classes="layout_nav" DockPanel.Dock="Top"
+                                 ItemsSource="{TemplateBinding SlotLeftTopChildren}"
+                                 SelectedItem="{TemplateBinding SlotLeftTopSelectedItem, Mode=TwoWay}" SelectionMode="Toggle"
+                                 IsVisible="{TemplateBinding SlotLeftTopChildren, Converter={x:Static local:SlotItemCollectionConverters.IsNotEmpty}}" />
 
-                            <Rectangle Height="1" Width="40" Fill="Red" StrokeThickness="0">
-                                <Rectangle.IsVisible>
-                                    <MultiBinding Converter="{x:Static BoolConverters.And}" Mode="OneWay">
-                                        <Binding Path="#PART_NavbarLeftTop.IsVisible" />
-                                        <Binding Path="#PART_NavbarLeftBottom.IsVisible" />
-                                    </MultiBinding>
-                                </Rectangle.IsVisible>
-                            </Rectangle>
-                            
-                            <ListBox Classes="layout_nav"
-                                     ItemsSource="{TemplateBinding SlotLeftBottomChildren}"
-                                     SelectedItem="{TemplateBinding SlotLeftBottomSelectedItem}"
-                                     IsVisible="{TemplateBinding SlotLeftBottomChildren, Converter={x:Static local:SlotItemCollectionConverters.IsNotEmpty}}" />
+                        <Rectangle DockPanel.Dock="Top" Height="1" Width="40" Fill="Red" StrokeThickness="0">
+                            <Rectangle.IsVisible>
+                                <MultiBinding Converter="{x:Static BoolConverters.And}" Mode="OneWay">
+                                    <Binding Path="#PART_NavbarLeftTop.IsVisible" />
+                                    <Binding Path="#PART_NavbarLeftBottom.IsVisible" />
+                                </MultiBinding>
+                            </Rectangle.IsVisible>
+                        </Rectangle>
+
+                        <ListBox x:Name="PART_NavbarLeftBottom"
+                                 Classes="layout_nav" DockPanel.Dock="Top"
+                                 ItemsSource="{TemplateBinding SlotLeftBottomChildren}"
+                                 SelectedItem="{TemplateBinding SlotLeftBottomSelectedItem, Mode=TwoWay}" SelectionMode="Toggle"
+                                 IsVisible="{TemplateBinding SlotLeftBottomChildren, Converter={x:Static local:SlotItemCollectionConverters.IsNotEmpty}}" />
 
 
+                        <ListBox Classes="layout_nav" DockPanel.Dock="Bottom"
+                                 ItemsSource="{TemplateBinding SlotBottomLeftChildren}"
+                                 SelectedItem="{TemplateBinding SlotBottomLeftSelectedItem, Mode=TwoWay}" SelectionMode="Toggle"
+                                 IsVisible="{TemplateBinding SlotBottomLeftChildren, Converter={x:Static local:SlotItemCollectionConverters.IsNotEmpty}}" />
+
+                        <StackPanel Background="LightCoral">
+                            <Button Content="%%%">
+                                <Button.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="ooooooo"/>
+                                    </ContextMenu>
+                                </Button.ContextMenu>
+                                <Button.Flyout>
+                                    <MenuFlyout Placement="">
+                                        <MenuItem Header="11111"/>
+                                        <MenuItem Header="22222"/>
+                                    </MenuFlyout>
+                                </Button.Flyout>
+                            </Button>
                         </StackPanel>
-
-                        <Border x:Name="PART_NavbarBottomLeft" Height="100" Background="Green" VerticalAlignment="Bottom"
-                                IsVisible="False" />
-                    </Panel>
+                        
+                    </DockPanel>
 
                     <!-- 右侧新增区域 -->
                     <Border DockPanel.Dock="Right" MinWidth="40" BorderBrush="Black" BorderThickness="1" />

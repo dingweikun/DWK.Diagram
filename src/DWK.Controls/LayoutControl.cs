@@ -38,7 +38,8 @@ public class LayoutControl : TemplatedControl
         SlotRightBottomChildren = SlotItems.Where(item => item.Position == SlotPosition.RightBottom).ToList();
         SlotBottomLeftChildren = SlotItems.Where(item => item.Position == SlotPosition.BottomLeft).ToList();
         SlotBottomRightChildren = SlotItems.Where(item => item.Position == SlotPosition.BottomRight).ToList();
-
+        HidedSlotItems = SlotItems.Where(item => item.Position == SlotPosition.None).ToList();
+        
         SlotLeftTopSelectedItem = SlotLeftTopChildren.FirstOrDefault();
         SlotLeftBottomSelectedItem = SlotLeftBottomChildren.FirstOrDefault();
         SlotRightTopSelectedItem = SlotRightTopChildren.FirstOrDefault();
@@ -180,6 +181,16 @@ public class LayoutControl : TemplatedControl
         set => SetValue(SlotBottomRightChildrenProperty, value);
     }
 
+    // 定义 HidedSlotItems 的相关属性
+    public static readonly StyledProperty<IList<SlotItem>> HidedSlotItemsProperty =
+        AvaloniaProperty.Register<LayoutControl, IList<SlotItem>>(nameof(HidedSlotItems), []);
+
+    private IList<SlotItem> HidedSlotItems
+    {
+        get => GetValue(HidedSlotItemsProperty);
+        set => SetValue(HidedSlotItemsProperty, value);
+    }
+
     // 新增 Content 属性
     public static readonly StyledProperty<Control?> ContentProperty =
         AvaloniaProperty.Register<LayoutControl, Control?>(nameof(Content), null);
@@ -189,7 +200,6 @@ public class LayoutControl : TemplatedControl
         get => GetValue(ContentProperty);
         set => SetValue(ContentProperty, value);
     }
-
 
     #region ContextMenu Commands
 
@@ -279,7 +289,7 @@ public static class SlotItemConverters
             throw new NotImplementedException();
         }
     }
-    
+
     public static IsConverter Is { get; } = new IsConverter();
     public static NotConverter Not { get; } = new NotConverter();
 

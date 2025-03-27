@@ -29,45 +29,37 @@
                 <Run Text="{Binding #MyLayoutControl.SlotLeftTopChildren, Mode=OneWay, Converter={x:Static local:SlotItemCollectionConverters.IsNotEmpty}}"/>
             </TextBlock>
         </StackPanel>
-        <!-- <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Bottom"> -->
-        <!--     <Button Content="Select Slot1 Item1" Click="SelectSlot1Item1" /> -->
-        <!--     <Button Content="Select Slot1 With Slot2 Item1" Click="SelectSlot1WithSlot2Item1" /> -->
+        
+        <!-- <ListBox DockPanel.Dock="Left" Width="100" -->
+        <!--          IsVisible="{Binding #MyLayoutControl.SlotLeftTopChildren, Converter={x:Static local:SlotItemCollectionConverters.IsNotEmpty}}" -->
         <!-- -->
-        <!--     <Button Content="Select Slot2 Item1" Click="SelectSlot2Item1" /> -->
-        <!--     <Button Content="Select Slot2 With Slot1 Item1" Click="SelectSlot2WithSlot1Item1" /> -->
-        <!-- </StackPanel> -->
-
-                 <!-- IsVisible="{Binding #MyLayoutControl.SlotLeftTopChildren, Converter={x:Static local:SlotItemCollectionConverters.IsEmpty}}" -->
-        <ListBox DockPanel.Dock="Left" Width="100"
-                 IsVisible="{Binding #MyLayoutControl.SlotLeftTopChildren, Converter={x:Static local:SlotItemCollectionConverters.IsNotEmpty}}"
-
-                 SelectionMode="Toggle"
-                 ItemsSource="{Binding #MyLayoutControl.SlotLeftTopChildren}"
-                 SelectedItem="{Binding #MyLayoutControl.SlotLeftTopSelectedItem}">
-            <ListBox.ItemTemplate>
-                <DataTemplate DataType="local:SlotItem">
-                    <Border>
-                        <Border.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Header="Hide" Click="HideSlotItem" />
-                                <MenuItem Header="Move To">
-                                    <MenuItem Header="Left Top" Click="MoveSlotItemToLeftTop" />
-                                    <MenuItem Header="Left Bottom" Click="MoveSlotItemToLeftBottom" />
-                                    <MenuItem Header="Right Top" Click="MoveSlotItemToRightTop" />
-                                    <MenuItem Header="Right Bottom" Click="MoveSlotItemToRightBottom" />
-                                    <MenuItem Header="Bottom Left" Click="MoveSlotItemToBottomLeft" />
-                                    <MenuItem Header="Bottom Right" Click="MoveSlotItemToBottomRight" />
-                                </MenuItem>
-                            </ContextMenu>
-                        </Border.ContextMenu>
-                        <PathIcon Data="{Binding IconPath}"
-                                  Width="{Binding IconWidth}"
-                                  Height="{Binding IconHeight}" />
-
-                    </Border>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        <!--          SelectionMode="Toggle" -->
+        <!--          ItemsSource="{Binding #MyLayoutControl.SlotLeftTopChildren}" -->
+        <!--          SelectedItem="{Binding #MyLayoutControl.SlotLeftTopSelectedItem}"> -->
+        <!--     <ListBox.ItemTemplate> -->
+        <!--         <DataTemplate DataType="local:SlotItem"> -->
+        <!--             <Border> -->
+        <!--                 <Border.ContextMenu> -->
+        <!--                     <ContextMenu> -->
+        <!--                         <MenuItem Header="Hide" Click="HideSlotItem" /> -->
+        <!--                         <MenuItem Header="Move To"> -->
+        <!--                             <MenuItem Header="Left Top" Click="MoveSlotItemToLeftTop" /> -->
+        <!--                             <MenuItem Header="Left Bottom" Click="MoveSlotItemToLeftBottom" /> -->
+        <!--                             <MenuItem Header="Right Top" Click="MoveSlotItemToRightTop" /> -->
+        <!--                             <MenuItem Header="Right Bottom" Click="MoveSlotItemToRightBottom" /> -->
+        <!--                             <MenuItem Header="Bottom Left" Click="MoveSlotItemToBottomLeft" /> -->
+        <!--                             <MenuItem Header="Bottom Right" Click="MoveSlotItemToBottomRight" /> -->
+        <!--                         </MenuItem> -->
+        <!--                     </ContextMenu> -->
+        <!--                 </Border.ContextMenu> -->
+        <!--                 <PathIcon Data="{Binding IconPath}" -->
+        <!--                           Width="{Binding IconWidth}" -->
+        <!--                           Height="{Binding IconHeight}" /> -->
+        <!-- -->
+        <!--             </Border> -->
+        <!--         </DataTemplate> -->
+        <!--     </ListBox.ItemTemplate> -->
+        <!-- </ListBox> -->
 
 
         <local:LayoutControl x:Name="MyLayoutControl">
