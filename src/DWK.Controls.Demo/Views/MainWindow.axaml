@@ -4,11 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DWK.Controls;assembly=DWK.Controls"
+        xmlns:system="clr-namespace:System;assembly=System.Runtime"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="DWK.Controls.Demo.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
-        Title="DWK.Controls.Demo">
+        Title="DWK.Controls.Demo"
+        Name="Root">
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
@@ -18,18 +20,37 @@
 
 
     <DockPanel>
+        
+        <Button Content="点击选择" DockPanel.Dock="Top">
+            <Button.Flyout>
+                <MenuFlyout ItemsSource="{Binding #Root.SelectionItems}">
+                    <MenuFlyout.ItemContainerTheme>
+                        <ControlTheme TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}" 
+                                      x:DataType="system:String">
+
+                            <Setter Property="Header" Value="{Binding }"/>
+                            <!-- <Setter Property="ItemsSource" Value="{Binding Items}"/> -->
+                            <!-- <Setter Property="Command" Value="{Binding Command}"/> -->
+                            <!-- <Setter Property="CommandParameter" Value="{Binding CommandParameter}"/> -->
+          
+                        </ControlTheme>
+                    </MenuFlyout.ItemContainerTheme>
+                </MenuFlyout>
+            </Button.Flyout>
+        </Button>
+
         <StackPanel DockPanel.Dock="Top">
-            <Button Content="Mov" Click="Button_OnClick"></Button>
+            <!-- <Button Content="Mov" Click="Button_OnClick"></Button> -->
             <TextBlock>
-                <Run Text="左上区域为空"/>
-                <Run Text="{Binding #MyLayoutControl.SlotLeftTopChildren, Mode=OneWay,   Converter={x:Static local:SlotItemCollectionConverters.IsEmpty}}"/>
+                <Run Text="左上区域为空" />
+                <Run Text="{Binding #MyLayoutControl.SlotLeftTopChildren, Mode=OneWay,   Converter={x:Static local:IListConverters.IsEmpty}}" />
             </TextBlock>
             <TextBlock>
-                <Run Text="左上区域不为空"/>
-                <Run Text="{Binding #MyLayoutControl.SlotLeftTopChildren, Mode=OneWay, Converter={x:Static local:SlotItemCollectionConverters.IsNotEmpty}}"/>
+                <Run Text="左上区域不为空" />
+                <Run Text="{Binding #MyLayoutControl.SlotLeftTopChildren, Mode=OneWay, Converter={x:Static local:IListConverters.IsNotEmpty}}" />
             </TextBlock>
         </StackPanel>
-        
+
         <!-- <ListBox DockPanel.Dock="Left" Width="100" -->
         <!--          IsVisible="{Binding #MyLayoutControl.SlotLeftTopChildren, Converter={x:Static local:SlotItemCollectionConverters.IsNotEmpty}}" -->
         <!-- -->

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows.Input;
@@ -15,39 +16,35 @@ public class LayoutControl : TemplatedControl
 {
     public LayoutControl()
     {
-        SlotItems.CollectionChanged += (_, _) => UpdateSlotLayout();
+        SlotItems.CollectionChanged += (_, _) => UpdateSlotChildren();
 
         SlotItem.LayoutInstance = this;
 
-        HideCommand = new RelayCommand<SlotItem>(item => SetSlotItemPosition(item, SlotPosition.None));
+        HideCommand = new RelayCommand<SlotItem>(item => DisplaySwitch(item, true));
+        ShowCommand = new RelayCommand<SlotItem>(item => DisplaySwitch(item, false));
         MoveToLeftTopCommand = new RelayCommand<SlotItem>(item => SetSlotItemPosition(item, SlotPosition.LeftTop));
         MoveToLeftBottomCommand = new RelayCommand<SlotItem>(item => SetSlotItemPosition(item, SlotPosition.LeftBottom));
         MoveToRightTopCommand = new RelayCommand<SlotItem>(item => SetSlotItemPosition(item, SlotPosition.RightTop));
         MoveToRightBottomCommand = new RelayCommand<SlotItem>(item => SetSlotItemPosition(item, SlotPosition.RightBottom));
         MoveToBottomLeftCommand = new RelayCommand<SlotItem>(item => SetSlotItemPosition(item, SlotPosition.BottomLeft));
         MoveToBottomRightCommand = new RelayCommand<SlotItem>(item => SetSlotItemPosition(item, SlotPosition.BottomRight));
+        MoveMenuToLeftCommand = new RelayCommand(() => MenuOnRight = false);
+        MoveMenuToRightCommand = new RelayCommand(() => MenuOnRight = true);
     }
+
+    #region 属性
 
     public ObservableCollection<SlotItem> SlotItems { get; } = [];
 
-    public void UpdateSlotLayout()
-    {
-        SlotLeftTopChildren = SlotItems.Where(item => item.Position == SlotPosition.LeftTop).ToList();
-        SlotLeftBottomChildren = SlotItems.Where(item => item.Position == SlotPosition.LeftBottom).ToList();
-        SlotRightTopChildren = SlotItems.Where(item => item.Position == SlotPosition.RightTop).ToList();
-        SlotRightBottomChildren = SlotItems.Where(item => item.Position == SlotPosition.RightBottom).ToList();
-        SlotBottomLeftChildren = SlotItems.Where(item => item.Position == SlotPosition.BottomLeft).ToList();
-        SlotBottomRightChildren = SlotItems.Where(item => item.Position == SlotPosition.BottomRight).ToList();
-        HidedSlotItems = SlotItems.Where(item => item.Position == SlotPosition.None).ToList();
-        
-        SlotLeftTopSelectedItem = SlotLeftTopChildren.FirstOrDefault();
-        SlotLeftBottomSelectedItem = SlotLeftBottomChildren.FirstOrDefault();
-        SlotRightTopSelectedItem = SlotRightTopChildren.FirstOrDefault();
-        SlotRightBottomSelectedItem = SlotRightBottomChildren.FirstOrDefault();
-        SlotBottomLeftSelectedItem = SlotBottomLeftChildren.FirstOrDefault();
-        SlotBottomRightSelectedItem = SlotBottomRightChildren.FirstOrDefault();
-    }
+    // 定义 HidedSlotItems 的相关属性
+    public static readonly StyledProperty<IList<SlotItem>> HiddenSlotItemsProperty =
+        AvaloniaProperty.Register<LayoutControl, IList<SlotItem>>(nameof(HiddenSlotItems), []);
 
+    private IList<SlotItem> HiddenSlotItems
+    {
+        get => GetValue(HiddenSlotItemsProperty);
+        set => SetValue(HiddenSlotItemsProperty, value);
+    }
 
     // 定义 SlotLeftTop 的相关属性
     public static readonly StyledProperty<SlotItem?> SlotLeftTopSelectedItemProperty =
@@ -181,15 +178,6 @@ public class LayoutControl : TemplatedControl
         set => SetValue(SlotBottomRightChildrenProperty, value);
     }
 
-    // 定义 HidedSlotItems 的相关属性
-    public static readonly StyledProperty<IList<SlotItem>> HidedSlotItemsProperty =
-        AvaloniaProperty.Register<LayoutControl, IList<SlotItem>>(nameof(HidedSlotItems), []);
-
-    private IList<SlotItem> HidedSlotItems
-    {
-        get => GetValue(HidedSlotItemsProperty);
-        set => SetValue(HidedSlotItemsProperty, value);
-    }
 
     // 新增 Content 属性
     public static readonly StyledProperty<Control?> ContentProperty =
@@ -201,36 +189,183 @@ public class LayoutControl : TemplatedControl
         set => SetValue(ContentProperty, value);
     }
 
-    #region ContextMenu Commands
+    // 布局菜单是否在右侧
+    public static readonly DirectProperty<LayoutControl, bool> MenuOnRightProperty = AvaloniaProperty.RegisterDirect<LayoutControl, bool>(
+        nameof(MenuOnRight),
+        o => o.MenuOnRight,
+        (o, v) => o.MenuOnRight = v);
+
+    private bool _menuOnRight;
+
+    public bool MenuOnRight
+    {
+        get => _menuOnRight;
+        set => SetAndRaise(MenuOnRightProperty, ref _menuOnRight, value);
+    }
+
+    #endregion
+
+    #region 命令
 
     public ICommand HideCommand { get; }
+    public ICommand ShowCommand { get; }
     public ICommand MoveToLeftTopCommand { get; }
     public ICommand MoveToLeftBottomCommand { get; }
     public ICommand MoveToRightTopCommand { get; }
     public ICommand MoveToRightBottomCommand { get; }
     public ICommand MoveToBottomLeftCommand { get; }
     public ICommand MoveToBottomRightCommand { get; }
+    public ICommand MoveMenuToLeftCommand { get; }
+    public ICommand MoveMenuToRightCommand { get; }
+
+    #endregion
+
+    private void UpdateSlotChildren()
+    {
+        var ltSel = SlotLeftTopSelectedItem;
+        var lbSel = SlotLeftBottomSelectedItem;
+        var rtSel = SlotRightTopSelectedItem;
+        var rbSel = SlotRightBottomSelectedItem;
+        var blSel = SlotBottomLeftSelectedItem;
+        var brSel = SlotBottomRightSelectedItem;
+
+        List<SlotItem> hidden = [], lt = [], lb = [], rt = [], rb = [], bl = [], br = [];
+
+        foreach (var item in SlotItems)
+        {
+            if (item.IsHidden) hidden.Add(item);
+            else
+            {
+                switch (item.Position)
+                {
+                    case SlotPosition.LeftTop:
+                        lt.Add(item);
+                        break;
+                    case SlotPosition.LeftBottom:
+                        lb.Add(item);
+                        break;
+                    case SlotPosition.RightTop:
+                        rt.Add(item);
+                        break;
+                    case SlotPosition.RightBottom:
+                        rb.Add(item);
+                        break;
+                    case SlotPosition.BottomLeft:
+                        bl.Add(item);
+                        break;
+                    case SlotPosition.BottomRight:
+                        br.Add(item);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+        }
+
+        HiddenSlotItems = hidden;
+        SlotLeftTopChildren = lt;
+        SlotLeftBottomChildren = lb;
+        SlotRightTopChildren = rt;
+        SlotRightBottomChildren = rb;
+        SlotBottomLeftChildren = bl;
+        SlotBottomRightChildren = br;
+
+        SlotLeftTopSelectedItem = ltSel;
+        SlotLeftBottomSelectedItem = lbSel;
+        SlotRightTopSelectedItem = rtSel;
+        SlotRightBottomSelectedItem = rbSel;
+        SlotBottomLeftSelectedItem = blSel;
+        SlotBottomRightSelectedItem = brSel;
+    }
+
+    private void DisplaySwitch(SlotItem? slotItem, bool hidden)
+    {
+        if (slotItem is null || slotItem.IsHidden == hidden) return;
+
+        slotItem.IsHidden = hidden;
+        UpdateSlotChildren();
+
+        if (!slotItem.IsHidden)
+            SetSlotSelectedItem(slotItem.Position, slotItem);
+    }
 
     private void SetSlotItemPosition(SlotItem? slotItem, SlotPosition position)
     {
         if (slotItem is null || slotItem.Position == position) return;
 
+        var isSelected = slotItem == slotItem.Position switch
+        {
+            SlotPosition.LeftTop => SlotLeftTopSelectedItem,
+            SlotPosition.LeftBottom => SlotLeftBottomSelectedItem,
+            SlotPosition.RightTop => SlotRightTopSelectedItem,
+            SlotPosition.RightBottom => SlotRightBottomSelectedItem,
+            SlotPosition.BottomLeft => SlotBottomLeftSelectedItem,
+            SlotPosition.BottomRight => SlotBottomRightSelectedItem,
+            _ => throw new ArgumentOutOfRangeException(nameof(position), position, null)
+        };
+
         slotItem.Position = position;
-        UpdateSlotLayout();
+        UpdateSlotChildren();
+
+        if (isSelected)
+            SetSlotSelectedItem(position, slotItem);
     }
 
-    #endregion
+    private void SetSlotSelectedItem(SlotPosition position, SlotItem? slotItem)
+    {
+        switch (position)
+        {
+            case SlotPosition.LeftTop:
+                SlotLeftTopSelectedItem = slotItem;
+                break;
+            case SlotPosition.LeftBottom:
+                SlotLeftBottomSelectedItem = slotItem;
+                break;
+            case SlotPosition.RightTop:
+                SlotRightTopSelectedItem = slotItem;
+                break;
+            case SlotPosition.RightBottom:
+                SlotRightBottomSelectedItem = slotItem;
+                break;
+            case SlotPosition.BottomLeft:
+                SlotBottomLeftSelectedItem = slotItem;
+                break;
+            case SlotPosition.BottomRight:
+                SlotBottomRightSelectedItem = slotItem;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(position), position, null);
+        }
+    }
+
+    private void UpdateSlotLayout()
+    {
+    }
+
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    {
+        base.OnPropertyChanged(change);
+
+        if (change.Property == SlotLeftTopSelectedItemProperty || change.Property == SlotLeftBottomSelectedItemProperty ||
+            change.Property == SlotRightTopSelectedItemProperty || change.Property == SlotRightBottomSelectedItemProperty ||
+            change.Property == SlotBottomLeftSelectedItemProperty || change.Property == SlotBottomRightSelectedItemProperty)
+        {
+            if (change.NewValue is not null && change.OldValue is not null)
+                return; // 窗口内容替换，布局不需要更新
+
+            UpdateSlotLayout();
+        }
+    }
 }
 
 public enum SlotPosition
 {
-    None = 0,
-    LeftTop = 1,
-    LeftBottom = 2,
-    RightTop = 3,
-    RightBottom = 4,
-    BottomLeft = 5,
-    BottomRight = 6
+    LeftTop,
+    LeftBottom,
+    RightTop,
+    RightBottom,
+    BottomLeft,
+    BottomRight
 }
 
 public static class SlotPositionConverters
@@ -257,10 +392,11 @@ public static class SlotPositionConverters
 
 public class SlotItem
 {
-    public bool InLeftTop => Position == SlotPosition.LeftTop;
     public static LayoutControl? LayoutInstance { get; internal set; }
 
     public SlotPosition Position { get; set; }
+
+    public bool IsHidden { get; set; }
 
     [Content] public required Control Content { get; init; }
 
@@ -310,16 +446,16 @@ public static class SlotItemConverters
     }
 }
 
-public static class SlotItemCollectionConverters
+public static class IListConverters
 {
-    public static CollecitonIsEmptyConverter IsEmpty { get; } = new();
-    public static CollecitonIsNotEmptyConverter IsNotEmpty { get; } = new();
+    public static IsEmptyConverter IsEmpty { get; } = new();
+    public static IsNotEmptyConverter IsNotEmpty { get; } = new();
 
-    public class CollecitonIsEmptyConverter : IValueConverter
+    public class IsEmptyConverter : IValueConverter
     {
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
-            return value is ICollection<SlotItem> { Count: 0 };
+            return value is IList { Count: 0 };
         }
 
         public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
@@ -328,11 +464,29 @@ public static class SlotItemCollectionConverters
         }
     }
 
-    public class CollecitonIsNotEmptyConverter : IValueConverter
+    public class IsNotEmptyConverter : IValueConverter
     {
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
-            return value is ICollection<SlotItem> { Count: > 0 };
+            return value is IList { Count: > 0 };
+        }
+
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
+
+public static class DebugConverters
+{
+    public static TypeConverter Type { get; } = new();
+
+    public class TypeConverter : IValueConverter
+    {
+        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            return value?.GetType().Name ?? "Null";
         }
 
         public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
