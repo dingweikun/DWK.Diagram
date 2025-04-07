@@ -14,22 +14,31 @@ namespace DWK.Controls;
 
 public class LayoutControl : TemplatedControl
 {
+    public const double MinSpace = 40;
+
+    private DockPanel? PART_NavbarLeftDockPanel, PART_NavbarRightDockPanel;
+
     public LayoutControl()
     {
-        SlotItems.CollectionChanged += (_, _) => UpdateSlotChildren();
+        SlotItems.CollectionChanged += (_, _) =>
+        {
+            UpdateSlotChildren();
+            UpdateNavbar();
+            UpdateSlotLayout();
+        };
 
         SlotItem.LayoutInstance = this;
 
-        HideCommand = new RelayCommand<SlotItem>(item => DisplaySwitch(item, true));
-        ShowCommand = new RelayCommand<SlotItem>(item => DisplaySwitch(item, false));
+        HideCommand = new RelayCommand<SlotItem>(item => SetSlotItemHidden(item, true));
+        ShowCommand = new RelayCommand<SlotItem>(item => SetSlotItemHidden(item, false));
         MoveToLeftTopCommand = new RelayCommand<SlotItem>(item => SetSlotItemPosition(item, SlotPosition.LeftTop));
         MoveToLeftBottomCommand = new RelayCommand<SlotItem>(item => SetSlotItemPosition(item, SlotPosition.LeftBottom));
         MoveToRightTopCommand = new RelayCommand<SlotItem>(item => SetSlotItemPosition(item, SlotPosition.RightTop));
         MoveToRightBottomCommand = new RelayCommand<SlotItem>(item => SetSlotItemPosition(item, SlotPosition.RightBottom));
         MoveToBottomLeftCommand = new RelayCommand<SlotItem>(item => SetSlotItemPosition(item, SlotPosition.BottomLeft));
         MoveToBottomRightCommand = new RelayCommand<SlotItem>(item => SetSlotItemPosition(item, SlotPosition.BottomRight));
-        MoveMenuToLeftCommand = new RelayCommand(() => MenuOnRight = false);
-        MoveMenuToRightCommand = new RelayCommand(() => MenuOnRight = true);
+        MoveMenuToLeftCommand = new RelayCommand(() => SetMenuSide(false));
+        MoveMenuToRightCommand = new RelayCommand(() => SetMenuSide(true));
     }
 
     #region 属性
@@ -278,12 +287,13 @@ public class LayoutControl : TemplatedControl
         SlotBottomRightSelectedItem = brSel;
     }
 
-    private void DisplaySwitch(SlotItem? slotItem, bool hidden)
+    private void SetSlotItemHidden(SlotItem? slotItem, bool hidden)
     {
         if (slotItem is null || slotItem.IsHidden == hidden) return;
 
         slotItem.IsHidden = hidden;
         UpdateSlotChildren();
+        UpdateNavbar();
 
         if (!slotItem.IsHidden)
             SetSlotSelectedItem(slotItem.Position, slotItem);
@@ -306,6 +316,7 @@ public class LayoutControl : TemplatedControl
 
         slotItem.Position = position;
         UpdateSlotChildren();
+        UpdateNavbar();
 
         if (isSelected)
             SetSlotSelectedItem(position, slotItem);
@@ -338,9 +349,43 @@ public class LayoutControl : TemplatedControl
         }
     }
 
+    private void SetMenuSide(bool menuOnRight)
+    {
+        MenuOnRight = menuOnRight;
+        UpdateNavbar();
+    }
+
+    private void UpdateNavbar()
+    {
+        if (PART_NavbarLeftDockPanel != null)
+            PART_NavbarLeftDockPanel.IsVisible =
+                (HiddenSlotItems.Count > 0 && !MenuOnRight) ||
+                SlotLeftTopChildren.Count > 0 ||
+                SlotLeftBottomChildren.Count > 0 ||
+                SlotBottomLeftChildren.Count > 0;
+
+        if (PART_NavbarRightDockPanel != null)
+            PART_NavbarRightDockPanel.IsVisible =
+                (HiddenSlotItems.Count > 0 && MenuOnRight) ||
+                SlotRightTopChildren.Count > 0 ||
+                SlotRightBottomChildren.Count > 0 ||
+                SlotBottomRightChildren.Count > 0;
+    }
+
+
     private void UpdateSlotLayout()
     {
     }
+
+
+    protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+    {
+        base.OnApplyTemplate(e);
+
+        PART_NavbarLeftDockPanel = e.NameScope.Find<DockPanel>(nameof(PART_NavbarLeftDockPanel)) ?? throw new NotSupportedException();
+        PART_NavbarRightDockPanel = e.NameScope.Find<DockPanel>(nameof(PART_NavbarRightDockPanel)) ?? throw new NotSupportedException();
+    }
+
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
@@ -424,25 +469,6 @@ public static class SlotItemConverters
         {
             throw new NotImplementedException();
         }
-    }
-
-    public static IsConverter Is { get; } = new IsConverter();
-    public static NotConverter Not { get; } = new NotConverter();
-
-    public class IsConverter : IValueConverter
-    {
-        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
-            value is SlotItem item && parameter is SlotPosition pos && item.Position == pos;
-
-        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotImplementedException();
-    }
-
-    public class NotConverter : IValueConverter
-    {
-        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
-            value is SlotItem item && parameter is SlotPosition pos && item.Position != pos;
-
-        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotImplementedException();
     }
 }
 

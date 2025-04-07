@@ -20,67 +20,35 @@
 
 
     <DockPanel>
-        
-        <Button Content="点击选择" DockPanel.Dock="Top">
-            <Button.Flyout>
-                <MenuFlyout ItemsSource="{Binding #Root.SelectionItems}">
-                    <MenuFlyout.ItemContainerTheme>
-                        <ControlTheme TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}" 
-                                      x:DataType="system:String">
-
-                            <Setter Property="Header" Value="{Binding }"/>
-                            <!-- <Setter Property="ItemsSource" Value="{Binding Items}"/> -->
-                            <!-- <Setter Property="Command" Value="{Binding Command}"/> -->
-                            <!-- <Setter Property="CommandParameter" Value="{Binding CommandParameter}"/> -->
-          
-                        </ControlTheme>
-                    </MenuFlyout.ItemContainerTheme>
-                </MenuFlyout>
-            </Button.Flyout>
-        </Button>
-
-        <StackPanel DockPanel.Dock="Top">
-            <!-- <Button Content="Mov" Click="Button_OnClick"></Button> -->
-            <TextBlock>
-                <Run Text="左上区域为空" />
-                <Run Text="{Binding #MyLayoutControl.SlotLeftTopChildren, Mode=OneWay,   Converter={x:Static local:IListConverters.IsEmpty}}" />
-            </TextBlock>
-            <TextBlock>
-                <Run Text="左上区域不为空" />
-                <Run Text="{Binding #MyLayoutControl.SlotLeftTopChildren, Mode=OneWay, Converter={x:Static local:IListConverters.IsNotEmpty}}" />
-            </TextBlock>
-        </StackPanel>
-
-        <!-- <ListBox DockPanel.Dock="Left" Width="100" -->
-        <!--          IsVisible="{Binding #MyLayoutControl.SlotLeftTopChildren, Converter={x:Static local:SlotItemCollectionConverters.IsNotEmpty}}" -->
+        <!-- <Button Content="点击选择" DockPanel.Dock="Top"> -->
+        <!--     <Button.Flyout> -->
+        <!--         <MenuFlyout ItemsSource="{Binding #Root.SelectionItems}"> -->
+        <!--             <MenuFlyout.ItemContainerTheme> -->
+        <!--                 <ControlTheme TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}" -->
+        <!--                               x:DataType="system:String"> -->
         <!-- -->
-        <!--          SelectionMode="Toggle" -->
-        <!--          ItemsSource="{Binding #MyLayoutControl.SlotLeftTopChildren}" -->
-        <!--          SelectedItem="{Binding #MyLayoutControl.SlotLeftTopSelectedItem}"> -->
-        <!--     <ListBox.ItemTemplate> -->
-        <!--         <DataTemplate DataType="local:SlotItem"> -->
-        <!--             <Border> -->
-        <!--                 <Border.ContextMenu> -->
-        <!--                     <ContextMenu> -->
-        <!--                         <MenuItem Header="Hide" Click="HideSlotItem" /> -->
-        <!--                         <MenuItem Header="Move To"> -->
-        <!--                             <MenuItem Header="Left Top" Click="MoveSlotItemToLeftTop" /> -->
-        <!--                             <MenuItem Header="Left Bottom" Click="MoveSlotItemToLeftBottom" /> -->
-        <!--                             <MenuItem Header="Right Top" Click="MoveSlotItemToRightTop" /> -->
-        <!--                             <MenuItem Header="Right Bottom" Click="MoveSlotItemToRightBottom" /> -->
-        <!--                             <MenuItem Header="Bottom Left" Click="MoveSlotItemToBottomLeft" /> -->
-        <!--                             <MenuItem Header="Bottom Right" Click="MoveSlotItemToBottomRight" /> -->
-        <!--                         </MenuItem> -->
-        <!--                     </ContextMenu> -->
-        <!--                 </Border.ContextMenu> -->
-        <!--                 <PathIcon Data="{Binding IconPath}" -->
-        <!--                           Width="{Binding IconWidth}" -->
-        <!--                           Height="{Binding IconHeight}" /> -->
+        <!--                     <Setter Property="Header" Value="{Binding }" /> -->
+        <!--                     ~1~ <Setter Property="ItemsSource" Value="{Binding Items}"/> @1@ -->
+        <!--                     ~1~ <Setter Property="Command" Value="{Binding Command}"/> @1@ -->
+        <!--                     ~1~ <Setter Property="CommandParameter" Value="{Binding CommandParameter}"/> @1@ -->
         <!-- -->
-        <!--             </Border> -->
-        <!--         </DataTemplate> -->
-        <!--     </ListBox.ItemTemplate> -->
-        <!-- </ListBox> -->
+        <!--                 </ControlTheme> -->
+        <!--             </MenuFlyout.ItemContainerTheme> -->
+        <!--         </MenuFlyout> -->
+        <!--     </Button.Flyout> -->
+        <!-- </Button> -->
+
+        <!-- <StackPanel DockPanel.Dock="Top"> -->
+        <!--     ~1~ <Button Content="Mov" Click="Button_OnClick"></Button> @1@ -->
+        <!--     <TextBlock> -->
+        <!--         <Run Text="左上区域为空" /> -->
+        <!--         <Run Text="{Binding #MyLayoutControl.SlotLeftTopChildren, Mode=OneWay,   Converter={x:Static local:IListConverters.IsEmpty}}" /> -->
+        <!--     </TextBlock> -->
+        <!--     <TextBlock> -->
+        <!--         <Run Text="左上区域不为空" /> -->
+        <!--         <Run Text="{Binding #MyLayoutControl.SlotLeftTopChildren, Mode=OneWay, Converter={x:Static local:IListConverters.IsNotEmpty}}" /> -->
+        <!--     </TextBlock> -->
+        <!-- </StackPanel> -->
 
 
         <local:LayoutControl x:Name="MyLayoutControl">
@@ -92,6 +60,9 @@
                 <local:SlotItem Title="Slot Left Top Item 2" Position="LeftTop">
                     <TextBlock Text="Slot Left Top Item 2" />
                 </local:SlotItem>
+                <local:SlotItem Title="Slot XXXXXXXXXX" Position="BottomRight" IsHidden="True">
+                    <TextBlock Text="Slot Left Top Item 2" FontSize="120" Foreground="Red"/>
+                </local:SlotItem>
             </local:LayoutControl.SlotItems>
 
             <!-- 可以在这里设置 Content 属性 -->
@@ -102,19 +73,5 @@
 
     </DockPanel>
 
-    <!-- <ListBox x:Name="animals"> -->
-    <!--     <ListBox.ItemTemplate> -->
-    <!--         <DataTemplate> -->
-    <!--             <Border BorderBrush="Blue" BorderThickness="1"  -->
-    <!--                     CornerRadius="4" Padding="4"> -->
-    <!--                 <TextBlock Text="{Binding}"/> -->
-    <!--             </Border> -->
-    <!--         </DataTemplate> -->
-    <!--     </ListBox.ItemTemplate> -->
-    <!--     <ListBoxItem>123</ListBoxItem> -->
-    <!--     <ListBoxItem>123</ListBoxItem> -->
-    <!--     <ListBoxItem>123</ListBoxItem> -->
-    <!--     <ListBoxItem>123</ListBoxItem> -->
-    <!-- </ListBox> -->
 
 </Window>
