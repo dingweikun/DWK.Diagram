@@ -2,14 +2,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="using:DWK.Controls">
 
-
     <Style Selector="ListBox.layout_nav">
-
         <Style Selector="^ PathIcon">
             <Setter Property="Width" Value="16" />
             <Setter Property="Height" Value="16" />
             <Setter Property="Data">
-                m 48.429011,171.44896 a 2.0002,2.0002 0 0 0 -1.999877,2.0004 v 32.07194 19.61534 a 2.0002,2.0002 0 0 0 1.999877,1.99988 h 51.255786 0.429943 a 2.0002,2.0002 0 0 0 1.99988,-1.99988 v -51.68728 a 2.0002,2.0002 0 0 0 -1.99988,-2.0004 z m 1.999876,4.00028 h 47.685978 v 28.07218 H 50.428887 Z m 32.438332,32.07246 h 14.817698 v 15.61506 H 82.867219 Z
+                m 48.429011,171.44896 a 2.0002,2.0002 0 0 0 -1.999877,2.0004 v 32.07194 19.61534 a 2.0002,2.0002 0 0 0 1.999877,1.99988
+                h 51.255786 0.429943 a 2.0002,2.0002 0 0 0 1.99988,-1.99988 v -51.68728 a 2.0002,2.0002 0 0 0 -1.99988,-2.0004 z m 1.999876,4.00028
+                h 47.685978 v 28.07218 H 50.428887 Z m 32.438332,32.07246 h 14.817698 v 15.61506 H 82.867219 Z
             </Setter>
         </Style>
 
@@ -107,7 +107,6 @@
                                     </PathIcon>
                                 </MenuItem.Icon>
                             </MenuItem>
-
                         </ContextMenu>
                     </Border.ContextMenu>
                     <PathIcon Data="{Binding IconPath}"
@@ -116,7 +115,41 @@
                 </Border>
             </DataTemplate>
         </Setter>
+    </Style>
 
+    <Style Selector="Border.slot_items_menu">
+        <Style Selector="^ PathIcon">
+            <Setter Property="Height" Value="18" />
+            <Setter Property="Width" Value="18" />
+            <Setter Property="Data">
+                M128 384c-70.4 0-128 57.6-128 128s57.6 128 128 128 128-57.6 128-128-57.6-128-128-128z m768 0c-70.4 0-128 57.6-128 128s57.6
+                128 128 128 128-57.6 128-128-57.6-128-128-128z m-384 0c-70.4 0-128 57.6-128 128s57.6 128 128 128 128-57.6 128-128-57.6-128-128-128z
+            </Setter>
+        </Style>
+
+        <Style Selector="^ Menu>MenuItem">
+            <Setter Property="ItemContainerTheme">
+                <ControlTheme TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}"
+                              x:DataType="local:SlotItem">
+                    <!-- <Setter Property="Header" Value="{Binding Converter={x:Static local:DebugConverters.Type}, FallbackValue='???'}"/> -->
+                    <Setter Property="Header" Value="{Binding Title}"/>
+                    <!-- <Setter Property="Header" -->
+                    <!--         Value="{Binding $self.(DataContext).Title, FallbackValue={x:Null}}" /> -->
+                    <!-- <Setter Property="Command" -->
+                    <!--         Value="{Binding $self.((local:SlotItem)DataContext).LayoutInstance.HideCommand, FallbackValue={x:Null}}" /> -->
+                    <!-- <Setter Property="CommandParameter" -->
+                    <!--         Value="{Binding }" /> -->
+                    
+                    <Setter Property="Command"
+                            Value="{Binding LayoutInstance.ShowCommand, FallbackValue={x:Null}}" />
+                    <Setter Property="CommandParameter"
+                            Value="{Binding }" />
+                </ControlTheme>
+            </Setter>
+        </Style>
+
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="MinHeight" Value="32" />
     </Style>
 
     <Style Selector="local|LayoutControl">
@@ -132,7 +165,7 @@
                                  Classes="layout_nav" DockPanel.Dock="Top"
                                  ItemsSource="{TemplateBinding SlotLeftTopChildren}"
                                  SelectedItem="{TemplateBinding SlotLeftTopSelectedItem, Mode=TwoWay}" SelectionMode="Toggle"
-                                 IsVisible="{TemplateBinding SlotLeftTopChildren, Converter={x:Static local:SlotItemCollectionConverters.IsNotEmpty}}" />
+                                 IsVisible="{TemplateBinding SlotLeftTopChildren, Converter={x:Static local:IListConverters.IsNotEmpty}}" />
 
                         <Rectangle DockPanel.Dock="Top" Height="1" Width="40" Fill="Red" StrokeThickness="0">
                             <Rectangle.IsVisible>
@@ -147,30 +180,22 @@
                                  Classes="layout_nav" DockPanel.Dock="Top"
                                  ItemsSource="{TemplateBinding SlotLeftBottomChildren}"
                                  SelectedItem="{TemplateBinding SlotLeftBottomSelectedItem, Mode=TwoWay}" SelectionMode="Toggle"
-                                 IsVisible="{TemplateBinding SlotLeftBottomChildren, Converter={x:Static local:SlotItemCollectionConverters.IsNotEmpty}}" />
+                                 IsVisible="{TemplateBinding SlotLeftBottomChildren, Converter={x:Static local:IListConverters.IsNotEmpty}}" />
 
+                        <Border DockPanel.Dock="Top" Classes="slot_items_menu">
+                            <Menu>
+                                <MenuItem ItemsSource="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HiddenSlotItems, Mode=OneWay}">
+                                    <MenuItem.Header>
+                                        <PathIcon />
+                                    </MenuItem.Header>
+                                </MenuItem>
+                            </Menu>
+                        </Border>
 
-                        <ListBox Classes="layout_nav" DockPanel.Dock="Bottom"
+                        <ListBox Classes="layout_nav" VerticalAlignment="Bottom"
                                  ItemsSource="{TemplateBinding SlotBottomLeftChildren}"
                                  SelectedItem="{TemplateBinding SlotBottomLeftSelectedItem, Mode=TwoWay}" SelectionMode="Toggle"
-                                 IsVisible="{TemplateBinding SlotBottomLeftChildren, Converter={x:Static local:SlotItemCollectionConverters.IsNotEmpty}}" />
-
-                        <StackPanel Background="LightCoral">
-                            <Button Content="%%%">
-                                <Button.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Header="ooooooo"/>
-                                    </ContextMenu>
-                                </Button.ContextMenu>
-                                <Button.Flyout>
-                                    <MenuFlyout Placement="">
-                                        <MenuItem Header="11111"/>
-                                        <MenuItem Header="22222"/>
-                                    </MenuFlyout>
-                                </Button.Flyout>
-                            </Button>
-                        </StackPanel>
-                        
+                                 IsVisible="{TemplateBinding SlotBottomLeftChildren, Converter={x:Static local:IListConverters.IsNotEmpty}}" />
                     </DockPanel>
 
                     <!-- 右侧新增区域 -->
