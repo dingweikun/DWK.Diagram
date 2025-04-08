@@ -170,7 +170,7 @@
                                  Classes="layout_nav" DockPanel.Dock="Top"
                                  ItemsSource="{TemplateBinding SlotLeftTopChildren}"
                                  SelectedItem="{TemplateBinding SlotLeftTopSelectedItem, Mode=TwoWay}" SelectionMode="Toggle"
-                                 IsVisible="{TemplateBinding SlotLeftTopChildren, Converter={x:Static local:IListConverters.IsNotEmpty}}" />
+                                 IsVisible="{TemplateBinding SlotLeftTopChildren, Converter={x:Static local:ListConverters.IsNotEmpty}}" />
 
                         <Rectangle DockPanel.Dock="Top" Height="1" Width="32" Fill="Red" StrokeThickness="0">
                             <Rectangle.IsVisible>
@@ -185,13 +185,13 @@
                                  Classes="layout_nav" DockPanel.Dock="Top"
                                  ItemsSource="{TemplateBinding SlotLeftBottomChildren}"
                                  SelectedItem="{TemplateBinding SlotLeftBottomSelectedItem, Mode=TwoWay}" SelectionMode="Toggle"
-                                 IsVisible="{TemplateBinding SlotLeftBottomChildren, Converter={x:Static local:IListConverters.IsNotEmpty}}" />
+                                 IsVisible="{TemplateBinding SlotLeftBottomChildren, Converter={x:Static local:ListConverters.IsNotEmpty}}" />
 
                         <Border DockPanel.Dock="Top" Classes="slot_items_menu"
                                 IsVisible="{Binding  RelativeSource={RelativeSource TemplatedParent}, Path=!MenuOnRight, Mode=OneWay}">
                             <Menu
                                 IsVisible="{Binding  RelativeSource={RelativeSource TemplatedParent}, Path=HiddenSlotItems, 
-                                Converter={x:Static local:IListConverters.IsNotEmpty}, Mode=OneWay}">
+                                Converter={x:Static local:ListConverters.IsNotEmpty}, Mode=OneWay}">
                                 <MenuItem ItemsSource="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HiddenSlotItems, Mode=OneWay}">
                                     <MenuItem.Header>
                                         <PathIcon />
@@ -209,7 +209,7 @@
                         <ListBox Classes="layout_nav" VerticalAlignment="Bottom"
                                  ItemsSource="{TemplateBinding SlotBottomLeftChildren}"
                                  SelectedItem="{TemplateBinding SlotBottomLeftSelectedItem, Mode=TwoWay}" SelectionMode="Toggle"
-                                 IsVisible="{TemplateBinding SlotBottomLeftChildren, Converter={x:Static local:IListConverters.IsNotEmpty}}" />
+                                 IsVisible="{TemplateBinding SlotBottomLeftChildren, Converter={x:Static local:ListConverters.IsNotEmpty}}" />
                     </DockPanel>
 
                     <!-- 右侧新增区域 -->
@@ -218,7 +218,7 @@
                                  Classes="layout_nav" DockPanel.Dock="Top"
                                  ItemsSource="{TemplateBinding SlotRightTopChildren}"
                                  SelectedItem="{TemplateBinding SlotRightTopSelectedItem, Mode=TwoWay}" SelectionMode="Toggle"
-                                 IsVisible="{TemplateBinding SlotRightTopChildren, Converter={x:Static local:IListConverters.IsNotEmpty}}" />
+                                 IsVisible="{TemplateBinding SlotRightTopChildren, Converter={x:Static local:ListConverters.IsNotEmpty}}" />
 
                         <Rectangle Classes="nav_separator">
                             <Rectangle.IsVisible>
@@ -233,13 +233,13 @@
                                  Classes="layout_nav" DockPanel.Dock="Top"
                                  ItemsSource="{TemplateBinding SlotRightBottomChildren}"
                                  SelectedItem="{TemplateBinding SlotRightBottomSelectedItem, Mode=TwoWay}" SelectionMode="Toggle"
-                                 IsVisible="{TemplateBinding SlotRightBottomChildren, Converter={x:Static local:IListConverters.IsNotEmpty}}" />
+                                 IsVisible="{TemplateBinding SlotRightBottomChildren, Converter={x:Static local:ListConverters.IsNotEmpty}}" />
 
                         <Border DockPanel.Dock="Top" Classes="slot_items_menu"
                                 IsVisible="{Binding  RelativeSource={RelativeSource TemplatedParent}, Path=MenuOnRight, Mode=OneWay}">
                             <Menu
                                 IsVisible="{Binding  RelativeSource={RelativeSource TemplatedParent}, Path=HiddenSlotItems, 
-                                Converter={x:Static local:IListConverters.IsNotEmpty}, Mode=OneWay}">
+                                Converter={x:Static local:ListConverters.IsNotEmpty}, Mode=OneWay}">
                                 <MenuItem ItemsSource="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HiddenSlotItems, Mode=OneWay}">
                                     <MenuItem.Header>
                                         <PathIcon />
@@ -257,7 +257,7 @@
                         <ListBox Classes="layout_nav" VerticalAlignment="Bottom"
                                  ItemsSource="{TemplateBinding SlotBottomRightChildren}"
                                  SelectedItem="{TemplateBinding SlotBottomRightSelectedItem, Mode=TwoWay}" SelectionMode="Toggle"
-                                 IsVisible="{TemplateBinding SlotBottomRightChildren, Converter={x:Static local:IListConverters.IsNotEmpty}}" />
+                                 IsVisible="{TemplateBinding SlotBottomRightChildren, Converter={x:Static local:ListConverters.IsNotEmpty}}" />
                     </DockPanel>
 
                     <!-- 原布局 -->

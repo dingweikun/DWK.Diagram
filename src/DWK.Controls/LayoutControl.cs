@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows.Input;
@@ -452,72 +451,4 @@ public class SlotItem
     public double IconHeight { get; init; } = 20.0;
 
     public double IconWidth { get; init; } = 20.0;
-}
-
-public static class SlotItemConverters
-{
-    public static SlotItemContentConverter Content { get; } = new();
-
-    public class SlotItemContentConverter : IValueConverter
-    {
-        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            return value is SlotItem item ? item.Content : null;
-        }
-
-        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
-}
-
-public static class IListConverters
-{
-    public static IsEmptyConverter IsEmpty { get; } = new();
-    public static IsNotEmptyConverter IsNotEmpty { get; } = new();
-
-    public class IsEmptyConverter : IValueConverter
-    {
-        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            return value is IList { Count: 0 };
-        }
-
-        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class IsNotEmptyConverter : IValueConverter
-    {
-        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            return value is IList { Count: > 0 };
-        }
-
-        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
-}
-
-public static class DebugConverters
-{
-    public static TypeConverter Type { get; } = new();
-
-    public class TypeConverter : IValueConverter
-    {
-        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            return value?.GetType().Name ?? "Null";
-        }
-
-        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
 }
