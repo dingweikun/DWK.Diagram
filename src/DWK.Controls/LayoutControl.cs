@@ -1,12 +1,8 @@
 using System.Collections.ObjectModel;
-using System.Globalization;
 using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.Data.Converters;
-using Avalonia.Media;
-using Avalonia.Metadata;
 using CommunityToolkit.Mvvm.Input;
 
 namespace DWK.Controls;
@@ -400,55 +396,4 @@ public class LayoutControl : TemplatedControl
             UpdateSlotLayout();
         }
     }
-}
-
-public enum SlotPosition
-{
-    LeftTop,
-    LeftBottom,
-    RightTop,
-    RightBottom,
-    BottomLeft,
-    BottomRight
-}
-
-public static class SlotPositionConverters
-{
-    public static IsConverter Is { get; } = new IsConverter();
-    public static NotConverter Not { get; } = new NotConverter();
-
-    public class IsConverter : IValueConverter
-    {
-        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
-            value is SlotPosition pos1 && parameter is SlotPosition pos2 && pos1 == pos2;
-
-        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotImplementedException();
-    }
-
-    public class NotConverter : IValueConverter
-    {
-        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
-            value is SlotPosition pos1 && parameter is SlotPosition pos2 && pos1 != pos2;
-
-        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotImplementedException();
-    }
-}
-
-public class SlotItem
-{
-    public static LayoutControl? LayoutInstance { get; internal set; }
-
-    public SlotPosition Position { get; set; }
-
-    public bool IsHidden { get; set; }
-
-    [Content] public required Control Content { get; init; }
-
-    public required string Title { get; init; }
-
-    public Geometry? IconPath { get; init; } = Geometry.Parse("M 40,20 L 60,40 L 40,60 L 20,40 Z");
-
-    public double IconHeight { get; init; } = 20.0;
-
-    public double IconWidth { get; init; } = 20.0;
 }

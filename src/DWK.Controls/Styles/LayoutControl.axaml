@@ -260,8 +260,10 @@
                                  IsVisible="{TemplateBinding SlotBottomRightChildren, Converter={x:Static local:ListConverters.IsNotEmpty}}" />
                     </DockPanel>
 
-                    <!-- 原布局 -->
+                    <!-- 内容布局 -->
                     <Grid RowDefinitions="*,Auto,*">
+                        
+                        <!-- 上部区域 -->
                         <Grid Grid.Row="0" ColumnDefinitions="*,Auto,*,Auto,*">
                             <!-- 左列 -->
                             <Grid Grid.Column="0" RowDefinitions="*,Auto,*">
@@ -273,12 +275,14 @@
                                                 Content="{TemplateBinding SlotLeftBottomSelectedItem, Converter={x:Static local:SlotItemConverters.Content}}"
                                                 IsVisible="{TemplateBinding SlotLeftBottomSelectedItem, Converter={x:Static ObjectConverters.IsNotNull}}" />
                             </Grid>
+                            
                             <GridSplitter Grid.Column="1" Width="4" VerticalAlignment="Stretch" Background="Gray" />
 
                             <!-- 中间列 -->
                             <Border Grid.Column="2" x:Name="PART_ContentBorder" BorderThickness="1" BorderBrush="Red">
                                 <ContentPresenter Content="{TemplateBinding Content}" />
                             </Border>
+                            
                             <GridSplitter Grid.Column="3" Width="4" VerticalAlignment="Stretch" Background="Gray" />
 
                             <!-- 右列 -->
@@ -307,7 +311,6 @@
                         </Grid>
                     </Grid>
                 </DockPanel>
-
             </ControlTemplate>
         </Setter>
     </Style>
